@@ -7,7 +7,7 @@
     "icon": "./assets/images/icon.png",
     "scheme": "recipeapp",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
     "ios": {
       "supportsTablet": true
     },
@@ -23,7 +23,8 @@
     },
     "web": {
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/favicon.png",
+      "bundle": "metro"
     },
     "plugins": [
       "expo-router",
