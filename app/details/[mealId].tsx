@@ -119,7 +119,7 @@ export default function MealDetails() {
               تحتوي هذه الوصفة على مكونات غير مسموحة (لحم خنزير أو مشتقاته)
             </Text>
           </View>
-        </View>
+     ةف-10mt-1mt-10relative0    </View>
       </View>
     );
   }
@@ -155,38 +155,62 @@ export default function MealDetails() {
             name={favorite ? "heart" : "heart-outline"}
             size={26}
             color="#FF8A00"
-            style={{ marginRight: 4 }}
+            style={{ marginRight: 4, textAlign: "center" }}
           />
         </Pressable>
 
         <View className="p-4">
-          <Text className="text-2xl font-bold text-primary mb-2">
+          <Text className="text-2xl font-bold text-primary mb-2 ">
             {meal.strMeal}
           </Text>
-          <Text className="text-text mb-1 text-right my-2 text-lg font-semibold">
-            التصنيف: {meal.strCategory || "-"}
-          </Text>
-          <Text className="text-text mb-3 text-right my-2 text-lg font-semibold">
-            المنطقة: {meal.strArea || "-"}
-          </Text>
+          <View className="flex-row items-center space-x-4 gap-2 mb-4 my-5">
+            {/* CATEGORY CONTAINER */}
+            <View className="bg-primary/10  rounded-xl border border-primary gap-3 p-2 items-center mx-auto">
+              <Text className="text-md font-semibold text-black">التصنيف</Text>
+              <Text className="text-md text-black mt-1 font-bold">{meal.strCategory}</Text>
+            </View>
+              {/* AREA CONTAINER */}
+              <View className="bg-primary/10 rounded-xl border border-primary gap-3 p-2 items-center mx-auto">
+                <Text className="text-md font-semibold text-black">المنطقة</Text>
+                <Text className="text-md text-black mt-1 font-bold">{meal.strArea}</Text>
+              </View>
+              {/* INGREDIENTS CONTAINER */}
+              <View className="bg-primary/10 rounded-xl border border-primary gap-3 p-2 items-center mx-auto">
+                <Text className="text-md font-semibold text-black">عدد المكونات</Text>
+                <Text className="text-md text-black mt-1 font-bold">{ingredients.length}</Text>
+              </View>
 
-          <Text className="text-2xl font-bold text-primary mt-2 mb-2 text-right">
-            المكونات
-          </Text>
+          </View>
+          <View className=" p-3 rounded-xl flex-row items-center justify-end">
+            <Text>
+              <Feather name="list" size={20} color="#FF8A00" className="mr-2" />
+            </Text>
+            <Text className="text-2xl font-bold text-primary mt-2 mb-2 ml-4 text-right">
+            المكونات 
+            </Text>
+          </View>
+          
+          <View className="mb-4 bg-primary/5 p-3 rounded-xl">
           {ingredients.map((it, idx) => (
             <View
               key={idx}
-              className="flex-row justify-between items-center py-1"
+              className="flex-row justify-between items-center py-2  px-4 mb-2"
             >
               <Text className="text-text font-semibold">{it.ingredient}</Text>
               <Text className="text-text text-sm text-muted font-semibold">{it.measure}</Text>
             </View>
           ))}
+          </View>
+          <View className=" p-3 rounded-xl flex-row items-center justify-end">
+            <Text>
+              <Feather name="book-open" size={20} color="#FF8A00" className="mr-2" />
+            </Text>
 
-          <Text className="text-xl font-bold text-primary mt-4 mb-2 text-right">
-            طريقة التحضير
-          </Text>
-          <Text className="text-text leading-6 font-semibold">{meal.strInstructions}</Text>
+            <Text className="text-2xl font-bold text-primary mt-2 mb-4 ml-4 text-right">
+              طريقة التحضير
+            </Text>
+          </View>
+          <Text className="text-text leading-6 font-semibold bg-primary/5 p-4 rounded-xl">{meal.strInstructions}</Text>
         </View>
       </ScrollView>
     </View>

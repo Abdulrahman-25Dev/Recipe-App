@@ -3,15 +3,16 @@ import {
   View,
   ActivityIndicator,
   Pressable,
-  Image,
   FlatList,
   ScrollView,
-  Dimensions,
+  ImageBackground,
+  TouchableOpacity,
 } from "react-native";
 import { getMealsByCategory } from "../../src/api/meal";
 import { useEffect, useState } from "react";
 import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
+import { LinearGradient } from "expo-linear-gradient";
 
 type Meal = {
   idMeal: string;
@@ -22,17 +23,9 @@ type Meal = {
 
 export default function Index() {
   const [meals, setMeals] = useState<Meal[]>([]);
-  const [imageHeights, setImageHeights] = useState<Record<string, number>>({});
   const [activeCategory, setActiveCategory] = useState("Chicken");
 
-  const categories = [
-    "Chicken",
-    "Seafood",
-    "Beef",
-    "Lamb",
-    ];
-
- 
+  const categories = ["Chicken", "Seafood", "Beef", "Lamb"];
 
   useEffect(() => {
     const fetchMealsByCategory = async () => {
@@ -42,21 +35,9 @@ export default function Index() {
     fetchMealsByCategory();
   }, [activeCategory]);
 
-  useEffect(() => {
-    if (meals.length === 0) return;
-    const colWidth = (Dimensions.get("window").width - 40) / 2; // approximate column width
-    meals.forEach((m) => {
-      if (!m.strMealThumb) return;
-      Image.getSize(
-        m.strMealThumb,
-        (w, h) => {
-          const scaled = Math.round((colWidth * h) / w);
-          setImageHeights((prev) => ({ ...prev, [m.idMeal]: scaled }));
-        },
-        () => {},
-      );
-    });
-  }, [meals]);
+  const getRandomHeight = () => {
+    return Math.random() * (220 - 150) + 150;
+  };
 
   if (meals.length === 0) {
     return (
@@ -77,12 +58,15 @@ export default function Index() {
 
       {/* Categories Header */}
       <View className="flex-row justify-between items-center px-5 mt-2">
-        <Pressable onPress={() => {
+        <Pressable
+          onPress={() => {
+            router.push("/categories/cats");
             console.log("Show all categories");
-        }}>
+          }}
+        >
           <Text className="text-primary text-md font-semibold">عرض الكل</Text>
         </Pressable>
-        
+
         <Text className="text-text text-lg font-semibold">التصنيفات</Text>
       </View>
 
@@ -120,35 +104,40 @@ export default function Index() {
         <Text className="text-text text-2xl font-bold mb-2">الوصفات</Text>
       </View>
       {/* Random meals */}
-      <View className="px-2">
+      <View className="px-2 flex-1">
         <FlatList
           data={meals}
           numColumns={2}
-          columnWrapperStyle={{ justifyContent: "space-between" }}
-          contentContainerStyle={{ paddingBottom: 250 }}
+          columnWrapperStyle={{ paddingHorizontal: 6, paddingBottom: 4 }}
+          contentContainerStyle={{ paddingVertical: 8, paddingBottom: 250 }}
           showsVerticalScrollIndicator={false}
           keyExtractor={(item) => item.idMeal}
           renderItem={({ item }) => (
-            <View className="flex-1 m-2 bg-card rounded-lg p-4">
-              <Pressable 
-              key={item.idMeal}
-              onPress={() => {
-                 router.push(`/details/${item.idMeal}`);
-              }}>
-                <Image
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={() => router.push(`/details/${item.idMeal}`)}
+              className="flex-1 m-1.5"
+            >
+              <ImageBackground
                 source={{ uri: item.strMealThumb }}
-                style={{
-                  width: "100%",
-                  height: imageHeights[item.idMeal] ?? 160,
-                }}
-                className="rounded-lg mb-2"
-              />
-                <Text className="text-text text-md font-semibold text-center">
-                  {item.strMeal}
-                </Text>
-              </Pressable>
-              
-            </View>
+                className="rounded-2xl overflow-hidden flex-1"
+                style={{ height: getRandomHeight() }}
+                imageStyle={{ resizeMode: "cover" }}
+              >
+                {/* Dark gradient overlay at the bottom */}
+                <LinearGradient
+                  colors={["transparent", "rgba(0, 0, 0, 0.8)"]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 0, y: 1 }}
+                  className="flex-1 justify-end p-4"
+                >
+                  {/* Meal name */}
+                  <Text className="text-white font-bold text-base leading-5">
+                    {item.strMeal}
+                  </Text>
+                </LinearGradient>
+              </ImageBackground>
+            </TouchableOpacity>
           )}
         />
       </View>
