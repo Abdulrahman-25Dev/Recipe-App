@@ -1,10 +1,123 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import {
+  View,
+  Text,
+  TextInput,
+  FlatList,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+  ImageBackground,
+} from "react-native";
+import { useState, useEffect } from "react";
+import { Feather } from "@expo/vector-icons";
+import { router } from "expo-router";
+import { LinearGradient } from "expo-linear-gradient";
 
-export default function search() {
+export default function Search() {
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  const fetchMeals = async () => {
+    if (!query.trim()) {
+      setResults([]);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await fetch(
+        `https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`,
+      );
+      const data = await res.json();
+      setResults(data.meals || []);
+    } catch (err) {
+      console.log(err);
+    }
+    setLoading(false);
+  };
+
+  // بحث تلقائي مع كل تغيير في query (debounce)
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      fetchMeals();
+    }, 400);
+
+    return () => clearTimeout(delay);
+  }, [query]);
+
   return (
-    <View>
-      <Text>search</Text>
+    <View className="flex-1 bg-background px-4 pt-10">
+      {/* العنوان */}
+      <Text className="text-2xl font-bold text-black mb-4 text-center">
+        البحث
+      </Text>
+
+      {/* شريط البحث */}
+      <View className="flex-row items-center bg-white rounded-xl px-4 py-3 mx-3 mb-4 border border-neutral-300">
+        <Feather name="search" size={20} color="#777" className="mr-2" />
+        <TextInput
+          placeholder="ابحث عن وصفة…"
+          placeholderTextColor="#777"
+          className="flex-1 text-black text-base"
+          value={query}
+          onChangeText={setQuery}
+        />
+      </View>
+
+      {/* حالة التحميل */}
+      {loading && (
+        <ActivityIndicator size="large" color="#FF8A00" className="mt-6" />
+      )}
+
+      {/* لا توجد نتائج */}
+      {!loading && query.length > 0 && results.length === 0 && (
+        <Text className="text-neutral-500 text-center mt-10">
+          لا توجد وصفات مطابقة لبحثك
+        </Text>
+      )}
+
+      {/* Categories */}
+      
+
+      {/* نتائج البحث */}
+      <FlatList
+        data={results}
+        numColumns={2}
+        columnWrapperStyle={{ justifyContent: "space-between" }}
+        keyExtractor={(item) => item.idMeal}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 20 }}
+        renderItem={({ item }) => (
+          <TouchableOpacity className="w-[48%] mb-3"
+            onPress={() => router.push(`/details/${item.idMeal}`)} 
+           >
+            <View className="rounded-xl overflow-hidden bg-neutral-100 border border-neutral-200">
+              <ImageBackground
+                source={{ uri: item.strMealThumb }}
+                className="w-full h-52"
+                resizeMode="cover"
+              >
+                {/* Dark gradient overlay at the bottom */}
+                <LinearGradient
+                  colors={["transparent", "rgba(0, 0, 0, 0.6)"]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 0, y: 1 }}
+                  className="flex-1 justify-end p-4"
+                >
+                  {/* اسم الوصفة */}
+                  <Text
+                    className="text-white font-bold text-base leading-5"
+                    numberOfLines={2}
+                  >
+                    {item.strMeal}
+                  </Text>
+                </LinearGradient>
+              </ImageBackground>
+            </View>
+          </TouchableOpacity>
+        )}
+      />
     </View>
-  )
+  );
 }

@@ -163,21 +163,21 @@ export default function MealDetails() {
           <Text className="text-2xl font-bold text-primary mb-2 ">
             {meal.strMeal}
           </Text>
-          <View className="flex-row items-center space-x-4 gap-2 mb-4 my-5">
+          <View className="flex-row items-center gap-2 mb-4 my-5">
             {/* CATEGORY CONTAINER */}
-            <View className="bg-primary/10  rounded-xl border border-primary gap-3 p-2 items-center mx-auto">
-              <Text className="text-md font-semibold text-black">التصنيف</Text>
-              <Text className="text-md text-black mt-1 font-bold">{meal.strCategory}</Text>
+            <View className="bg-primary/10  rounded-xl border border-primary gap-2 p-2 items-center mx-auto">
+              <Text className="text-sm font-semibold text-black">التصنيف</Text>
+              <Text className="text-sm text-black mt-1 font-bold">{meal.strCategory}</Text>
             </View>
               {/* AREA CONTAINER */}
               <View className="bg-primary/10 rounded-xl border border-primary gap-3 p-2 items-center mx-auto">
-                <Text className="text-md font-semibold text-black">المنطقة</Text>
-                <Text className="text-md text-black mt-1 font-bold">{meal.strArea}</Text>
+                <Text className="text-sm font-semibold text-black">المنطقة</Text>
+                <Text className="text-sm text-black mt-1 font-bold">{meal.strArea}</Text>
               </View>
               {/* INGREDIENTS CONTAINER */}
               <View className="bg-primary/10 rounded-xl border border-primary gap-3 p-2 items-center mx-auto">
-                <Text className="text-md font-semibold text-black">عدد المكونات</Text>
-                <Text className="text-md text-black mt-1 font-bold">{ingredients.length}</Text>
+                <Text className="text-sm font-semibold text-black">عدد المكونات</Text>
+                <Text className="text-sm text-black mt-1 font-bold">{ingredients.length}</Text>
               </View>
 
           </View>

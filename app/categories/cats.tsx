@@ -71,12 +71,12 @@ export default function CategoriesScreen() {
     }
   };
 
-  const getRandomHeight = () => {
-    return Math.random() * (220 - 140) + 140;
-  };
+  // const getRandomHeight = () => {
+  //   return Math.random() * (220 - 140) + 140;
+  // };
 
   const CategoryCard = ({ item }: { item: Category }) => {
-    const cardHeight = getRandomHeight();
+    // const cardHeight = getRandomHeight();
 
     return (
       <TouchableOpacity
@@ -87,7 +87,7 @@ export default function CategoriesScreen() {
         <ImageBackground
           source={{ uri: item.strCategoryThumb }}
           className="rounded-2xl overflow-hidden flex-1"
-          style={{ height: cardHeight }}
+          style={{ height: 170 }}
           imageStyle={{ resizeMode: "cover" }}
         >
           {/* Icon on top-left */}
