@@ -167,16 +167,16 @@ export default function MealDetails() {
             {/* CATEGORY CONTAINER */}
             <View className="bg-primary/10  rounded-xl border border-primary gap-2 p-2 items-center mx-auto">
               <Text className="text-sm font-semibold text-black">التصنيف</Text>
-              <Text className="text-sm text-black mt-1 font-bold">{meal.strCategory}</Text>
+              <Text numberOfLines={2} className="text-sm text-black mt-1 font-bold">{meal.strCategory}</Text>
             </View>
               {/* AREA CONTAINER */}
               <View className="bg-primary/10 rounded-xl border border-primary gap-3 p-2 items-center mx-auto">
                 <Text className="text-sm font-semibold text-black">المنطقة</Text>
-                <Text className="text-sm text-black mt-1 font-bold">{meal.strArea}</Text>
+                <Text numberOfLines={2} className="text-sm text-black mt-1 font-bold">{meal.strArea}</Text>
               </View>
               {/* INGREDIENTS CONTAINER */}
               <View className="bg-primary/10 rounded-xl border border-primary gap-3 p-2 items-center mx-auto">
-                <Text className="text-sm font-semibold text-black">عدد المكونات</Text>
+                <Text className="text-sm font-semibold text-black">المكونات</Text>
                 <Text className="text-sm text-black mt-1 font-bold">{ingredients.length}</Text>
               </View>
 

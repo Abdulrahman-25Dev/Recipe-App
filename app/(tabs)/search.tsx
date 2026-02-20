@@ -3,7 +3,6 @@ import {
   Text,
   TextInput,
   FlatList,
-  Image,
   TouchableOpacity,
   ActivityIndicator,
   ImageBackground,
@@ -49,12 +48,12 @@ export default function Search() {
   return (
     <View className="flex-1 bg-background px-4 pt-10">
       {/* العنوان */}
-      <Text className="text-2xl font-bold text-black mb-4 text-center">
+      <Text className="text-2xl font-bold text-text mb-4 mt-4 text-center">
         البحث
       </Text>
 
       {/* شريط البحث */}
-      <View className="flex-row items-center bg-white rounded-xl px-4 py-3 mx-3 mb-4 border border-neutral-300">
+      <View className="flex-row items-center bg-white rounded-full px-4 py-3 mx-3 mt-4 mb-4 border border-neutral-300">
         <Feather name="search" size={20} color="#777" className="mr-2" />
         <TextInput
           placeholder="ابحث عن وصفة…"
@@ -68,23 +67,24 @@ export default function Search() {
       {/* حالة التحميل */}
       {loading && (
         <ActivityIndicator size="large" color="#FF8A00" className="mt-6" />
+        
       )}
 
       {/* لا توجد نتائج */}
       {!loading && query.length > 0 && results.length === 0 && (
-        <Text className="text-neutral-500 text-center mt-10">
+        <Text className="text-neutral-700 text-center mt-10 text-lg">
           لا توجد وصفات مطابقة لبحثك
         </Text>
       )}
 
       {/* Categories */}
-      
+
 
       {/* نتائج البحث */}
       <FlatList
         data={results}
         numColumns={2}
-        columnWrapperStyle={{ justifyContent: "space-between" }}
+        columnWrapperStyle={{ justifyContent: "space-around" }}
         keyExtractor={(item) => item.idMeal}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 20 }}
@@ -100,7 +100,7 @@ export default function Search() {
               >
                 {/* Dark gradient overlay at the bottom */}
                 <LinearGradient
-                  colors={["transparent", "rgba(0, 0, 0, 0.6)"]}
+                  colors={["transparent", "rgba(0, 0, 0, 0.7)"]}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 0, y: 1 }}
                   className="flex-1 justify-end p-4"
