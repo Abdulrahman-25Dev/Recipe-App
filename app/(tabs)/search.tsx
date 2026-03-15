@@ -46,26 +46,29 @@ export default function Search() {
   }, [query]);
 
   return (
-    <View className="flex-1 bg-background px-4 pt-10">
-      {/* العنوان */}
-      <Text className="text-2xl font-bold text-text mb-4 mt-4 text-center">
-        البحث
-      </Text>
-
+    <View className="flex-1 bg-background px-4 pt-10 mt-3">
+      
       {/* شريط البحث */}
-      <View className="flex-row items-center bg-white rounded-full px-4 py-3 mx-3 mt-4 mb-4 border border-neutral-300">
+      <View className="flex-row items-center bg-white rounded-full px-3 py-2 mx-3 mt-4 mb-4 border border-neutral-300 ">
         <Feather name="search" size={20} color="#777" className="mr-2" />
         <TextInput
           placeholder="ابحث عن وصفة…"
           placeholderTextColor="#777"
-          className="flex-1 text-black text-base"
+          className="flex-1 text-black p-2 text-lg"
           value={query}
           onChangeText={setQuery}
         />
       </View>
+      {/* TEXT */}
+      {!loading && results.length === 0 && query.length === 0 && (
+        <Text className="text-neutral-500 text-xl mt-4 text-center">
+          ابدأ بالبحث عن وصفاتك المفضلة!
+        </Text>
+      )}
+
 
       {/* حالة التحميل */}
-      {loading && (
+      {loading &&(
         <ActivityIndicator size="large" color="#FF8A00" className="mt-6" />
         
       )}
@@ -76,8 +79,6 @@ export default function Search() {
           لا توجد وصفات مطابقة لبحثك
         </Text>
       )}
-
-      {/* Categories */}
 
 
       {/* نتائج البحث */}

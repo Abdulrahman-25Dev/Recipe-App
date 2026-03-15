@@ -47,7 +47,7 @@ export default function CategoryMealsScreen() {
   };
 
   const getRandomHeight = () => {
-    return Math.random() * (220 - 150) + 150;
+    return Math.floor(Math.random() * (220 - 150) + 150);
   };
 
   const MealCard = ({ item }: { item: Meal }) => {

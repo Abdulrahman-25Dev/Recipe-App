@@ -36,7 +36,7 @@ export default function Index() {
   }, [activeCategory]);
 
   const getRandomHeight = () => {
-    return Math.random() * (220 - 150) + 150;
+    return Math.floor(Math.random() * (220 - 150) + 160);
   };
 
   if (meals.length === 0) {
