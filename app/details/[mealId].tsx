@@ -10,6 +10,8 @@ import React, { useEffect, useState } from "react";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { getMealById } from "../../src/api/meal";
 import { Feather, Ionicons } from "@expo/vector-icons";
+import { useFavorites } from "../../store/useFavoriteStore";
+
 type Meal = {
   idMeal: string;
   strMeal: string;
@@ -47,26 +49,30 @@ const parseIngredients = (meal: Meal) => {
   return list;
 };
 
+
 export default function MealDetails() {
   const { mealId } = useLocalSearchParams();
   const [meal, setMeal] = useState<Meal | null>(null);
   const [loading, setLoading] = useState(true);
-  const [favorite, setFavorite] = useState(false);
   const [isHaram, setIsHaram] = useState(false);
-
+  const {toggleFavorite} = useFavorites();
+  
+  const favorited = useFavorites((state) => 
+    state.favorites.some((f) => f.idMeal === String(mealId))
+);
   useEffect(() => {
-    if (!mealId) return;
-    const fetchMeal = async () => {
-      setLoading(true);
-      const data = await getMealById(String(mealId));
-      setMeal(data);
-      if (data && containsHaramIngredients(data)) {
-        setIsHaram(true);
-      }
-      setLoading(false);
-    };
-    fetchMeal();
-  }, [mealId]);
+  if (!mealId) return;
+  const fetchMeal = async () => {
+    setLoading(true);
+    const data = await getMealById(String(mealId));
+    setMeal(data);
+    if (data && containsHaramIngredients(data)) {
+      setIsHaram(true);
+    }
+    setLoading(false);
+  };
+  fetchMeal();
+}, [mealId]);
 
   if (!mealId) {
     return (
@@ -83,7 +89,10 @@ export default function MealDetails() {
         <Text className="text-text mt-4">جاري تحميل تفاصيل الوصفة...</Text>
       </View>
     );
-  }
+  } 
+  
+
+  
 
   // Show halal message if meal contains haram ingredients
   if (isHaram) {
@@ -148,14 +157,13 @@ export default function MealDetails() {
           />
         ) : null}
         <Pressable
-          onPress={() => setFavorite(!favorite)}
+          onPress={() => meal && toggleFavorite(meal)}
           className="absolute top-4 bg-black left-4 z-10 p-2 rounded-full shadow mt-7"
         >
           <Ionicons
-            name={favorite ? "heart" : "heart-outline"}
-            size={26}
+            name={favorited ? "heart" : "heart-outline"}
+            size={24}
             color="#FF8A00"
-            style={{ marginRight: 4, textAlign: "center" }}
           />
         </Pressable>
 

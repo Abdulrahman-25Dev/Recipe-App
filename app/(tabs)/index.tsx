@@ -22,11 +22,12 @@ type Meal = {
 };
 
 export default function Index() {
+
   const [meals, setMeals] = useState<Meal[]>([]);
   const [activeCategory, setActiveCategory] = useState("Chicken");
-
+  
   const categories = ["Chicken", "Seafood", "Beef", "Lamb"];
-
+  
   useEffect(() => {
     const fetchMealsByCategory = async () => {
       const data = await getMealsByCategory(activeCategory);
