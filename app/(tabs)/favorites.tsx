@@ -10,6 +10,7 @@ import { router } from "expo-router";
 import { useFavorites } from "../../store/useFavoriteStore";
 import { LinearGradient } from "expo-linear-gradient";
 import Feather from "@expo/vector-icons/build/Feather";
+import { Ionicons } from "@expo/vector-icons";
 const Favorites = () => {
   const favorites = useFavorites((state) => state.favorites);
   return (
@@ -18,7 +19,7 @@ const Favorites = () => {
         <Text className="text-2xl font-bold text-primary mr-2">
           وصفاتي المفضلة
         </Text>
-        <Feather name="heart" size={24} color="red" />
+        <Feather name="heart" size={24} color="#FF8A00" />
       </View>
       <View className="flex-1 px-3">
         <FlatList
@@ -34,10 +35,10 @@ const Favorites = () => {
               onPress={() => router.push(`/details/${item.idMeal}`)}
               className="flex-1 m-1.5"
             >
-              <Feather
+              <Ionicons
                 name="heart"
                 size={20}
-                color="#ff4d4d"
+                color="#FF8A00"
                 className="absolute top-2 left-2 z-10 p-2 bg-black rounded-full"
               />
 
@@ -62,7 +63,7 @@ const Favorites = () => {
                     {item.strMeal}
                   </Text>
                   <View className="mt-1 bg-black/50 px-2 py-1 rounded-full self-start">
-                    <Text className="text-primary font-semibold text-md leading-7">
+                    <Text className="text-primary font-semibold text-sm leading-5">
                       {item.strCategory}
                     </Text>
                   </View>
