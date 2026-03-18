@@ -61,8 +61,7 @@ export default function Index() {
       <View className="flex-row justify-between items-center px-5 mt-2">
         <Pressable
           onPress={() => {
-            router.push("/categories/cats");
-            console.log("Show all categories");
+            router.push("/categories/cats");;
           }}
         >
           <Text className="text-primary text-md font-semibold">عرض الكل</Text>
