@@ -55,7 +55,7 @@ export default function MealDetails() {
   const [meal, setMeal] = useState<Meal | null>(null);
   const [loading, setLoading] = useState(true);
   const [isHaram, setIsHaram] = useState(false);
-  const {toggleFavorite} = useFavorites();
+  const { toggleFavorite } = useFavorites();
   
   const favorited = useFavorites((state) => 
     state.favorites.some((f) => f.idMeal === String(mealId))
