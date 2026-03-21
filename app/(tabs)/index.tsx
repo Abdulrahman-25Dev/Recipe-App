@@ -120,7 +120,7 @@ export default function Index() {
             >
               <ImageBackground
                 source={{ uri: item.strMealThumb }}
-                className="rounded-2xl overflow-hidden flex-1"
+                className="rounded-3xl overflow-hidden flex-1"
                 style={{ height: getRandomHeight() }}
                 imageStyle={{ resizeMode: "cover" }}
               >
