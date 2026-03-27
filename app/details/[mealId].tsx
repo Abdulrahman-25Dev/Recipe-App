@@ -167,25 +167,25 @@ export default function MealDetails() {
           />
         </Pressable>
 
-        <View className="p-4">
-          <Text className="text-2xl font-bold text-primary mb-2 ">
+        <View className="p-4 bg-background dark:bg-darkBackground">
+          <Text className="text-2xl font-bold text-primary dark:text-darkPrimary mb-2 ">
             {meal.strMeal}
           </Text>
           <View className="flex-row items-center gap-2 mb-4 my-5">
             {/* CATEGORY CONTAINER */}
-            <View className="bg-primary/10  rounded-xl border border-primary gap-2 p-2 items-center mx-auto">
-              <Text className="text-sm font-semibold text-black">التصنيف</Text>
-              <Text numberOfLines={2} className="text-sm text-black mt-1 font-bold">{meal.strCategory}</Text>
+            <View className="bg-primary/10  rounded-xl border border-primary dark:border-darkPrimary gap-2 p-2 items-center mx-auto">
+              <Text className="text-sm font-semibold text-text dark:text-darkText">التصنيف</Text>
+              <Text numberOfLines={2} className="text-sm text-text dark:text-darkText mt-1 font-bold">{meal.strCategory}</Text>
             </View>
               {/* AREA CONTAINER */}
               <View className="bg-primary/10 rounded-xl border border-primary gap-3 p-2 items-center mx-auto">
-                <Text className="text-sm font-semibold text-black">المنطقة</Text>
-                <Text numberOfLines={2} className="text-sm text-black mt-1 font-bold">{meal.strArea}</Text>
+                <Text className="text-sm font-semibold text-text dark:text-darkText">المنطقة</Text>
+                <Text numberOfLines={2} className="text-sm text-text dark:text-darkText mt-1 font-bold">{meal.strArea}</Text>
               </View>
               {/* INGREDIENTS CONTAINER */}
               <View className="bg-primary/10 rounded-xl border border-primary gap-3 p-2 items-center mx-auto">
-                <Text className="text-sm font-semibold text-black">المكونات</Text>
-                <Text className="text-sm text-black mt-1 font-bold">{ingredients.length}</Text>
+                <Text className="text-sm font-semibold text-text dark:text-darkText">المكونات</Text>
+                <Text className="text-sm text-text dark:text-darkText mt-1 font-bold">{ingredients.length}</Text>
               </View>
 
           </View>
@@ -193,7 +193,7 @@ export default function MealDetails() {
             <Text>
               <Feather name="list" size={20} color="#FF8A00" className="mr-2" />
             </Text>
-            <Text className="text-2xl font-bold text-primary mt-2 mb-2 ml-4 text-right">
+            <Text className="text-2xl font-bold text-primary dark:text-darkPrimary mt-2 mb-2 ml-4 text-right">
             المكونات 
             </Text>
           </View>
@@ -204,8 +204,8 @@ export default function MealDetails() {
               key={idx}
               className="flex-row justify-between items-center py-2  px-4 mb-2"
             >
-              <Text className="text-text font-semibold">{it.ingredient}</Text>
-              <Text className="text-text text-sm text-muted font-semibold">{it.measure}</Text>
+              <Text className="text-text font-semibold dark:text-darkText">{it.ingredient}</Text>
+              <Text className="text-text text-sm text-muted font-semibold dark:text-darkText">{it.measure}</Text>
             </View>
           ))}
           </View>

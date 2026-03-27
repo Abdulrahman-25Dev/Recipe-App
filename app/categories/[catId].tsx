@@ -83,11 +83,11 @@ export default function CategoryMealsScreen() {
   };
 
   return (
-    <>
+    <View className="flex-1 bg-background dark:bg-darkBackground">
       <Stack.Screen options={{ headerShown: false }} />
 
       {/* Header */}
-      <View className="flex-row items-center justify-between px-4 py-4 bg-white border-b border-gray-200 mt-10">
+      <View className="flex-row items-center justify-between px-4 py-4 bg-background dark:bg-darkBackground mt-10">
         <Text className="text-2xl font-bold flex-1 ml-3 truncate text-primary">
           {categoryName}
         </Text>
@@ -122,6 +122,6 @@ export default function CategoryMealsScreen() {
           <Text className="text-gray-500 text-lg">No meals found</Text>
         </View>
       )}
-    </>
+    </View>
   );
 }
