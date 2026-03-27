@@ -2,10 +2,13 @@ import React from "react";
 import { View, Text, ScrollView, Switch, Pressable } from "react-native";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { useFavorites } from "../../store/useFavoriteStore"; // تأكد من مسار ملف الستور عندك
+import { useTheme } from "../../store/useTheme";
 
 export default function SettingsScreen() {
   // جلب البيانات من الستور
   const { favorites } = useFavorites();
+
+  const { isDark, toggleTheme, language, setLanguage } = useTheme();
 
   // حساب عدد المفضلة
   const favoritesCount = favorites.length;
@@ -91,6 +94,8 @@ export default function SettingsScreen() {
             <Switch
               trackColor={{ true: "#FF8A00", false: "#DDD" }}
               thumbColor="white"
+              value={isDark}
+              onValueChange={toggleTheme}
             />
           </View>
 

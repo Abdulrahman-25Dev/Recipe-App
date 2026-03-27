@@ -14,6 +14,7 @@ module.exports = {
         textLight: "#6B7280",
       }
     },
+    darkMode: "class",
   },
   plugins: [],
 }
