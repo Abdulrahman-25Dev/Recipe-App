@@ -14,9 +14,9 @@ import { Ionicons } from "@expo/vector-icons";
 const Favorites = () => {
   const favorites = useFavorites((state) => state.favorites);
   return (
-    <View className="flex-1 bg-background">
-      <View className="p-3 flex-row items-center justify-end mt-10 bg-card">
-        <Text className="text-2xl font-bold text-primary mr-2">
+    <View className="flex-1 bg-background dark:bg-darkBackground">
+      <View className="p-3 flex-row items-center justify-end mt-10">
+        <Text className="text-2xl font-bold text-primary dark:text-darkPrimary mr-2">
           وصفاتي المفضلة
         </Text>
         <Feather name="heart" size={24} color="#FF8A00" />
@@ -63,7 +63,7 @@ const Favorites = () => {
                     {item.strMeal}
                   </Text>
                   <View className="mt-1 bg-black/50 px-2 py-1 rounded-full self-start">
-                    <Text className="text-primary font-semibold text-sm leading-5">
+                    <Text className="text-primary dark:text-darkPrimary font-semibold text-sm leading-5">
                       {item.strCategory}
                     </Text>
                   </View>

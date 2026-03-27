@@ -31,45 +31,45 @@ export default function SettingsScreen() {
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
-      className="flex-1 bg-background "
+      className="flex-1 bg-background dark:bg-darkBackground"
     >
       {/* 1. الهيدر: البروفايل */}
       <View className="items-center mt-10 mb-8 px-5">
-        <View className="w-28 h-28 rounded-full bg-orange-50 items-center justify-center border-4 border-white shadow-sm">
+        <View className="w-28 h-28 rounded-full bg-white dark:bg-darkBackground items-center justify-center border-4 border-white dark:border-darkBackground shadow-sm">
           <Feather name="user" size={55} color="#FF8A00" />
         </View>
-        <Text className="text-2xl font-bold mt-4 text-black text-center">
+        <Text className="text-2xl font-bold mt-4 text-text dark:text-darkText text-center">
           طباخ ماهر
         </Text>
-        <Text className="text-gray-400 text-center text-base mt-1">
+        <Text className="text-gray-400 dark:text-gray-300 text-center text-base mt-1">
           مرحباً بك في مطبخك الخاص
         </Text>
       </View>
 
       {/* 2. قسم الإحصائيات: مربعات الإحصائيات (Stat Cards) */}
       <View className="px-5 mb-8">
-        <Text className="text-right text-gray-400 font-bold mb-4 mr-2">
+        <Text className="text-right text-gray-400 dark:text-gray-300 font-bold mb-4 mr-2">
           الإحصائيات
         </Text>
         <View className="flex-row-reverse gap-4">
           {/* مربع المفضلة - يقرأ من الستور */}
-          <View className="flex-1 bg-white p-5 rounded-[35px] items-center shadow-sm border border-gray-50">
-            <View className="bg-orange-50 p-2.5 rounded-2xl mb-2">
+          <View className="flex-1 bg-card dark:bg-darkCard p-5 rounded-[35px] items-center shadow-sm border border-gray-50 dark:border-gray-800">
+            <View className="bg-orange-50 dark:bg-orange-900 p-2.5 rounded-2xl mb-2">
               <Ionicons name="heart" size={22} color="#FF8A00" />
             </View>
-            <Text className="text-gray-400 text-xs mb-1">المفضلة</Text>
-            <Text className="text-2xl font-bold text-black">
+            <Text className="text-gray-400 dark:text-gray-300 text-xs mb-1">المفضلة</Text>
+            <Text className="text-2xl font-bold text-black dark:text-darkText">
               {favoritesCount}
             </Text>
           </View>
 
           {/* مربع التصنيف المفضل */}
-          <View className="flex-1 bg-white p-5 rounded-[35px] items-center shadow-sm border border-gray-50">
-            <View className="bg-blue-50 p-2.5 rounded-2xl mb-2">
+          <View className="flex-1 bg-white dark:bg-darkCard p-5 rounded-[35px] items-center shadow-sm border border-gray-50 dark:border-gray-800">
+            <View className="bg-blue-50 dark:bg-blue-900 p-2.5 rounded-2xl mb-2">
               <Feather name="tag" size={22} color="#3B82F6" />
             </View>
-            <Text className="text-gray-400 text-xs mb-1">الأكثر حفظاً</Text>
-            <Text className="text-lg font-bold text-black" numberOfLines={1}>
+            <Text className="text-gray-400 dark:text-gray-300 text-xs mb-1">الأكثر حفظاً</Text>
+            <Text className="text-lg font-bold text-black dark:text-darkText" numberOfLines={1}>
               {getTopCategory()}
             </Text>
           </View>
@@ -78,16 +78,16 @@ export default function SettingsScreen() {
 
       {/* 3. قسم التفضيلات */}
       <View className="px-5 mb-8">
-        <Text className="text-right text-gray-400 font-bold mb-4 mr-2">
+        <Text className="text-right text-gray-400 dark:text-gray-300 font-bold mb-4 mr-2">
           التفضيلات
         </Text>
-        <View className="bg-white rounded-[35px] p-5 shadow-sm border border-gray-50">
-          <View className="flex-row-reverse items-center justify-between py-3 border-b border-gray-50">
+        <View className="bg-white dark:bg-darkCard rounded-[35px] p-5 shadow-sm border border-gray-50 dark:border-gray-800">
+          <View className="flex-row-reverse items-center justify-between py-3 border-b border-gray-50 dark:border-gray-800">
             <View className="flex-row-reverse items-center gap-4">
-              <View className="bg-orange-50 p-2.5 rounded-2xl">
+              <View className="bg-orange-50 dark:bg-darkCard p-2.5 rounded-2xl">
                 <Feather name="moon" size={22} color="#FF8A00" />
               </View>
-              <Text className="text-lg font-semibold text-gray-800">
+              <Text className="text-lg font-semibold text-gray-800 dark:text-darkText">
                 الوضع الليلي
               </Text>
             </View>
@@ -101,17 +101,17 @@ export default function SettingsScreen() {
 
           <View className="flex-row-reverse items-center justify-between py-3">
             <View className="flex-row-reverse items-center gap-4">
-              <View className="bg-blue-50 p-2.5 rounded-2xl">
+              <View className="bg-blue-50 dark:bg-darkCard p-2.5 rounded-2xl">
                 <Feather name="globe" size={22} color="#3B82F6" />
               </View>
-              <Text className="text-lg font-semibold text-gray-800">اللغة</Text>
+              <Text className="text-lg font-semibold text-gray-800 dark:text-darkText">اللغة</Text>
             </View>
             <View className="flex-row gap-4">
-              <Pressable className=" border border-primary p-2 rounded-[30px]">
-                <Text className="text-lg font-semibold">ع</Text>
+              <Pressable className=" border border-primary dark:border-darkPrimary p-2 rounded-lg">
+                <Text className="text-lg font-semibold dark:text-darkText">ع</Text>
               </Pressable>
-              <Pressable className=" border border-primary p-2 rounded-[30px]">
-                <Text className="text-lg font-semibold">En</Text>
+              <Pressable className=" border border-primary dark:border-darkPrimary p-2 rounded-lg">
+                <Text className="text-lg font-semibold dark:text-darkText">En</Text>
               </Pressable>
             </View>
           </View>
@@ -120,16 +120,16 @@ export default function SettingsScreen() {
 
       {/* 4. قسم المزيد */}
       <View className="px-5 mb-10">
-        <Text className="text-right text-gray-400 font-bold mb-4 mr-2">
+        <Text className="text-right text-gray-400 font-bold mb-4 mr-2 dark:text-gray-300">
           المزيد
         </Text>
-        <View className="bg-white rounded-[35px] p-5 shadow-sm border border-gray-50">
-          <Pressable className="flex-row-reverse items-center justify-between py-3 border-b border-gray-50">
+        <View className="bg-white dark:bg-darkCard rounded-[35px] p-5 shadow-sm border border-gray-50 dark:border-gray-800">
+          <Pressable className="flex-row-reverse items-center justify-between py-3 border-b border-gray-50 dark:border-gray-800">
             <View className="flex-row-reverse items-center gap-4">
-              <View className="bg-blue-50 p-2.5 rounded-2xl">
+              <View className="bg-blue-50 dark:bg-darkCard p-2.5 rounded-2xl">
                 <Feather name="star" size={22} color="#3B82F6" />
               </View>
-              <Text className="text-lg font-semibold text-gray-800">
+              <Text className="text-lg font-semibold text-gray-800 dark:text-darkText">
                 تقييم التطبيق
               </Text>
             </View>
@@ -138,7 +138,7 @@ export default function SettingsScreen() {
 
           <Pressable className="flex-row-reverse items-center justify-between py-3">
             <View className="flex-row-reverse items-center gap-4">
-              <View className="bg-red-50 p-2.5 rounded-2xl">
+              <View className="bg-red-50 dark:bg-darkCard p-2.5 rounded-2xl">
                 <Feather name="trash-2" size={22} color="#EF4444" />
               </View>
               <Text className="text-lg font-semibold text-red-500">

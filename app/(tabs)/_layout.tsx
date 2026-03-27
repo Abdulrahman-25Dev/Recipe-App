@@ -1,7 +1,9 @@
 import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons"; // تمكين دعم اللغة العربية (من اليمين إلى اليسار)
+import { useTheme } from "../../store/useTheme";
 
 export default function TabLayout() {
+  const { isDark } = useTheme();
   return (
     <Tabs
       screenOptions={{
@@ -10,8 +12,8 @@ export default function TabLayout() {
         tabBarInactiveTintColor: "#9CA3AF", // رمادي هادي
         tabBarShowLabel: false,
         tabBarStyle: {
-          backgroundColor: "#ffffff",
-          borderTopColor: "#E5E7EB",
+          backgroundColor: isDark ? "#121212" : "#F9FAFB",
+          borderTopColor: isDark ? "#9CA3AF" : "#E5E7EB",
           height: 54,
           paddingBottom: 8,
           paddingTop: 6,

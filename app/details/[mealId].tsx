@@ -140,7 +140,6 @@ export default function MealDetails() {
       <Stack.Screen options={{ headerShown: false }} />
 
       <ScrollView
-        contentContainerStyle={{ paddingBottom: 120 }}
         showsVerticalScrollIndicator={false}
       >
         <Pressable
@@ -214,11 +213,11 @@ export default function MealDetails() {
               <Feather name="book-open" size={20} color="#FF8A00" className="mr-2" />
             </Text>
 
-            <Text className="text-2xl font-bold text-primary mt-2 mb-4 ml-4 text-right">
+            <Text className="text-2xl font-bold text-primary dark:text-darkPrimary mt-2 mb-4 ml-4 text-right">
               طريقة التحضير
             </Text>
           </View>
-          <Text className="text-text leading-6 font-semibold bg-primary/5 p-4 rounded-xl">{meal.strInstructions}</Text>
+          <Text className="text-text dark:text-darkText leading-6 font-semibold bg-primary/5 p-4 rounded-xl">{meal.strInstructions}</Text>
         </View>
       </ScrollView>
     </View>
