@@ -119,18 +119,19 @@ export default function CategoriesScreen() {
   };
 
   return (
-    <>
+    <View className="flex-1 bg-background dark:bg-darkBackground">
       <Stack.Screen options={{ headerShown: false }} />
+      
 
       {/* Header */}
-      <View className="flex-row items-center mt-10 justify-between px-4 py-4 bg-white border-b border-gray-200">
+      <View className="flex-row items-center mt-10 justify-between px-4 py-4 bg-background dark:bg-darkBackground">
         <TouchableOpacity
           onPress={() => router.back()}
           className="p-2 active:bg-gray-100 rounded-full bg-black"
         >
           <Ionicons name="arrow-back" size={24} color="#FF8A00" />
         </TouchableOpacity>
-        <Text className="text-2xl font-bold flex-1 ml-3 text-primary text-right">
+        <Text className="text-2xl font-bold flex-1 ml-3 text-primary dark:text-darkPrimary text-right">
           التصنيفات
         </Text>
       </View>
@@ -155,6 +156,6 @@ export default function CategoriesScreen() {
           showsVerticalScrollIndicator={false}
         />
       )}
-    </>
+    </View>
   );
 }

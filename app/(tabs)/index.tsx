@@ -50,7 +50,7 @@ export default function Index() {
   }
 
   return (
-    <View className="flex-1 bg-background">
+    <View className="flex-1 bg-background dark:bg-darkBackground">
       {/* Header */}
       <View className="p-5 flex-row items-center justify-end mt-10">
         <Text className="text-lg font-bold text-primary mr-2">مرحبا بك</Text>
@@ -64,10 +64,10 @@ export default function Index() {
             router.push("/categories/cats");;
           }}
         >
-          <Text className="text-primary text-md font-semibold">عرض الكل</Text>
+          <Text className="text-primary text-md font-semibold dark:text-darkPrimary">عرض الكل</Text>
         </Pressable>
 
-        <Text className="text-text text-lg font-semibold">التصنيفات</Text>
+        <Text className="text-text text-lg font-semibold dark:text-darkText">التصنيفات</Text>
       </View>
 
       {/* Category Buttons */}
@@ -83,13 +83,13 @@ export default function Index() {
               onPress={() => setActiveCategory(cat)}
               className={`
               px-4 py-2 rounded-full  
-              ${activeCategory === cat ? "bg-primary" : "bg-card"}
+              ${activeCategory === cat ? "bg-primary dark:bg-darkPrimary" : "bg-card dark:bg-darkCard"}
             `}
             >
               <Text
                 className={`
                 font-medium 
-                ${activeCategory === cat ? "text-white" : "text-text"}
+                ${activeCategory === cat ? "text-white dark:text-darkText" : "text-text dark:text-darkText"}
               `}
               >
                 {cat}
@@ -101,7 +101,7 @@ export default function Index() {
 
       {/* Meal Title */}
       <View className="p-2 mt-5 justify-end items-center flex-row">
-        <Text className="text-text text-2xl font-bold mb-2">الوصفات</Text>
+        <Text className="text-text dark:text-darkText text-2xl font-bold mb-2">الوصفات</Text>
       </View>
       {/* Random meals */}
       <View className="px-2 flex-1">

@@ -31,7 +31,7 @@ export default function SettingsScreen() {
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
-      className="flex-1 bg-background"
+      className="flex-1 bg-background "
     >
       {/* 1. الهيدر: البروفايل */}
       <View className="items-center mt-10 mb-8 px-5">
