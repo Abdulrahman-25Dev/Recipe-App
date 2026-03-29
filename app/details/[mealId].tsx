@@ -56,8 +56,43 @@ export default function MealDetails() {
   const [meal, setMeal] = useState<Meal | null>(null);
   const [loading, setLoading] = useState(true);
   const [isHaram, setIsHaram] = useState(false);
+  const [isArabic, setIsArabic] = useState(false);
+  const [translatedData, setTranslatedData] = useState<string | null>(null); // للنص العربي
+  // مصفوفة لتخزين المكونات المترجمة
+  const [translatedIngredients, setTranslatedIngredients] = useState<
+    string[] | null
+  >(null);
   const { toggleFavorite } = useFavorites();
 
+  const handleToggle = async () => {
+    if (!isArabic && (!translatedData || !translatedIngredients)) {
+      setLoading(true);
+      try {
+        // 1. ترجمة طريقة التحضير (نص واحد - ما فيه مشكلة)
+        const instructionsAr = await translateText(meal?.strInstructions || "");
+        setTranslatedData(instructionsAr);
+
+        // 2. ترجمة المكونات (هنا اللعبة!)
+        // نجمع المكونات ونحط فاصلة غريبة شوي عشان نضمن الـ Split صح
+        const ingredientsList = ingredients
+          .map((it) => it.ingredient)
+          .join(" ### ");
+        const ingredientsAr = await translateText(ingredientsList);
+
+        if (ingredientsAr) {
+          // نفكك النص بناءً على نفس الفاصلة وننظف المسافات الزائدة
+          const ingredientsArray = ingredientsAr
+            .split(" ### ")
+            .map((item) => item.trim());
+          setTranslatedIngredients(ingredientsArray);
+        }
+      } catch (error) {
+        console.error("Translation failed", error);
+      }
+      setLoading(false);
+    }
+    setIsArabic(!isArabic);
+  };
 
   const favorited = useFavorites((state) =>
     state.favorites.some((f) => f.idMeal === String(mealId)),
@@ -200,12 +235,12 @@ export default function MealDetails() {
               </Text>
             </View>
           </View>
-          {/* <View className="px-4 my-4">
+          <View className="px-4 my-4">
             <View className="flex-row items-center justify-between bg-[#1a1a1a] p-4 rounded-2xl border border-zinc-800">
               <Switch
                 value={isArabic}
                 onValueChange={handleToggle}
-                thumbColor={isEnabled ? "#FF8A00" : "#f4f3f4"}
+                thumbColor={isArabic ? "#FF8A00" : "#f4f3f4"}
                 trackColor={{ false: "#767577", true: "#FF8A00" }}
               />
               <View className="flex-row items-center">
@@ -214,7 +249,7 @@ export default function MealDetails() {
                 </Text>
               </View>
             </View>
-          </View> */}
+          </View>
 
           <View className=" p-3 rounded-xl flex-row items-center justify-end">
             <Text>
@@ -229,10 +264,14 @@ export default function MealDetails() {
             {ingredients.map((it, idx) => (
               <View
                 key={idx}
-                className="flex-row justify-between items-center py-2  px-4 mb-2"
+                className={`flex-row items-center justify-between mb-3 ${isArabic ? "flex-row-reverse" : ""}`}
               >
-                <Text className="text-text font-semibold dark:text-darkText">
-                  {it.ingredient}
+                <Text
+                  className={`text-text text-sm font-semibold dark:text-darkText ${isArabic ? "text-right" : "text-left"}`}
+                >
+                  {isArabic && translatedIngredients
+                    ? translatedIngredients[idx]
+                    : it.ingredient}
                 </Text>
                 <Text className="text-text text-sm text-muted font-semibold dark:text-darkText">
                   {it.measure}
@@ -255,7 +294,9 @@ export default function MealDetails() {
             </Text>
           </View>
           <Text className="text-text dark:text-darkText leading-6 font-semibold bg-primary/5 p-4 rounded-xl">
-            {meal.strInstructions}
+            {isArabic
+              ? translatedData || "جاري تحميل الترجمة..."
+              : meal?.strInstructions}{" "}
           </Text>
         </View>
       </ScrollView>

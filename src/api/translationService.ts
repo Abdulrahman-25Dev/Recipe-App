@@ -1,30 +1,18 @@
-// جرب هذا الرابط (غالباً هو الأفضل حالياً)
-const LIBRE_URL = "https://translate.argosopentech.com/translate";
-
-export const translateText = async (text: string) => {
+export const translateText = async (text: string): Promise<string | null> => {
   try {
-    console.log("Translation in progress..."); // بيطلع لك في تيرمينال الفيدورا
-
-    const response = await fetch(LIBRE_URL, {
-      method: "POST",
-      body: JSON.stringify({
-        q: text,
-        source: "en",
-        target: "ar",
-        format: "text",
-      }),
-      headers: { "Content-Type": "application/json" },
-    });
+    // استخدمنا encodeURIComponent عشان المسافات والرموز ما تخرب الرابط
+    const response = await fetch(
+      `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|ar`
+    );
 
     const data = await response.json();
 
-    // اطبع الرد في التيرمينال عشان تشوف وش جالس يصير
-    console.log("رد السيرفر:", data);
-
-    // بعض السيرفرات ترجع النص داخل 'translatedText' وبعضها 'translation'
-    return data.translatedText || data.translation || text;
+    if (data.responseStatus === 200) {
+      return data.responseData.translatedText;
+    }
+    return null;
   } catch (error) {
-    console.error("Translation Error:", error);
-    return text;
+    console.error("MyMemory Translation Error:", error);
+    return null;
   }
 };
