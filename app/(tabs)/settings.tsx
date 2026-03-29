@@ -8,7 +8,8 @@ import { useTranslation } from "react-i18next";
 export default function SettingsScreen() {
   const { t } = useTranslation();
   // جلب البيانات من الستور
-  const { favorites } = useFavorites();
+  const { favorites, clearFavorites } = useFavorites();
+
 
   const { isDark, toggleTheme} = useTheme();
 
@@ -138,7 +139,9 @@ export default function SettingsScreen() {
             <Feather name="chevron-left" size={20} color="#CCC" />
           </Pressable>
 
-          <Pressable className="flex-row-reverse items-center justify-between py-3">
+          <Pressable
+          onPress={clearFavorites}
+          className="flex-row-reverse items-center justify-between py-3">
             <View className="flex-row-reverse items-center gap-4">
               <View className="bg-red-50 dark:bg-darkCard p-2.5 rounded-2xl">
                 <Feather name="trash-2" size={22} color="#EF4444" />

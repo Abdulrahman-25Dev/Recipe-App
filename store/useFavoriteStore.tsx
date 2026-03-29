@@ -15,6 +15,7 @@ interface FavoritesState {
   favorites: Meal[];
   toggleFavorite: (meal: Meal) => void;
   isFavorite: (mealId: string) => boolean;
+  clearFavorites: () => void;
 }
 
 export const useFavorites = create<FavoritesState>()(
@@ -41,6 +42,9 @@ export const useFavorites = create<FavoritesState>()(
       isFavorite: (mealId) => {
         const { favorites } = get();
         return favorites.some((f) => f.idMeal === mealId);
+      },
+      clearFavorites: () => {
+        set({ favorites: [] });
       }
     }),
     {

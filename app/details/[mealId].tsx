@@ -5,12 +5,14 @@ import {
   ScrollView,
   ActivityIndicator,
   Pressable,
+  Switch,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { getMealById } from "../../src/api/meal";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { useFavorites } from "../../store/useFavoriteStore";
+import { translateText } from "../../src/api/translationService";
 
 type Meal = {
   idMeal: string;
@@ -49,30 +51,30 @@ const parseIngredients = (meal: Meal) => {
   return list;
 };
 
-
 export default function MealDetails() {
   const { mealId } = useLocalSearchParams();
   const [meal, setMeal] = useState<Meal | null>(null);
   const [loading, setLoading] = useState(true);
   const [isHaram, setIsHaram] = useState(false);
   const { toggleFavorite } = useFavorites();
-  
-  const favorited = useFavorites((state) => 
-    state.favorites.some((f) => f.idMeal === String(mealId))
-);
+
+
+  const favorited = useFavorites((state) =>
+    state.favorites.some((f) => f.idMeal === String(mealId)),
+  );
   useEffect(() => {
-  if (!mealId) return;
-  const fetchMeal = async () => {
-    setLoading(true);
-    const data = await getMealById(String(mealId));
-    setMeal(data);
-    if (data && containsHaramIngredients(data)) {
-      setIsHaram(true);
-    }
-    setLoading(false);
-  };
-  fetchMeal();
-}, [mealId]);
+    if (!mealId) return;
+    const fetchMeal = async () => {
+      setLoading(true);
+      const data = await getMealById(String(mealId));
+      setMeal(data);
+      if (data && containsHaramIngredients(data)) {
+        setIsHaram(true);
+      }
+      setLoading(false);
+    };
+    fetchMeal();
+  }, [mealId]);
 
   if (!mealId) {
     return (
@@ -89,10 +91,7 @@ export default function MealDetails() {
         <Text className="text-text mt-4">جاري تحميل تفاصيل الوصفة...</Text>
       </View>
     );
-  } 
-  
-
-  
+  }
 
   // Show halal message if meal contains haram ingredients
   if (isHaram) {
@@ -106,7 +105,6 @@ export default function MealDetails() {
           >
             <Feather name="arrow-right" size={24} color="#FF8A00" />
           </Pressable>
-
           {meal.strMealThumb ? (
             <Image
               source={{ uri: meal.strMealThumb }}
@@ -114,11 +112,9 @@ export default function MealDetails() {
               style={{ resizeMode: "cover" }}
             />
           ) : null}
-
           <Text className="text-2xl font-bold text-primary mb-4 text-center">
             {meal.strMeal}
           </Text>
-
           <View className="bg-red-100 rounded-xl px-6 py-8 items-center">
             <Feather name="alert-circle" size={48} color="#EF4444" />
             <Text className="text-lg font-semibold text-red-600 mt-4 text-center">
@@ -128,7 +124,8 @@ export default function MealDetails() {
               تحتوي هذه الوصفة على مكونات غير مسموحة (لحم خنزير أو مشتقاته)
             </Text>
           </View>
-     ةف-10mt-1mt-10relative0    </View>
+          ةف-10mt-1mt-10relative0{" "}
+        </View>
       </View>
     );
   }
@@ -139,9 +136,7 @@ export default function MealDetails() {
     <View className="flex-1 bg-background">
       <Stack.Screen options={{ headerShown: false }} />
 
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-      >
+      <ScrollView showsVerticalScrollIndicator={false}>
         <Pressable
           onPress={() => router.back()}
           className="absolute top-4 bg-black right-4 z-10 p-2 rounded-full shadow mt-7"
@@ -173,51 +168,95 @@ export default function MealDetails() {
           <View className="flex-row items-center gap-2 mb-4 my-5">
             {/* CATEGORY CONTAINER */}
             <View className="bg-primary/10  rounded-xl border border-primary dark:border-darkPrimary gap-2 p-2 items-center mx-auto">
-              <Text className="text-sm font-semibold text-text dark:text-darkText">التصنيف</Text>
-              <Text numberOfLines={2} className="text-sm text-text dark:text-darkText mt-1 font-bold">{meal.strCategory}</Text>
+              <Text className="text-sm font-semibold text-text dark:text-darkText">
+                التصنيف
+              </Text>
+              <Text
+                numberOfLines={2}
+                className="text-sm text-text dark:text-darkText mt-1 font-bold"
+              >
+                {meal.strCategory}
+              </Text>
             </View>
-              {/* AREA CONTAINER */}
-              <View className="bg-primary/10 rounded-xl border border-primary gap-3 p-2 items-center mx-auto">
-                <Text className="text-sm font-semibold text-text dark:text-darkText">المنطقة</Text>
-                <Text numberOfLines={2} className="text-sm text-text dark:text-darkText mt-1 font-bold">{meal.strArea}</Text>
-              </View>
-              {/* INGREDIENTS CONTAINER */}
-              <View className="bg-primary/10 rounded-xl border border-primary gap-3 p-2 items-center mx-auto">
-                <Text className="text-sm font-semibold text-text dark:text-darkText">المكونات</Text>
-                <Text className="text-sm text-text dark:text-darkText mt-1 font-bold">{ingredients.length}</Text>
-              </View>
-
+            {/* AREA CONTAINER */}
+            <View className="bg-primary/10 rounded-xl border border-primary gap-3 p-2 items-center mx-auto">
+              <Text className="text-sm font-semibold text-text dark:text-darkText">
+                المنطقة
+              </Text>
+              <Text
+                numberOfLines={2}
+                className="text-sm text-text dark:text-darkText mt-1 font-bold"
+              >
+                {meal.strArea}
+              </Text>
+            </View>
+            {/* INGREDIENTS CONTAINER */}
+            <View className="bg-primary/10 rounded-xl border border-primary gap-3 p-2 items-center mx-auto">
+              <Text className="text-sm font-semibold text-text dark:text-darkText">
+                المكونات
+              </Text>
+              <Text className="text-sm text-text dark:text-darkText mt-1 font-bold">
+                {ingredients.length}
+              </Text>
+            </View>
           </View>
+          {/* <View className="px-4 my-4">
+            <View className="flex-row items-center justify-between bg-[#1a1a1a] p-4 rounded-2xl border border-zinc-800">
+              <Switch
+                value={isArabic}
+                onValueChange={handleToggle}
+                thumbColor={isEnabled ? "#FF8A00" : "#f4f3f4"}
+                trackColor={{ false: "#767577", true: "#FF8A00" }}
+              />
+              <View className="flex-row items-center">
+                <Text className="text-white text-base font-bold mr-2">
+                  ترجمة الوصفة
+                </Text>
+              </View>
+            </View>
+          </View> */}
+
           <View className=" p-3 rounded-xl flex-row items-center justify-end">
             <Text>
               <Feather name="list" size={20} color="#FF8A00" className="mr-2" />
             </Text>
             <Text className="text-2xl font-bold text-primary dark:text-darkPrimary mt-2 mb-2 ml-4 text-right">
-            المكونات 
+              المكونات
             </Text>
           </View>
-          
+
           <View className="mb-4 bg-primary/5 p-3 rounded-xl">
-          {ingredients.map((it, idx) => (
-            <View
-              key={idx}
-              className="flex-row justify-between items-center py-2  px-4 mb-2"
-            >
-              <Text className="text-text font-semibold dark:text-darkText">{it.ingredient}</Text>
-              <Text className="text-text text-sm text-muted font-semibold dark:text-darkText">{it.measure}</Text>
-            </View>
-          ))}
+            {ingredients.map((it, idx) => (
+              <View
+                key={idx}
+                className="flex-row justify-between items-center py-2  px-4 mb-2"
+              >
+                <Text className="text-text font-semibold dark:text-darkText">
+                  {it.ingredient}
+                </Text>
+                <Text className="text-text text-sm text-muted font-semibold dark:text-darkText">
+                  {it.measure}
+                </Text>
+              </View>
+            ))}
           </View>
           <View className=" p-3 rounded-xl flex-row items-center justify-end">
             <Text>
-              <Feather name="book-open" size={20} color="#FF8A00" className="mr-2" />
+              <Feather
+                name="book-open"
+                size={20}
+                color="#FF8A00"
+                className="mr-2"
+              />
             </Text>
 
             <Text className="text-2xl font-bold text-primary dark:text-darkPrimary mt-2 mb-4 ml-4 text-right">
               طريقة التحضير
             </Text>
           </View>
-          <Text className="text-text dark:text-darkText leading-6 font-semibold bg-primary/5 p-4 rounded-xl">{meal.strInstructions}</Text>
+          <Text className="text-text dark:text-darkText leading-6 font-semibold bg-primary/5 p-4 rounded-xl">
+            {meal.strInstructions}
+          </Text>
         </View>
       </ScrollView>
     </View>
