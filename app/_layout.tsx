@@ -1,3 +1,4 @@
+import "../i18next/i18n";
 import { Stack } from "expo-router";
 import "./global.css";
 import { useTheme } from "../store/useTheme";

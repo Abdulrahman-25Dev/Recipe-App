@@ -3,12 +3,14 @@ import { View, Text, ScrollView, Switch, Pressable } from "react-native";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { useFavorites } from "../../store/useFavoriteStore"; // تأكد من مسار ملف الستور عندك
 import { useTheme } from "../../store/useTheme";
+import { useTranslation } from "react-i18next";
 
 export default function SettingsScreen() {
+  const { t } = useTranslation();
   // جلب البيانات من الستور
   const { favorites } = useFavorites();
 
-  const { isDark, toggleTheme, language, setLanguage } = useTheme();
+  const { isDark, toggleTheme} = useTheme();
 
   // حساب عدد المفضلة
   const favoritesCount = favorites.length;
@@ -39,17 +41,17 @@ export default function SettingsScreen() {
           <Feather name="user" size={55} color="#FF8A00" />
         </View>
         <Text className="text-2xl font-bold mt-4 text-text dark:text-darkText text-center">
-          طباخ ماهر
+          {t("skilled cook")}
         </Text>
         <Text className="text-gray-400 dark:text-gray-300 text-center text-base mt-1">
-          مرحباً بك في مطبخك الخاص
+          {t("welcome to your own kitchen")}
         </Text>
       </View>
 
       {/* 2. قسم الإحصائيات: مربعات الإحصائيات (Stat Cards) */}
       <View className="px-5 mb-8">
         <Text className="text-right text-gray-400 dark:text-gray-300 font-bold mb-4 mr-2">
-          الإحصائيات
+          {t("stats")}
         </Text>
         <View className="flex-row-reverse gap-4">
           {/* مربع المفضلة - يقرأ من الستور */}
@@ -57,7 +59,7 @@ export default function SettingsScreen() {
             <View className="bg-orange-50 dark:bg-orange-900 p-2.5 rounded-2xl mb-2">
               <Ionicons name="heart" size={22} color="#FF8A00" />
             </View>
-            <Text className="text-gray-400 dark:text-gray-300 text-xs mb-1">المفضلة</Text>
+            <Text className="text-gray-400 dark:text-gray-300 text-xs mb-1">{t("favorites")}</Text>
             <Text className="text-2xl font-bold text-black dark:text-darkText">
               {favoritesCount}
             </Text>
@@ -68,7 +70,7 @@ export default function SettingsScreen() {
             <View className="bg-blue-50 dark:bg-blue-900 p-2.5 rounded-2xl mb-2">
               <Feather name="tag" size={22} color="#3B82F6" />
             </View>
-            <Text className="text-gray-400 dark:text-gray-300 text-xs mb-1">الأكثر حفظاً</Text>
+            <Text className="text-gray-400 dark:text-gray-300 text-xs mb-1">{t("most saved")}</Text>
             <Text className="text-lg font-bold text-black dark:text-darkText" numberOfLines={1}>
               {getTopCategory()}
             </Text>
@@ -79,16 +81,16 @@ export default function SettingsScreen() {
       {/* 3. قسم التفضيلات */}
       <View className="px-5 mb-8">
         <Text className="text-right text-gray-400 dark:text-gray-300 font-bold mb-4 mr-2">
-          التفضيلات
+          {t("preferences")}
         </Text>
         <View className="bg-white dark:bg-darkCard rounded-[35px] p-5 shadow-sm border border-gray-50 dark:border-gray-800">
           <View className="flex-row-reverse items-center justify-between py-3 border-b border-gray-50 dark:border-gray-800">
             <View className="flex-row-reverse items-center gap-4">
               <View className="bg-orange-50 dark:bg-darkCard p-2.5 rounded-2xl">
-                <Feather name="moon" size={22} color="#FF8A00" />
+                <Feather name={isDark ? "moon" : "sun"} size={22} color="#FF8A00" />
               </View>
               <Text className="text-lg font-semibold text-gray-800 dark:text-darkText">
-                الوضع الليلي
+                {t("theme")}
               </Text>
             </View>
             <Switch
@@ -104,7 +106,7 @@ export default function SettingsScreen() {
               <View className="bg-blue-50 dark:bg-darkCard p-2.5 rounded-2xl">
                 <Feather name="globe" size={22} color="#3B82F6" />
               </View>
-              <Text className="text-lg font-semibold text-gray-800 dark:text-darkText">اللغة</Text>
+              <Text className="text-lg font-semibold text-gray-800 dark:text-darkText">{t("language")}</Text>
             </View>
             <View className="flex-row gap-4">
               <Pressable className=" border border-primary dark:border-darkPrimary p-2 rounded-lg">
@@ -121,7 +123,7 @@ export default function SettingsScreen() {
       {/* 4. قسم المزيد */}
       <View className="px-5 mb-10">
         <Text className="text-right text-gray-400 font-bold mb-4 mr-2 dark:text-gray-300">
-          المزيد
+          {t("more")}
         </Text>
         <View className="bg-white dark:bg-darkCard rounded-[35px] p-5 shadow-sm border border-gray-50 dark:border-gray-800">
           <Pressable className="flex-row-reverse items-center justify-between py-3 border-b border-gray-50 dark:border-gray-800">
@@ -130,7 +132,7 @@ export default function SettingsScreen() {
                 <Feather name="star" size={22} color="#3B82F6" />
               </View>
               <Text className="text-lg font-semibold text-gray-800 dark:text-darkText">
-                تقييم التطبيق
+                {t("rate us")}
               </Text>
             </View>
             <Feather name="chevron-left" size={20} color="#CCC" />
@@ -142,7 +144,7 @@ export default function SettingsScreen() {
                 <Feather name="trash-2" size={22} color="#EF4444" />
               </View>
               <Text className="text-lg font-semibold text-red-500">
-                مسح كل المفضلة
+                {t("delete all favorites")}
               </Text>
             </View>
           </Pressable>
@@ -150,7 +152,7 @@ export default function SettingsScreen() {
       </View>
 
       <Text className="text-center text-gray-300 font-medium mb-10">
-        إصدار 1.0.0
+        {t("version")}
       </Text>
     </ScrollView>
   );

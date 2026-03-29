@@ -11,13 +11,15 @@ import { useFavorites } from "../../store/useFavoriteStore";
 import { LinearGradient } from "expo-linear-gradient";
 import Feather from "@expo/vector-icons/build/Feather";
 import { Ionicons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 const Favorites = () => {
+  const { t } = useTranslation();
   const favorites = useFavorites((state) => state.favorites);
   return (
     <View className="flex-1 bg-background dark:bg-darkBackground">
       <View className="p-3 flex-row items-center justify-end mt-10">
         <Text className="text-2xl font-bold text-primary dark:text-darkPrimary mr-2">
-          وصفاتي المفضلة
+          {t("favorites recipes")}
         </Text>
         <Feather name="heart" size={24} color="#FF8A00" />
       </View>

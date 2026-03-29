@@ -11,8 +11,10 @@ import { useState, useEffect } from "react";
 import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
+import { useTranslation } from "react-i18next";
 
 export default function Search() {
+  const { t } = useTranslation();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -52,7 +54,7 @@ export default function Search() {
       <View className="flex-row items-center bg-white dark:bg-darkCard rounded-full px-3 py-2 mx-3 mt-4 mb-4 border border-neutral-300 ">
         <Feather name="search" size={20} color="#777" className="mr-2" />
         <TextInput
-          placeholder="ابحث عن وصفة…"
+          placeholder={t("search for a recipe")}
           placeholderTextColor="#777"
           className="flex-1 text-text dark:text-darkText p-2 text-lg"
           value={query}
@@ -62,7 +64,7 @@ export default function Search() {
       {/* TEXT */}
       {!loading && results.length === 0 && query.length === 0 && (
         <Text className="text-neutral-500 dark:text-neutral-400 text-xl mt-4 text-center">
-          ابدأ بالبحث عن وصفاتك المفضلة!
+          {t("start searching for your favorite recipe")}
         </Text>
       )}
 

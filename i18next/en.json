@@ -1,0 +1,31 @@
+{
+    "welcome":"Welcome",
+    "categories":"Categories",
+    "chicken":"Chicken",
+    "seafood":"Seafood",
+    "beef":"Beef",
+    "lamb":"Lamb",
+    "show all":"Show all",
+
+    "search for a recipe":"Search for a recipe...",
+    "start searching for your favorite recipe":"Start searching for your favorite recipe",
+
+    "favorites recipes":"Favorites recipes",
+
+    "skilled cook":"Skilled cook",
+    "welcome to your own kitchen":"Welcome to your own kitchen",
+    "stats":"Stats",
+    "favorites":"Favorites",
+    "most saved":"Most saved",
+    "preferences":"Perferences",
+    "theme":"Theme",
+    "language":"Lang",
+    "more":"More",
+    "rate us":"Rate us",
+    "delete all favorites":"Delete all favorites",
+    "are you sure?":"Are you sure?",
+    "of corse Text?":"Do you want to delete all favorites permanently?",
+    "delete":"Delete",
+    "cancel":"Cancel",
+    "version":"Version 1.0.0"
+}

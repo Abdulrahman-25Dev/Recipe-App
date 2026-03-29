@@ -1,0 +1,31 @@
+{
+    "welcome":"مرحبا بك",
+    "categories":"التصنيفات",
+    "chicken":"دجاج",
+    "seafood":"طعام البحر",
+    "beef":"لحم بقري",
+    "lamb":"لحم قطن",
+    "show all":"عرض الكل",
+
+    "search for a recipe":"ابحث عن وصفة...",
+    "start searching for your favorite recipe":"ابدأ بالبحث عن وصفاتك المفضلة",
+
+    "favorites recipes":"وصفاتي المفضلة",
+
+    "skilled cook":"طباخ ماهر",
+    "welcome to your own kitchen":"مرحبا بك في مطبخك الخاص",
+    "stats":"الاحصائيات",
+    "favorites":"المفضلة",
+    "most saved":"الأكثر حفظا",
+    "preferences":"التفضيلات",
+    "theme":"الوضع",
+    "language":"اللغة",
+    "more":"المزيد",
+    "rate us":"تقييم التطبيق",
+    "delete all favorites":"إزالة كل المفضلات",
+    "are you sure?":"هل تريد الحذف؟",
+    "of corse Text?":"هل تريد إزالة جميع المفضلات بشكل نهائي؟",
+    "delete":"حذف",
+    "cancel":"الغاء",
+    "version":"اصدار 1.0.0"
+}

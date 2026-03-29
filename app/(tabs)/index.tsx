@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
+import { useTranslation } from "react-i18next";
 
 type Meal = {
   idMeal: string;
@@ -22,6 +23,8 @@ type Meal = {
 };
 
 export default function Index() {
+
+  const { t } = useTranslation();
 
   const [meals, setMeals] = useState<Meal[]>([]);
   const [activeCategory, setActiveCategory] = useState("Chicken");
@@ -53,7 +56,7 @@ export default function Index() {
     <View className="flex-1 bg-background dark:bg-darkBackground">
       {/* Header */}
       <View className="p-5 flex-row items-center justify-end mt-10">
-        <Text className="text-lg font-bold text-primary mr-2">مرحبا بك</Text>
+        <Text className="text-lg font-bold text-primary mr-2">{t("welcome")}</Text>
         <Feather name="sun" size={24} color="#FF8A00" />
       </View>
 
@@ -64,10 +67,10 @@ export default function Index() {
             router.push("/categories/cats");;
           }}
         >
-          <Text className="text-primary text-md font-semibold dark:text-darkPrimary">عرض الكل</Text>
+          <Text className="text-primary text-md font-semibold dark:text-darkPrimary">{t("show all")}</Text>
         </Pressable>
 
-        <Text className="text-text text-lg font-semibold dark:text-darkText">التصنيفات</Text>
+        <Text className="text-text text-lg font-semibold dark:text-darkText">{t("categories")}</Text>
       </View>
 
       {/* Category Buttons */}
