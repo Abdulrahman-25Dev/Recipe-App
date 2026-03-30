@@ -57,7 +57,12 @@ export default function MealDetails() {
   const [loading, setLoading] = useState(true);
   const [isHaram, setIsHaram] = useState(false);
   const [isArabic, setIsArabic] = useState(false);
-  const [translatedData, setTranslatedData] = useState<string | null>(null); // للنص العربي
+  type TranslatedData = {
+    title: string;
+    category: string;
+    instructions: string;
+  };
+  const [translatedData, setTranslatedData] = useState<TranslatedData | null>(null); // للنص العربي
   // مصفوفة لتخزين المكونات المترجمة
   const [translatedIngredients, setTranslatedIngredients] = useState<
     string[] | null
@@ -65,11 +70,38 @@ export default function MealDetails() {
   const { toggleFavorite } = useFavorites();
 
   const handleToggle = async () => {
+    const cleanInstructions = meal?.strInstructions
+      ?.replace(/\n+/g, " ") // إزالة الأسطر
+      ?.replace(/\r+/g, " ") // إزالة الرموز المخفية
+      ?.replace(/\s+/g, " ") // دمج المسافات
+      ?.trim();
+
     if (!isArabic && (!translatedData || !translatedIngredients)) {
       setLoading(true);
+
+      // نجهز كل الأشياء اللي نبي نترجمها
+      const title = meal?.strMeal || "";
+      const category = meal?.strCategory || "";
+      const instructions = meal?.strInstructions || "";
+
+      const [translatedTitle, translatedCategory, translatedInstructions] = await Promise.all([
+        translateText(title),
+        translateText(category),
+        translateText(instructions),
+      ]);
+
+      if(translatedTitle && translatedCategory && translatedInstructions) {
+        setTranslatedData({
+        title: translatedTitle,
+        category: translatedCategory,
+        instructions: translatedInstructions
+      });
+      }
+
+
       try {
         // 1. ترجمة طريقة التحضير (نص واحد - ما فيه مشكلة)
-        const instructionsAr = await translateText(meal?.strInstructions || "");
+        const instructionsAr = await translateText(cleanInstructions || "");
         setTranslatedData(instructionsAr);
 
         // 2. ترجمة المكونات (هنا اللعبة!)
@@ -293,7 +325,9 @@ export default function MealDetails() {
               طريقة التحضير
             </Text>
           </View>
-          <Text className="text-text dark:text-darkText leading-6 font-semibold bg-primary/5 p-4 rounded-xl">
+          <Text
+            className={`text-text dark:text-darkText leading-7 text-lg font-semibold bg-primary/5 p-4 rounded-xl ${isArabic ? "text-right" : "text-left"}`}
+          >
             {isArabic
               ? translatedData || "جاري تحميل الترجمة..."
               : meal?.strInstructions}{" "}
