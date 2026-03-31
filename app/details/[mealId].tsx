@@ -57,12 +57,7 @@ export default function MealDetails() {
   const [loading, setLoading] = useState(true);
   const [isHaram, setIsHaram] = useState(false);
   const [isArabic, setIsArabic] = useState(false);
-  type TranslatedData = {
-    title: string;
-    category: string;
-    instructions: string;
-  };
-  const [translatedData, setTranslatedData] = useState<TranslatedData | null>(null); // للنص العربي
+  const [translatedData, setTranslatedData] = useState<string | null>(null); // للنص العربي
   // مصفوفة لتخزين المكونات المترجمة
   const [translatedIngredients, setTranslatedIngredients] = useState<
     string[] | null
@@ -78,25 +73,6 @@ export default function MealDetails() {
 
     if (!isArabic && (!translatedData || !translatedIngredients)) {
       setLoading(true);
-
-      // نجهز كل الأشياء اللي نبي نترجمها
-      const title = meal?.strMeal || "";
-      const category = meal?.strCategory || "";
-      const instructions = meal?.strInstructions || "";
-
-      const [translatedTitle, translatedCategory, translatedInstructions] = await Promise.all([
-        translateText(title),
-        translateText(category),
-        translateText(instructions),
-      ]);
-
-      if(translatedTitle && translatedCategory && translatedInstructions) {
-        setTranslatedData({
-        title: translatedTitle,
-        category: translatedCategory,
-        instructions: translatedInstructions
-      });
-      }
 
 
       try {

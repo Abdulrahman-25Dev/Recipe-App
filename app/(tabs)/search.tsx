@@ -55,7 +55,7 @@ export default function Search() {
         <Feather name="search" size={20} color="#777" className="mr-2" />
         <TextInput
           placeholder={t("search for a recipe")}
-          placeholderTextColor="#777"
+          placeholderTextColor={"#777"}
           className="flex-1 text-text dark:text-darkText p-2 text-lg"
           value={query}
           onChangeText={setQuery}

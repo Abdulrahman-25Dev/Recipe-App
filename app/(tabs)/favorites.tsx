@@ -12,12 +12,14 @@ import { LinearGradient } from "expo-linear-gradient";
 import Feather from "@expo/vector-icons/build/Feather";
 import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
+import i18n from "../../i18next/i18n";
 const Favorites = () => {
   const { t } = useTranslation();
+  const isRTL = i18n.language === "ar";
   const favorites = useFavorites((state) => state.favorites);
   return (
     <View className="flex-1 bg-background dark:bg-darkBackground">
-      <View className="p-3 flex-row items-center justify-end mt-10">
+      <View className={`p-3 flex-row items-center ${isRTL ? "justify-end" : "justify-start"} mt-10`}>
         <Text className="text-2xl font-bold text-primary dark:text-darkPrimary mr-2">
           {t("favorites recipes")}
         </Text>

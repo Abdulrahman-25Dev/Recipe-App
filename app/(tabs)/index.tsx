@@ -14,7 +14,7 @@ import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTranslation } from "react-i18next";
-
+import i18n from "../../i18next/i18n";
 type Meal = {
   idMeal: string;
   strMeal: string;
@@ -24,7 +24,10 @@ type Meal = {
 
 export default function Index() {
 
+  const isRTL = i18n.language === "ar";
+
   const { t } = useTranslation();
+
 
   const [meals, setMeals] = useState<Meal[]>([]);
   const [activeCategory, setActiveCategory] = useState("Chicken");
@@ -51,17 +54,16 @@ export default function Index() {
       </View>
     );
   }
-
   return (
     <View className="flex-1 bg-background dark:bg-darkBackground">
       {/* Header */}
-      <View className="p-5 flex-row items-center justify-end mt-10">
+      <View className={`p-5 flex-row items-center mt-10 ${isRTL ? "justify-end" : "justify-start"}`}>
         <Text className="text-lg font-bold text-primary mr-2">{t("welcome")}</Text>
         <Feather name="sun" size={24} color="#FF8A00" />
       </View>
 
       {/* Categories Header */}
-      <View className="flex-row justify-between items-center px-5 mt-2">
+      <View className={` justify-between items-center px-5 mt-2 ${isRTL ? "flex-row" : "flex-row-reverse"}`}>
         <Pressable
           onPress={() => {
             router.push("/categories/cats");;
@@ -103,8 +105,8 @@ export default function Index() {
       </View>
 
       {/* Meal Title */}
-      <View className="p-2 mt-5 justify-end items-center flex-row">
-        <Text className="text-text dark:text-darkText text-2xl font-bold mb-2">الوصفات</Text>
+      <View className={`p-2 mt-5 mx-5 ${isRTL ? "justify-end" : "justify-start"} items-center flex-row`}>
+        <Text className="text-text dark:text-darkText text-2xl font-bold mb-2">{t("recipes")}</Text>
       </View>
       {/* Random meals */}
       <View className="px-2 flex-1">
