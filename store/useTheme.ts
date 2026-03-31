@@ -12,10 +12,10 @@ interface ThemeState {
 export const useTheme = create<ThemeState>()(
     persist(
         (set) => ({
-            isDark: false,
-            toggleTheme: () => set((state) => ({ isDark: !state.isDark })),
-            language: 'ar',
-            setLanguage: (lang) => set({ language: lang }),
+            isDark: false, // 
+            toggleTheme: () => set((state) => ({ isDark: !state.isDark })), // دالة لتبديل الثيم
+            language: 'ar', // القيمة الافتراضية هي العربية
+            setLanguage: (lang) => set({ language: lang }), // دالة لتغيير اللغة
         }),
         {
             name: "recipe-theme",

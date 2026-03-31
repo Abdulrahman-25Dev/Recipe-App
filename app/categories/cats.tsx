@@ -11,6 +11,8 @@ import {
 import { useRouter, Stack } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import {useTranslation} from "react-i18next";
+import i18n from "@/i18next/i18n";
 
 interface Category {
   idCategory: string;
@@ -26,6 +28,8 @@ export default function CategoriesScreen() {
   const router = useRouter();
   const windowWidth = Dimensions.get("window").width;
   const cardWidth = (windowWidth - 24) / 2;
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchCategories();
@@ -70,6 +74,8 @@ export default function CategoriesScreen() {
       setLoading(false);
     }
   };
+
+  const isRTL = i18n.language === "ar";
 
   // const getRandomHeight = () => {
   //   return Math.random() * (220 - 140) + 140;
@@ -124,15 +130,15 @@ export default function CategoriesScreen() {
       
 
       {/* Header */}
-      <View className="flex-row items-center mt-10 justify-between px-4 py-4 bg-background dark:bg-darkBackground">
+      <View className={`${isRTL ? "flex-row" : "flex-row-reverse"} items-center mt-10 justify-between px-4 py-4 bg-background dark:bg-darkBackground`}>
         <TouchableOpacity
           onPress={() => router.back()}
           className="p-2 active:bg-gray-100 rounded-full bg-black"
         >
-          <Ionicons name="arrow-back" size={24} color="#FF8A00" />
+          <Ionicons name={isRTL ? "arrow-back" : "arrow-forward"} size={24} color="#FF8A00" />
         </TouchableOpacity>
-        <Text className="text-2xl font-bold flex-1 ml-3 text-primary dark:text-darkPrimary text-right">
-          التصنيفات
+        <Text className={`${isRTL ? "text-right" : "text-left"} text-2xl font-bold flex-1 ml-3 text-primary dark:text-darkPrimary`}>
+          {t("categories")}
         </Text>
       </View>
 

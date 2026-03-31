@@ -173,27 +173,27 @@ export default function SettingsScreen() {
 
       {/* 4. قسم المزيد */}
       <View className="px-5 mb-10">
-        <Text className="text-right text-gray-400 font-bold mb-4 mr-2 dark:text-gray-300">
+        <Text className={`text-gray-400 px-2 font-bold mb-4 mr-2 dark:text-gray-300 ${isRTL ? "text-right" : "text-left"}`}>
           {t("more")}
         </Text>
         <View className="bg-white dark:bg-darkCard rounded-[35px] p-5 shadow-sm border border-gray-50 dark:border-gray-800">
-          <Pressable className="flex-row-reverse items-center justify-between py-3 border-b border-gray-50 dark:border-gray-800">
-            <View className="flex-row-reverse items-center gap-4">
+          <Pressable className={` items-center justify-between py-3 border-b border-gray-50 dark:border-gray-800 ${isRTL ? "flex-row-reverse" : "flex-row"}`}>
+            <View className={`items-center gap-4 ${isRTL ? "flex-row-reverse" : "flex-row"}`}>
               <View className="bg-blue-50 dark:bg-darkCard p-2.5 rounded-2xl">
-                <Feather name="star" size={22} color="#3B82F6" />
+                <Feather name={"star"} size={22} color="#3B82F6" />
               </View>
               <Text className="text-lg font-semibold text-gray-800 dark:text-darkText">
                 {t("rate us")}
               </Text>
             </View>
-            <Feather name="chevron-left" size={20} color="#CCC" />
+            <Feather name="chevron-right" size={20} color="#CCC" />
           </Pressable>
 
           <Pressable
             onPress={clearFavorites}
-            className="flex-row-reverse items-center justify-between py-3"
+            className={` items-center justify-between py-3 ${isRTL ? "flex-row-reverse" : "flex-row"}`}
           >
-            <View className="flex-row-reverse items-center gap-4">
+            <View className={`items-center gap-4 ${isRTL ? "flex-row-reverse" : "flex-row"}`}>
               <View className="bg-red-50 dark:bg-darkCard p-2.5 rounded-2xl">
                 <Feather name="trash-2" size={22} color="#EF4444" />
               </View>
