@@ -5,6 +5,7 @@ import { useFavorites } from "../../store/useFavoriteStore"; // تأكد من م
 import { useTheme } from "../../store/useTheme";
 import { useTranslation } from "react-i18next";
 import i18n from "../../i18next/i18n";
+import { router } from "expo-router";
 
 export default function SettingsScreen() {
   const { t } = useTranslation();
@@ -188,6 +189,23 @@ export default function SettingsScreen() {
             </View>
             <Feather name="chevron-right" size={20} color="#CCC" />
           </Pressable>
+
+          <Pressable
+            onPress={() => router.push("../aboutScreen")}
+           className={` items-center justify-between py-3 border-b border-gray-50 dark:border-gray-800 ${isRTL ? "flex-row-reverse" : "flex-row"}`}>
+            <View className={`items-center gap-4 ${isRTL ? "flex-row-reverse" : "flex-row"}`}>
+              <View className="bg-blue-50 dark:bg-darkCard p-2.5 rounded-2xl">
+                <Feather name={"info"} size={22} color="#3B82F6" />
+              </View>
+              <Text className="text-lg font-semibold text-gray-800 dark:text-darkText">
+                حول التطبيق 
+              </Text>
+            </View>
+            <Feather name="chevron-left" size={20} color="#CCC" />
+          </Pressable>
+
+
+
 
           <Pressable
             onPress={clearFavorites}
