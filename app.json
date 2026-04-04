@@ -24,7 +24,7 @@
     },
     "web": {
       "output": "static",
-      "favicon": "./assets/images/favicon.png",
+      "favicon": "./assets/images/RecipeIconNoBackground.png",
       "bundle": "metro"
     },
     "plugins": [
@@ -32,12 +32,12 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/RecipeIconO.png",
+          "image": "./assets/images/RecipeIconNoBackground.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#FF8A00",
+          "backgroundColor": "#F8F9FA",
           "dark": {
-            "backgroundColor": "#FF8A00"
+            "backgroundColor": "#121212"
           }
         }
       ]

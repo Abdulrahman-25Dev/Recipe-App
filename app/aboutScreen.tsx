@@ -123,6 +123,10 @@ export default function AboutApp() {
           >
             <Text className="text-white font-bold">{t("github")}</Text>
           </Pressable>
+
+          <Pressable onPress={() => Linking.openURL("mailto:dooomww@gmail.com")} className="bg-orange-500 mt-4 p-3 rounded-xl items-center shadow-sm">
+            <Text className="text-neutral-800 dark:text-white font-semibold">تواصل عبر Gmail</Text>
+          </Pressable>
         </View>
       </View>
 

@@ -1,5 +1,5 @@
-import React from "react";
-import { View, Text, ScrollView, Switch, Pressable } from "react-native";
+import React, { useState } from "react";
+import { View, Text, ScrollView, Switch, Pressable, Modal } from "react-native";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { useFavorites } from "../../store/useFavoriteStore"; // تأكد من مسار ملف الستور عندك
 import { useTheme } from "../../store/useTheme";
@@ -17,6 +17,13 @@ export default function SettingsScreen() {
 
   const language = useTheme((state) => state.language);
   const setLanguage = useTheme((state) => state.setLanguage);
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const confirmDeleteFavorites = () => {
+    clearFavorites();
+    setShowDeleteModal(false);
+  }
 
   // حساب عدد المفضلة
   const favoritesCount = favorites.length;
@@ -133,7 +140,6 @@ export default function SettingsScreen() {
                 onPress={() => {
                   i18n.changeLanguage("ar");
                   setLanguage("ar");
-                  console.log("Language set to Arabic");
                 }}
                 className={` p-4 rounded-2xl border-2 items-center ${
                   language === "ar"
@@ -153,7 +159,6 @@ export default function SettingsScreen() {
                 onPress={() => {
                   i18n.changeLanguage("en");
                   setLanguage("en");
-                  console.log("Language set to English");
                 }}
                 className={` p-4 rounded-2xl border-2 items-center ${
                   language === "en"
@@ -178,17 +183,7 @@ export default function SettingsScreen() {
           {t("more")}
         </Text>
         <View className="bg-white dark:bg-darkCard rounded-[35px] p-5 shadow-sm border border-gray-50 dark:border-gray-800">
-          <Pressable className={` items-center justify-between py-3 border-b border-gray-50 dark:border-gray-800 ${isRTL ? "flex-row-reverse" : "flex-row"}`}>
-            <View className={`items-center gap-4 ${isRTL ? "flex-row-reverse" : "flex-row"}`}>
-              <View className="bg-blue-50 dark:bg-darkCard p-2.5 rounded-2xl">
-                <Feather name={"star"} size={22} color="#3B82F6" />
-              </View>
-              <Text className="text-lg font-semibold text-gray-800 dark:text-darkText">
-                {t("rate us")}
-              </Text>
-            </View>
-            <Feather name="chevron-right" size={20} color="#CCC" />
-          </Pressable>
+          
 
           <Pressable
             onPress={() => router.push("../aboutScreen")}
@@ -208,7 +203,7 @@ export default function SettingsScreen() {
 
 
           <Pressable
-            onPress={clearFavorites}
+            onPress={() => setShowDeleteModal(true)}
             className={` items-center justify-between py-3 ${isRTL ? "flex-row-reverse" : "flex-row"}`}
           >
             <View className={`items-center gap-4 ${isRTL ? "flex-row-reverse" : "flex-row"}`}>
@@ -222,6 +217,42 @@ export default function SettingsScreen() {
           </Pressable>
         </View>
       </View>
+
+      {/* MODAL WITH OVERLAY FOR DELETE ALL FAVORITES */}
+      <Modal
+        visible={showDeleteModal} 
+        transparent={true} 
+        animationType="fade"
+        onRequestClose={() => setShowDeleteModal(false)}
+      >
+        <View className="flex-1 bg-black/50 justify-center items-center">
+          <View className="bg-white dark:bg-darkCard rounded-2xl p-6 w-11/12 max-w-sm shadow-lg">
+            <Text className="text-xl font-bold text-red-500 dark:text-red-500  mb-4 text-center">
+              {t("confirm delete")}
+            </Text>
+            <Text className="text-gray-600 dark:text-gray-300 mb-6 text-center text-lg">
+              {t("delete confirmation message")}
+            </Text>
+            <View className="flex-row justify-center gap-4">
+              <Pressable
+                onPress={() => setShowDeleteModal(false)}
+                className="bg-gray-100 px-4 py-2 rounded-lg border border-gray-300"
+              >
+                <Text className="text-gray-700 text-md">{t("cancel")}</Text>
+              </Pressable>
+              <Pressable
+                onPress={confirmDeleteFavorites}
+                className="px-4 py-2 rounded-lg bg-red-500"
+              >
+                <Text className="text-white text-md">{t("delete")}</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+
+      </Modal>
+      
+      
 
       <Text className="text-center text-gray-300 font-medium mb-10">
         {t("version")}

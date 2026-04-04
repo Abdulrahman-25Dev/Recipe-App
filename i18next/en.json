@@ -43,7 +43,9 @@
     "feature4_desc":"Save your favorite recipes for later use without having to search for them again.",
     "developer":"Developed by Abdulrahman ",
     "github":"View on Github",    
-    "copyright":"Copyright © 2023 Abdulrahman. All rights reserved."
+    "copyright":"Copyright © 2023 Abdulrahman. All rights reserved.",
+    "confirm delete":"Confirm delete",
+    "delete confirmation message":"Do you want to delete all favorites permanently?"
 
     
 }
