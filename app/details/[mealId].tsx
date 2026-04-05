@@ -139,7 +139,7 @@ export default function MealDetails() {
   // Show halal message if meal contains haram ingredients
   if (isHaram) {
     return (
-      <View className="flex-1 bg-background">
+      <View className="flex-1 bg-background dark:bg-darkBackground">
         <Stack.Screen options={{ headerShown: false }} />
         <View className="flex-1 items-center justify-center px-6">
           <Pressable
@@ -155,7 +155,7 @@ export default function MealDetails() {
               style={{ resizeMode: "cover" }}
             />
           ) : null}
-          <Text className="text-2xl font-bold text-primary mb-4 text-center">
+          <Text className="text-2xl font-bold text-primaryv mb-4 text-center">
             {meal.strMeal}
           </Text>
           <View className="bg-red-100 rounded-xl px-6 py-8 items-center">
@@ -244,7 +244,7 @@ export default function MealDetails() {
             </View>
           </View>
           <View className="px-4 my-4">
-            <View className="flex-row items-center justify-between bg-[#1a1a1a] p-4 rounded-2xl border border-zinc-800">
+            <View className="flex-row items-center justify-between bg-background dark:bg-darkBackground p-4 rounded-2xl border border-primary dark:border-darkPrimary">
               <Switch
                 value={isArabic}
                 onValueChange={handleToggle}
@@ -252,7 +252,7 @@ export default function MealDetails() {
                 trackColor={{ false: "#767577", true: "#FF8A00" }}
               />
               <View className="flex-row items-center">
-                <Text className="text-white text-base font-bold mr-2">
+                <Text className="text-text dark:text-darkText text-base font-bold mr-2">
                   ترجمة الوصفة
                 </Text>
               </View>

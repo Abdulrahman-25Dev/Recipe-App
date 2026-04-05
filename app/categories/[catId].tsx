@@ -73,7 +73,7 @@ export default function CategoryMealsScreen() {
             className="flex-1 justify-end p-4"
           >
             {/* Meal name */}
-            <Text className="text-white font-bold text-base leading-5">
+            <Text numberOfLines={2} className="text-white font-bold text-base leading-5">
               {item.strMeal}
             </Text>
           </LinearGradient>

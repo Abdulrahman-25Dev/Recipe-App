@@ -19,7 +19,9 @@ const Favorites = () => {
   const favorites = useFavorites((state) => state.favorites);
   return (
     <View className="flex-1 bg-background dark:bg-darkBackground">
-      <View className={`p-3 flex-row items-center ${isRTL ? "justify-end" : "justify-start"} mt-10`}>
+      <View
+        className={`p-3 flex-row items-center ${isRTL ? "justify-end" : "justify-start"} mt-10`}
+      >
         <Text className="text-2xl font-bold text-primary dark:text-darkPrimary mr-2">
           {t("favorites recipes")}
         </Text>
@@ -37,14 +39,11 @@ const Favorites = () => {
             <TouchableOpacity
               activeOpacity={0.7}
               onPress={() => router.push(`/details/${item.idMeal}`)}
-              className="flex-1 m-1.5"
+              className="flex-1 m-1.5 relative"
             >
-              <Ionicons
-                name="heart"
-                size={20}
-                color="#FF8A00"
-                className="absolute top-2 left-2 z-10 p-2 bg-black rounded-full"
-              />
+              <View className="absolute top-3 right-3 z-10 p-2 bg-black/70 rounded-full">
+                <Ionicons name="heart" size={16} color="#FF8A00" />
+              </View>
 
               <ImageBackground
                 source={{ uri: item.strMealThumb }}
@@ -66,8 +65,8 @@ const Favorites = () => {
                   >
                     {item.strMeal}
                   </Text>
-                  <View className="mt-1 bg-black/50 px-2 py-1 rounded-full self-start">
-                    <Text className="text-primary dark:text-darkPrimary font-semibold text-sm leading-5">
+                  <View className="mt-2 bg-black/50 px-2.5 py-1 rounded-full self-start">
+                    <Text className="text-primary dark:text-darkPrimary font-semibold text-xs leading-4">
                       {item.strCategory}
                     </Text>
                   </View>
