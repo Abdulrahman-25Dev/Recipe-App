@@ -23,7 +23,7 @@ export default function SettingsScreen() {
   const confirmDeleteFavorites = () => {
     clearFavorites();
     setShowDeleteModal(false);
-  }
+  };
 
   // حساب عدد المفضلة
   const favoritesCount = favorites.length;
@@ -100,12 +100,18 @@ export default function SettingsScreen() {
 
       {/* 3. قسم التفضيلات */}
       <View className="px-5 mb-8">
-        <Text className={` text-gray-400 dark:text-gray-300 font-bold mb-4 mr-2 ${isRTL ? "text-right" : "text-left"}`}>
+        <Text
+          className={` text-gray-400 dark:text-gray-300 font-bold mb-4 mr-2 ${isRTL ? "text-right" : "text-left"}`}
+        >
           {t("preferences")}
         </Text>
         <View className="bg-white dark:bg-darkCard rounded-[35px] p-5 shadow-sm border border-gray-50 dark:border-gray-800">
-          <View className={`${isRTL ? "flex-row-reverse" : "flex-row"} items-center justify-between py-3 border-b border-gray-50 dark:border-gray-800`}>
-            <View className={`${isRTL ? "flex-row-reverse" : "flex-row"} items-center gap-4`}>
+          <View
+            className={`${isRTL ? "flex-row-reverse" : "flex-row"} items-center justify-between py-3 border-b border-gray-50 dark:border-gray-800`}
+          >
+            <View
+              className={`${isRTL ? "flex-row-reverse" : "flex-row"} items-center gap-4`}
+            >
               <View className="bg-orange-50 dark:bg-darkCard p-2.5 rounded-2xl">
                 <Feather
                   name={isDark ? "moon" : "sun"}
@@ -125,8 +131,12 @@ export default function SettingsScreen() {
             />
           </View>
 
-          <View className={`${isRTL ? "flex-row-reverse" : "flex-row"} items-center justify-between py-1`}>
-            <View className={`${isRTL ? "flex-row-reverse" : "flex-row"} items-center gap-4`}>
+          <View
+            className={`${isRTL ? "flex-row-reverse" : "flex-row"} items-center justify-between py-1`}
+          >
+            <View
+              className={`${isRTL ? "flex-row-reverse" : "flex-row"} items-center gap-4`}
+            >
               <View className="bg-blue-50 dark:bg-darkCard p-2.5 rounded-2xl">
                 <Feather name="globe" size={22} color="#3B82F6" />
               </View>
@@ -179,34 +189,36 @@ export default function SettingsScreen() {
 
       {/* 4. قسم المزيد */}
       <View className="px-5 mb-10">
-        <Text className={`text-gray-400 px-2 font-bold mb-4 mr-2 dark:text-gray-300 ${isRTL ? "text-right" : "text-left"}`}>
+        <Text
+          className={`text-gray-400 px-2 font-bold mb-4 mr-2 dark:text-gray-300 ${isRTL ? "text-right" : "text-left"}`}
+        >
           {t("more")}
         </Text>
         <View className="bg-white dark:bg-darkCard rounded-[35px] p-5 shadow-sm border border-gray-50 dark:border-gray-800">
-          
-
           <Pressable
             onPress={() => router.push("../aboutScreen")}
-           className={` items-center justify-between py-3 border-b border-gray-50 dark:border-gray-800 ${isRTL ? "flex-row-reverse" : "flex-row"}`}>
-            <View className={`items-center gap-4 ${isRTL ? "flex-row-reverse" : "flex-row"}`}>
+            className={` items-center justify-between py-3 border-b border-gray-50 dark:border-gray-800 ${isRTL ? "flex-row-reverse" : "flex-row"}`}
+          >
+            <View
+              className={`items-center gap-4 ${isRTL ? "flex-row-reverse" : "flex-row"}`}
+            >
               <View className="bg-blue-50 dark:bg-darkCard p-2.5 rounded-2xl">
                 <Feather name={"info"} size={22} color="#3B82F6" />
               </View>
               <Text className="text-lg font-semibold text-gray-800 dark:text-darkText">
-                حول التطبيق 
+                {t("title")}
               </Text>
             </View>
             <Feather name="chevron-left" size={20} color="#CCC" />
           </Pressable>
 
-
-
-
           <Pressable
             onPress={() => setShowDeleteModal(true)}
             className={` items-center justify-between py-3 ${isRTL ? "flex-row-reverse" : "flex-row"}`}
           >
-            <View className={`items-center gap-4 ${isRTL ? "flex-row-reverse" : "flex-row"}`}>
+            <View
+              className={`items-center gap-4 ${isRTL ? "flex-row-reverse" : "flex-row"}`}
+            >
               <View className="bg-red-50 dark:bg-darkCard p-2.5 rounded-2xl">
                 <Feather name="trash-2" size={22} color="#EF4444" />
               </View>
@@ -220,8 +232,8 @@ export default function SettingsScreen() {
 
       {/* MODAL WITH OVERLAY FOR DELETE ALL FAVORITES */}
       <Modal
-        visible={showDeleteModal} 
-        transparent={true} 
+        visible={showDeleteModal}
+        transparent={true}
         animationType="fade"
         onRequestClose={() => setShowDeleteModal(false)}
       >
@@ -236,9 +248,11 @@ export default function SettingsScreen() {
             <View className="flex-row justify-center gap-4">
               <Pressable
                 onPress={() => setShowDeleteModal(false)}
-                className="bg-gray-100 px-4 py-2 rounded-lg border border-gray-300"
+                className="bg-gray-100 dark:bg-gray-700 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600"
               >
-                <Text className="text-gray-700 text-md">{t("cancel")}</Text>
+                <Text className="text-gray-700 dark:text-gray-300 text-md">
+                  {t("cancel")}
+                </Text>
               </Pressable>
               <Pressable
                 onPress={confirmDeleteFavorites}
@@ -249,12 +263,9 @@ export default function SettingsScreen() {
             </View>
           </View>
         </View>
-
       </Modal>
-      
-      
 
-      <Text className="text-center text-gray-300 font-medium mb-10">
+      <Text className="text-center text-gray-300 dark:text-gray-400 font-medium mb-10">
         {t("version")}
       </Text>
     </ScrollView>

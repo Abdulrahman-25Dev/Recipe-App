@@ -74,7 +74,6 @@ export default function MealDetails() {
     if (!isArabic && (!translatedData || !translatedIngredients)) {
       setLoading(true);
 
-
       try {
         // 1. ترجمة طريقة التحضير (نص واحد - ما فيه مشكلة)
         const instructionsAr = await translateText(cleanInstructions || "");
@@ -129,9 +128,11 @@ export default function MealDetails() {
 
   if (loading || !meal) {
     return (
-      <View className="flex-1 items-center justify-center bg-background">
+      <View className="flex-1 items-center justify-center bg-background dark:bg-darkBackground">
         <ActivityIndicator size="large" color="#FF8A00" />
-        <Text className="text-text mt-4">جاري تحميل تفاصيل الوصفة...</Text>
+        <Text className="text-text dark:text-darkText mt-4">
+          جاري تحميل تفاصيل الوصفة...
+        </Text>
       </View>
     );
   }
@@ -176,7 +177,7 @@ export default function MealDetails() {
   const ingredients = parseIngredients(meal);
 
   return (
-    <View className="flex-1 bg-background">
+    <View className="flex-1 bg-background dark:bg-darkBackground">
       <Stack.Screen options={{ headerShown: false }} />
 
       <ScrollView showsVerticalScrollIndicator={false}>

@@ -14,10 +14,12 @@ export default function RootLayout() {
   const { setColorScheme } = useColorScheme();
   const { isDark } = useTheme(); // القيمة من الستور حقك
 
-  useEffect(() => {
+  useEffect(() => { 
     // هنا السحر: نحدث وضع nativewind كل ما تغير الستور
     setColorScheme(isDark ? "dark" : "light");
-  }, [isDark]);
+  }, [isDark, setColorScheme]);
+
+  
 
   return (
     <Stack>

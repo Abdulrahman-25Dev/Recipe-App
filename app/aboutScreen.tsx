@@ -45,7 +45,9 @@ export default function AboutApp() {
         <Text className="text-2xl font-bold mt-4 text-neutral-800 dark:text-white">
           {t("app name")}
         </Text>
-        <Text className="text-neutral-500">{t("version")}</Text>
+        <Text className="text-neutral-500 dark:text-neutral-400">
+          {t("version")}
+        </Text>
       </View>
 
       <View className={language === "ar" ? "items-end" : "items-start"}>
@@ -118,19 +120,26 @@ export default function AboutApp() {
             {t("developer")} 🐧
           </Text>
           <Pressable
-            onPress={() => Linking.openURL("https://github.com/dooom77-0?tab=repositories")}
+            onPress={() =>
+              Linking.openURL("https://github.com/dooom77-0?tab=repositories")
+            }
             className="bg-orange-500 p-3 rounded-xl items-center shadow-sm"
           >
             <Text className="text-white font-bold">{t("github")}</Text>
           </Pressable>
 
-          <Pressable onPress={() => Linking.openURL("mailto:dooomww@gmail.com")} className="bg-orange-500 mt-4 p-3 rounded-xl items-center shadow-sm">
-            <Text className="text-neutral-800 dark:text-white font-semibold">تواصل عبر Gmail</Text>
+          <Pressable
+            onPress={() => Linking.openURL("mailto:dooomww@gmail.com")}
+            className="bg-orange-500 mt-4 p-3 rounded-xl items-center shadow-sm"
+          >
+            <Text className="text-white dark:text-white font-semibold">
+              تواصل عبر Gmail
+            </Text>
           </Pressable>
         </View>
       </View>
 
-      <Text className="text-center text-neutral-400 my-8 text-md pb-6 italic">
+      <Text className="text-center text-neutral-400 dark:text-neutral-500 my-8 text-md pb-6 italic">
         {t("copyright")}
       </Text>
     </ScrollView>

@@ -23,17 +23,15 @@ type Meal = {
 };
 
 export default function Index() {
-
   const isRTL = i18n.language === "ar";
 
   const { t } = useTranslation();
 
-
   const [meals, setMeals] = useState<Meal[]>([]);
   const [activeCategory, setActiveCategory] = useState("Chicken");
-  
+
   const categories = ["Chicken", "Seafood", "Beef", "Lamb"];
-  
+
   useEffect(() => {
     const fetchMealsByCategory = async () => {
       const data = await getMealsByCategory(activeCategory);
@@ -42,37 +40,45 @@ export default function Index() {
     fetchMealsByCategory();
   }, [activeCategory]);
 
-  const getRandomHeight = () => {
-    return Math.floor(Math.random() * (220 - 150) + 160);
-  };
-
   if (meals.length === 0) {
     return (
-      <View className="flex-1 items-center justify-center bg-background">
+      <View className="flex-1 items-center justify-center bg-background dark:bg-darkBackground">
         <ActivityIndicator color="#FF8A00" size="large" />
-        <Text className="text-text mt-4 text-md">جاري تحميل الوصفات...</Text>
+        <Text className="text-text dark:text-darkText mt-4 text-md">
+          جاري تحميل الوصفات...
+        </Text>
       </View>
     );
   }
   return (
     <View className="flex-1 bg-background dark:bg-darkBackground">
       {/* Header */}
-      <View className={`p-5 flex-row items-center mt-10 ${isRTL ? "justify-end" : "justify-start"}`}>
-        <Text className="text-lg font-bold text-primary mr-2">{t("welcome")}</Text>
+      <View
+        className={`p-5 flex-row items-center mt-10 ${isRTL ? "justify-end" : "justify-start"}`}
+      >
+        <Text className="text-lg font-bold text-primary dark:text-darkPrimary mr-2">
+          {t("welcome")}
+        </Text>
         <Feather name="sun" size={24} color="#FF8A00" />
       </View>
 
       {/* Categories Header */}
-      <View className={` justify-between items-center px-5 mt-2 ${isRTL ? "flex-row" : "flex-row-reverse"}`}>
+      <View
+        className={` justify-between items-center px-5 mt-2 ${isRTL ? "flex-row" : "flex-row-reverse"}`}
+      >
         <Pressable
           onPress={() => {
-            router.push("/categories/cats");;
+            router.push("/categories/cats");
           }}
         >
-          <Text className="text-primary text-md font-semibold dark:text-darkPrimary">{t("show all")}</Text>
+          <Text className="text-primary text-md font-semibold dark:text-darkPrimary">
+            {t("show all")}
+          </Text>
         </Pressable>
 
-        <Text className="text-text text-lg font-semibold dark:text-darkText">{t("categories")}</Text>
+        <Text className="text-text text-lg font-semibold dark:text-darkText">
+          {t("categories")}
+        </Text>
       </View>
 
       {/* Category Buttons */}
@@ -105,8 +111,12 @@ export default function Index() {
       </View>
 
       {/* Meal Title */}
-      <View className={`p-2 mt-5 mx-5 ${isRTL ? "justify-end" : "justify-start"} items-center flex-row`}>
-        <Text className="text-text dark:text-darkText text-2xl font-bold mb-2">{t("recipes")}</Text>
+      <View
+        className={`p-2 mt-5 mx-5 ${isRTL ? "justify-end" : "justify-start"} items-center flex-row`}
+      >
+        <Text className="text-text dark:text-darkText text-2xl font-bold mb-2">
+          {t("recipes")}
+        </Text>
       </View>
       {/* Random meals */}
       <View className="px-2 flex-1">
@@ -121,12 +131,13 @@ export default function Index() {
             <TouchableOpacity
               activeOpacity={0.7}
               onPress={() => router.push(`/details/${item.idMeal}`)}
-              className="flex-1 m-1.5"
+              className="m-1.5"
+              style={{ flex: 1, minHeight: 220 }}
             >
               <ImageBackground
                 source={{ uri: item.strMealThumb }}
-                className="rounded-3xl overflow-hidden flex-1"
-                style={{ height: getRandomHeight() }}
+                className="rounded-3xl overflow-hidden"
+                style={{ height: 220 }}
                 imageStyle={{ resizeMode: "cover" }}
               >
                 {/* Dark gradient overlay at the bottom */}
@@ -137,7 +148,10 @@ export default function Index() {
                   className="flex-1 justify-end p-4"
                 >
                   {/* Meal name */}
-                  <Text numberOfLines={2} className="text-white font-bold text-base leading-5">
+                  <Text
+                    numberOfLines={2}
+                    className="text-white font-bold text-base leading-5"
+                  >
                     {item.strMeal}
                   </Text>
                 </LinearGradient>

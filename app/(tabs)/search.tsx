@@ -19,27 +19,27 @@ export default function Search() {
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchMeals = async () => {
-    if (!query.trim()) {
-      setResults([]);
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const res = await fetch(
-        `https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`,
-      );
-      const data = await res.json();
-      setResults(data.meals || []);
-    } catch (err) {
-      console.log(err);
-    }
-    setLoading(false);
-  };
-
   // بحث تلقائي مع كل تغيير في query (debounce)
   useEffect(() => {
+    const fetchMeals = async () => {
+      if (!query.trim()) {
+        setResults([]);
+        return;
+      }
+
+      setLoading(true);
+      try {
+        const res = await fetch(
+          `https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`,
+        );
+        const data = await res.json();
+        setResults(data.meals || []);
+      } catch (err) {
+        console.log(err);
+      }
+      setLoading(false);
+    };
+
     const delay = setTimeout(() => {
       fetchMeals();
     }, 400);
@@ -49,7 +49,6 @@ export default function Search() {
 
   return (
     <View className="flex-1 bg-background dark:bg-darkBackground px-4 pt-10">
-      
       {/* شريط البحث */}
       <View className="flex-row items-center bg-white dark:bg-darkCard rounded-full px-3 py-2 mx-3 mt-4 mb-4 border border-neutral-300 ">
         <Feather name="search" size={20} color="#777" className="mr-2" />
@@ -68,20 +67,17 @@ export default function Search() {
         </Text>
       )}
 
-
       {/* حالة التحميل */}
-      {loading &&(
+      {loading && (
         <ActivityIndicator size="large" color="#FF8A00" className="mt-6" />
-        
       )}
 
       {/* لا توجد نتائج */}
       {!loading && query.length > 0 && results.length === 0 && (
-        <Text className="text-neutral-700 text-center mt-10 text-lg">
+        <Text className="text-neutral-700 dark:text-neutral-300 text-center mt-10 text-lg">
           لا توجد وصفات مطابقة لبحثك
         </Text>
       )}
-
 
       {/* نتائج البحث */}
       <FlatList
@@ -92,9 +88,10 @@ export default function Search() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 20 }}
         renderItem={({ item }) => (
-          <TouchableOpacity className="w-[48%] mb-3"
-            onPress={() => router.push(`/details/${item.idMeal}`)} 
-           >
+          <TouchableOpacity
+            className="w-[48%] mb-3"
+            onPress={() => router.push(`/details/${item.idMeal}`)}
+          >
             <View className="rounded-xl overflow-hidden bg-neutral-100 border border-neutral-200">
               <ImageBackground
                 source={{ uri: item.strMealThumb }}

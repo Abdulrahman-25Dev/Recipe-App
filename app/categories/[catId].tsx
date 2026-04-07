@@ -6,7 +6,6 @@ import {
   ImageBackground,
   Text,
   ActivityIndicator,
-  Dimensions,
 } from "react-native";
 import { useRouter, useLocalSearchParams, Stack } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
@@ -24,45 +23,39 @@ export default function CategoryMealsScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
   const categoryName = params.catId as string;
-  const windowWidth = Dimensions.get("window").width;
 
   useEffect(() => {
+    const fetchMeals = async () => {
+      try {
+        const response = await fetch(
+          `https://www.themealdb.com/api/json/v1/1/filter.php?c=${categoryName}`,
+        );
+        const data = await response.json();
+        setMeals(data.meals || []);
+      } catch (error) {
+        console.error("Error fetching meals:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     if (categoryName) {
       fetchMeals();
     }
   }, [categoryName]);
 
-  const fetchMeals = async () => {
-    try {
-      const response = await fetch(
-        `https://www.themealdb.com/api/json/v1/1/filter.php?c=${categoryName}`,
-      );
-      const data = await response.json();
-      setMeals(data.meals || []);
-    } catch (error) {
-      console.error("Error fetching meals:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const getRandomHeight = () => {
-    return Math.floor(Math.random() * (220 - 150) + 150);
-  };
-
   const MealCard = ({ item }: { item: Meal }) => {
-    const cardHeight = getRandomHeight();
-
     return (
       <TouchableOpacity
         activeOpacity={0.7}
         onPress={() => router.push(`/details/${item.idMeal}`)}
-        className="flex-1 m-1.5"
+        className="m-1.5"
+        style={{ flex: 1, minHeight: 180 }}
       >
         <ImageBackground
           source={{ uri: item.strMealThumb }}
-          className="rounded-2xl overflow-hidden flex-1"
-          style={{ height: cardHeight }}
+          className="rounded-2xl overflow-hidden"
+          style={{ height: 180 }}
           imageStyle={{ resizeMode: "cover" }}
         >
           {/* Dark gradient overlay at the bottom */}
@@ -73,7 +66,10 @@ export default function CategoryMealsScreen() {
             className="flex-1 justify-end p-4"
           >
             {/* Meal name */}
-            <Text numberOfLines={2} className="text-white font-bold text-base leading-5">
+            <Text
+              numberOfLines={2}
+              className="text-white font-bold text-base leading-5"
+            >
               {item.strMeal}
             </Text>
           </LinearGradient>
@@ -88,7 +84,7 @@ export default function CategoryMealsScreen() {
 
       {/* Header */}
       <View className="flex-row items-center justify-between px-4 py-4 bg-background dark:bg-darkBackground mt-10">
-        <Text className="text-2xl font-bold flex-1 ml-3 truncate text-primary">
+        <Text className="text-2xl font-bold flex-1 ml-3 truncate text-primary dark:text-darkPrimary">
           {categoryName}
         </Text>
         <TouchableOpacity
@@ -97,14 +93,15 @@ export default function CategoryMealsScreen() {
         >
           <Ionicons name="arrow-forward" size={24} color="#FF8A00" />
         </TouchableOpacity>
-
       </View>
 
       {/* Content */}
       {loading ? (
         <View className="flex-1 items-center justify-center">
           <ActivityIndicator size="large" color="#ea580c" />
-          <Text className="text-gray-500 mt-2">جاري تحميل الوصفات...</Text>
+          <Text className="text-gray-500 dark:text-gray-300 mt-2">
+            جاري تحميل الوصفات...
+          </Text>
         </View>
       ) : meals.length > 0 ? (
         <FlatList
@@ -119,7 +116,9 @@ export default function CategoryMealsScreen() {
         />
       ) : (
         <View className="flex-1 items-center justify-center">
-          <Text className="text-gray-500 text-lg">No meals found</Text>
+          <Text className="text-gray-500 dark:text-gray-300 text-lg">
+            No meals found
+          </Text>
         </View>
       )}
     </View>
