@@ -129,7 +129,7 @@ export default function AboutApp() {
           </Pressable>
 
           <Pressable
-            onPress={() => Linking.openURL("mailto:dooomww@gmail.com")}
+            onPress={() => Linking.openURL("mailto:abdulrahman.dev25@gmail.com")}
             className="bg-orange-500 mt-4 p-3 rounded-xl items-center shadow-sm"
           >
             <Text className="text-white dark:text-white font-semibold">
