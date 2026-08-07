@@ -10,30 +10,38 @@ import {
 import { useRouter, useLocalSearchParams, Stack } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import i18n from "@/i18next/i18n";
+import { apiClient } from "@/src/api/client";
 
-interface Meal {
-  idMeal: string;
-  strMeal: string;
-  strMealThumb: string;
-}
+const DEFAULT_MEAL_IMAGE =
+  "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&q=80";
 
 export default function CategoryMealsScreen() {
-  const [meals, setMeals] = useState<Meal[]>([]);
+  const [meals, setMeals] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const params = useLocalSearchParams();
   const categoryName = params.catId as string;
+  const isRTL = i18n.language === "ar";
 
   useEffect(() => {
     const fetchMeals = async () => {
       try {
-        const response = await fetch(
-          `https://www.themealdb.com/api/json/v1/1/filter.php?c=${categoryName}`,
+        setLoading(true);
+        // الطلب من الباك إند عبر المسار المخصص للوجبات حسب التصنيف
+        const response = await apiClient.get(
+          `/recipes/category/${encodeURIComponent(categoryName)}`
         );
-        const data = await response.json();
-        setMeals(data.meals || []);
+
+        const data =
+          response.data?.data ||
+          response.data?.recipes ||
+          response.data ||
+          [];
+
+        setMeals(Array.isArray(data) ? data : []);
       } catch (error) {
-        console.error("Error fetching meals:", error);
+        console.error("Error fetching category meals:", error);
       } finally {
         setLoading(false);
       }
@@ -44,33 +52,60 @@ export default function CategoryMealsScreen() {
     }
   }, [categoryName]);
 
-  const MealCard = ({ item }: { item: Meal }) => {
+  const MealCard = ({ item }: { item: any }) => {
+    const [imgError, setImgError] = useState(false);
+
+    // استخراج اسم الوجبة بناءً على اللغة المحددة
+    const mealTitle = isRTL
+      ? item.titleAr || item.title || item.strMeal
+      : item.title || item.strMeal || item.titleAr;
+
+    // استخراج رابط الصورة مع التأكد من وجوده
+    const rawImage =
+      item.image ||
+      item.imageUrl ||
+      item.thumbUrl ||
+      item.strMealThumb;
+
+    const imageUrl =
+      !imgError && rawImage && typeof rawImage === "string" && rawImage.trim() !== ""
+        ? rawImage
+        : DEFAULT_MEAL_IMAGE;
+
+    const mealId = item._id || item.idMeal || item.id;
+
     return (
       <TouchableOpacity
         activeOpacity={0.7}
-        onPress={() => router.push(`/details/${item.idMeal}`)}
-        className="m-1.5"
-        style={{ flex: 1, minHeight: 180 }}
+        onPress={() =>
+          router.push({
+            pathname: "/details/[mealId]",
+            params: { mealId: String(mealId) },
+          })
+        }
+        className="m-1.5 flex-1"
+        style={{ minHeight: 180 }}
       >
         <ImageBackground
-          source={{ uri: item.strMealThumb }}
-          className="rounded-2xl overflow-hidden"
+          source={{ uri: imageUrl }}
+          className="rounded-2xl overflow-hidden bg-gray-800"
           style={{ height: 180 }}
           imageStyle={{ resizeMode: "cover" }}
+          onError={() => setImgError(true)}
         >
-          {/* Dark gradient overlay at the bottom */}
           <LinearGradient
-            colors={["transparent", "rgba(0, 0, 0, 0.8)"]}
+            colors={["transparent", "rgba(0, 0, 0, 0.85)"]}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 1 }}
             className="flex-1 justify-end p-4"
           >
-            {/* Meal name */}
             <Text
               numberOfLines={2}
-              className="text-white font-bold text-base leading-5"
+              className={`text-white font-bold text-base leading-5 ${
+                isRTL ? "text-right" : "text-left"
+              }`}
             >
-              {item.strMeal}
+              {mealTitle}
             </Text>
           </LinearGradient>
         </ImageBackground>
@@ -83,41 +118,54 @@ export default function CategoryMealsScreen() {
       <Stack.Screen options={{ headerShown: false }} />
 
       {/* Header */}
-      <View className="flex-row items-center justify-between px-4 py-4 bg-background dark:bg-darkBackground mt-10">
-        <Text className="text-2xl font-bold flex-1 ml-3 truncate text-primary dark:text-darkPrimary">
-          {categoryName}
-        </Text>
+      <View
+        className={`${
+          isRTL ? "flex-row" : "flex-row-reverse"
+        } items-center justify-between px-4 py-4 bg-background dark:bg-darkBackground mt-10`}
+      >
         <TouchableOpacity
           onPress={() => router.back()}
-          className="p-2 active:bg-gray-100 rounded-full bg-black"
+          className="p-2 rounded-full bg-black"
         >
-          <Ionicons name="arrow-forward" size={24} color="#FF8A00" />
+          <Ionicons
+            name={isRTL ? "arrow-back" : "arrow-forward"}
+            size={24}
+            color="#FF8A00"
+          />
         </TouchableOpacity>
+        <Text
+          className={`text-2xl font-bold flex-1 mx-3 truncate text-primary dark:text-darkPrimary ${
+            isRTL ? "text-right" : "text-left"
+          }`}
+        >
+          {categoryName}
+        </Text>
       </View>
 
       {/* Content */}
       {loading ? (
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#ea580c" />
-          <Text className="text-gray-500 dark:text-gray-300 mt-2">
-            جاري تحميل الوصفات...
+          <ActivityIndicator size="large" color="#FF8A00" />
+          <Text className="text-text dark:text-darkText mt-3 font-semibold">
+            {isRTL ? "جاري تحميل الوصفات..." : "Loading recipes..."}
           </Text>
         </View>
       ) : meals.length > 0 ? (
         <FlatList
           data={meals}
           renderItem={({ item }) => <MealCard item={item} />}
-          keyExtractor={(item) => item.idMeal}
+          keyExtractor={(item, index) =>
+            item._id || item.idMeal || String(index)
+          }
           numColumns={2}
           columnWrapperStyle={{ paddingHorizontal: 6, paddingBottom: 4 }}
           contentContainerStyle={{ paddingVertical: 8 }}
-          scrollEventThrottle={16}
           showsVerticalScrollIndicator={false}
         />
       ) : (
         <View className="flex-1 items-center justify-center">
-          <Text className="text-gray-500 dark:text-gray-300 text-lg">
-            No meals found
+          <Text className="text-gray-500 dark:text-gray-300 text-lg font-semibold">
+            {isRTL ? "لا توجد وجبات في هذا التصنيف" : "No meals found"}
           </Text>
         </View>
       )}

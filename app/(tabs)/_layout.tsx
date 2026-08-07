@@ -1,5 +1,5 @@
 import { Tabs } from "expo-router";
-import { Ionicons } from "@expo/vector-icons"; // تمكين دعم اللغة العربية (من اليمين إلى اليسار)
+import { Home, Search, Heart, Settings2 } from "lucide-react-native";
 import { useTheme } from "../../store/useTheme";
 
 export default function TabLayout() {
@@ -28,35 +28,29 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "الرئيسية",
-          tabBarIcon: ({ color, size, focused }) => (
-            <Ionicons name={focused ? "home" : "home-outline"} size={size} color={color} />
-          ),
+          tabBarIcon: ({ color, size }) => <Home size={size} color={color} />,
         }}
       />
-        <Tabs.Screen
-          name="search"
-          options={{
-            title: "البحث",
-            tabBarIcon: ({ color, size, focused }) => (
-              <Ionicons name={focused ? "search" : "search-outline"} size={size} color={color} />
-            ),
-          }}
-        />
+      <Tabs.Screen
+        name="search"
+        options={{
+          title: "البحث",
+          tabBarIcon: ({ color, size }) => <Search size={size} color={color} />,
+        }}
+      />
       <Tabs.Screen
         name="favorites"
         options={{
           title: "المفضلة",
-          tabBarIcon: ({ color, size, focused }) => (
-            <Ionicons name={focused ? "heart" : "heart-outline"} size={size} color={color} />
-          ),
+          tabBarIcon: ({ color, size }) => <Heart size={size} color={color} />,
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
           title: "الإعدادات",
-          tabBarIcon: ({ color, size, focused }) => (
-            <Ionicons name={focused ? "settings" : "settings-outline"} size={size} color={color} />
+          tabBarIcon: ({ color, size }) => (
+            <Settings2 size={size} color={color} />
           ),
         }}
       />

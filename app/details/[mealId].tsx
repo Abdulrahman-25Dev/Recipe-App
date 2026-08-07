@@ -10,108 +10,52 @@ import {
 import React, { useEffect, useState } from "react";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { getMealById } from "../../src/api/meal";
-import { Feather, Ionicons } from "@expo/vector-icons";
 import { useFavorites } from "../../store/useFavoriteStore";
-import { translateText } from "../../src/api/translationService";
+import i18n from "../../i18next/i18n";
 
-type Meal = {
-  idMeal: string;
-  strMeal: string;
-  strCategory?: string;
-  strArea?: string;
-  strInstructions?: string;
-  strMealThumb?: string;
-  [key: string]: any;
-};
+// استيراد الأيقونات من Lucide
+import {
+  UtensilsCrossed,
+  Clock,
+  ListOrdered,
+  ArrowRight,
+  Heart,
+  List,
+  BookOpen,
+  AlertCircle,
+  MapPin,
+} from "lucide-react-native";
 
 const HARAM_INGREDIENTS = ["pork", "bacon", "ham", "pepperoni", "prosciutto"];
 
-const containsHaramIngredients = (meal: Meal): boolean => {
-  for (let i = 1; i <= 20; i++) {
-    const ingredient = meal[`strIngredient${i}`];
-    if (ingredient) {
-      const lowerIngredient = ingredient.toLowerCase();
-      if (HARAM_INGREDIENTS.some((haram) => lowerIngredient.includes(haram))) {
-        return true;
-      }
-    }
-  }
-  return false;
-};
-
-const parseIngredients = (meal: Meal) => {
-  const list: { ingredient: string; measure: string }[] = [];
-  for (let i = 1; i <= 20; i++) {
-    const ing = meal[`strIngredient${i}`];
-    const measure = meal[`strMeasure${i}`];
-    if (ing && ing.trim()) {
-      list.push({ ingredient: ing.trim(), measure: (measure || "").trim() });
-    }
-  }
-  return list;
-};
-
 export default function MealDetails() {
   const { mealId } = useLocalSearchParams();
-  const [meal, setMeal] = useState<Meal | null>(null);
+  const [meal, setMeal] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [isHaram, setIsHaram] = useState(false);
-  const [isArabic, setIsArabic] = useState(false);
-  const [translatedData, setTranslatedData] = useState<string | null>(null); // للنص العربي
-  // مصفوفة لتخزين المكونات المترجمة
-  const [translatedIngredients, setTranslatedIngredients] = useState<
-    string[] | null
-  >(null);
+
+  const [isArabic, setIsArabic] = useState(i18n.language === "ar");
+
   const { toggleFavorite } = useFavorites();
 
-  const handleToggle = async () => {
-    const cleanInstructions = meal?.strInstructions
-      ?.replace(/\n+/g, " ") // إزالة الأسطر
-      ?.replace(/\r+/g, " ") // إزالة الرموز المخفية
-      ?.replace(/\s+/g, " ") // دمج المسافات
-      ?.trim();
-
-    if (!isArabic && (!translatedData || !translatedIngredients)) {
-      setLoading(true);
-
-      try {
-        // 1. ترجمة طريقة التحضير (نص واحد - ما فيه مشكلة)
-        const instructionsAr = await translateText(cleanInstructions || "");
-        setTranslatedData(instructionsAr);
-
-        // 2. ترجمة المكونات (هنا اللعبة!)
-        // نجمع المكونات ونحط فاصلة غريبة شوي عشان نضمن الـ Split صح
-        const ingredientsList = ingredients
-          .map((it) => it.ingredient)
-          .join(" ### ");
-        const ingredientsAr = await translateText(ingredientsList);
-
-        if (ingredientsAr) {
-          // نفكك النص بناءً على نفس الفاصلة وننظف المسافات الزائدة
-          const ingredientsArray = ingredientsAr
-            .split(" ### ")
-            .map((item) => item.trim());
-          setTranslatedIngredients(ingredientsArray);
-        }
-      } catch (error) {
-        console.error("Translation failed", error);
-      }
-      setLoading(false);
-    }
-    setIsArabic(!isArabic);
-  };
-
   const favorited = useFavorites((state) =>
-    state.favorites.some((f) => f.idMeal === String(mealId)),
+    state.favorites.some(
+      (f: any) => (f._id || f.idMeal || f.id) === String(mealId)
+    )
   );
+
   useEffect(() => {
     if (!mealId) return;
     const fetchMeal = async () => {
       setLoading(true);
       const data = await getMealById(String(mealId));
       setMeal(data);
-      if (data && containsHaramIngredients(data)) {
-        setIsHaram(true);
+
+      if (data && Array.isArray(data.ingredients)) {
+        const hasHaram = data.ingredients.some((ing: string) =>
+          HARAM_INGREDIENTS.some((h) => ing.toLowerCase().includes(h))
+        );
+        setIsHaram(hasHaram);
       }
       setLoading(false);
     };
@@ -137,7 +81,38 @@ export default function MealDetails() {
     );
   }
 
-  // Show halal message if meal contains haram ingredients
+  const imageUrl =
+    meal.image ||
+    meal.thumbUrl ||
+    meal.strMealThumb ||
+    "https://via.placeholder.com/400x300.png?text=No+Image";
+
+  const title = isArabic
+    ? meal.titleAr || meal.title
+    : meal.title || meal.titleAr;
+
+  const category = isArabic
+    ? meal.categoryAr || meal.category || "عام"
+    : meal.category || meal.categoryAr || "General";
+
+  const country = isArabic
+    ? meal.countryAr || meal.country || "عالمي"
+    : meal.country || meal.countryAr || "International";
+
+  const prepTime = meal.prepTime ? `${meal.prepTime} دقيقة` : "غير حدد";
+
+  const ingredientsList: string[] = isArabic
+    ? meal.ingredientsAr && meal.ingredientsAr.length > 0
+      ? meal.ingredientsAr
+      : meal.ingredients || []
+    : meal.ingredients || [];
+
+  const instructionsList: string[] = isArabic
+    ? meal.instructionsAr && meal.instructionsAr.length > 0
+      ? meal.instructionsAr
+      : meal.instructions || []
+    : meal.instructions || [];
+
   if (isHaram) {
     return (
       <View className="flex-1 bg-background dark:bg-darkBackground">
@@ -147,20 +122,18 @@ export default function MealDetails() {
             onPress={() => router.back()}
             className="absolute top-4 bg-black right-4 z-10 p-2 rounded-full shadow mt-7"
           >
-            <Feather name="arrow-right" size={24} color="#FF8A00" />
+            <ArrowRight size={24} color="#FF8A00" />
           </Pressable>
-          {meal.strMealThumb ? (
-            <Image
-              source={{ uri: meal.strMealThumb }}
-              className="w-full h-64 rounded-lg mb-6 mt-16"
-              style={{ resizeMode: "cover" }}
-            />
-          ) : null}
-          <Text className="text-2xl font-bold text-primaryv mb-4 text-center">
-            {meal.strMeal}
+          <Image
+            source={{ uri: imageUrl }}
+            className="w-full h-64 rounded-lg mb-6 mt-16"
+            style={{ resizeMode: "cover" }}
+          />
+          <Text className="text-2xl font-bold text-primary mb-4 text-center">
+            {title}
           </Text>
           <View className="bg-red-100 rounded-xl px-6 py-8 items-center">
-            <Feather name="alert-circle" size={48} color="#EF4444" />
+            <AlertCircle size={48} color="#EF4444" />
             <Text className="text-lg font-semibold text-red-600 mt-4 text-center">
               الوصفة غير حلال
             </Text>
@@ -168,147 +141,168 @@ export default function MealDetails() {
               تحتوي هذه الوصفة على مكونات غير مسموحة (لحم خنزير أو مشتقاته)
             </Text>
           </View>
-          ةف-10mt-1mt-10relative0{" "}
         </View>
       </View>
     );
   }
-
-  const ingredients = parseIngredients(meal);
 
   return (
     <View className="flex-1 bg-background dark:bg-darkBackground">
       <Stack.Screen options={{ headerShown: false }} />
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Pressable
-          onPress={() => router.back()}
-          className="absolute top-4 bg-black right-4 z-10 p-2 rounded-full shadow mt-7"
-        >
-          <Feather name="arrow-right" size={24} color="#FF8A00" />
-        </Pressable>
-        {meal.strMealThumb ? (
+        {/* صورة الوجبة والأزرار العلوية */}
+        <View className="relative">
           <Image
-            source={{ uri: meal.strMealThumb }}
+            source={{ uri: imageUrl }}
             className="w-full h-64"
             style={{ resizeMode: "cover" }}
           />
-        ) : null}
-        <Pressable
-          onPress={() => meal && toggleFavorite(meal)}
-          className="absolute top-4 bg-black left-4 z-10 p-2 rounded-full shadow mt-7"
-        >
-          <Ionicons
-            name={favorited ? "heart" : "heart-outline"}
-            size={24}
-            color="#FF8A00"
-          />
-        </Pressable>
+
+          <Pressable
+            onPress={() => router.back()}
+            className="absolute top-4 bg-black/60 right-4 z-10 p-2.5 rounded-full shadow mt-7"
+          >
+            <ArrowRight size={22} color="#FF8A00" />
+          </Pressable>
+
+          <Pressable
+            onPress={() => toggleFavorite(meal)}
+            className="absolute top-4 bg-black/60 left-4 z-10 p-2.5 rounded-full shadow mt-7"
+          >
+            <Heart
+              size={22}
+              color="#FF8A00"
+              fill={favorited ? "#FF8A00" : "none"}
+            />
+          </Pressable>
+        </View>
 
         <View className="p-4 bg-background dark:bg-darkBackground">
-          <Text className="text-2xl font-bold text-primary dark:text-darkPrimary mb-2 ">
-            {meal.strMeal}
+          {/* عنوان الوصفة */}
+          <Text className={`text-2xl font-bold text-primary dark:text-darkPrimary mb-4 ${isArabic ? "text-right" : "text-left"}`}>
+            {title}
           </Text>
-          <View className="flex-row items-center gap-2 mb-4 my-5">
-            {/* CATEGORY CONTAINER */}
-            <View className="bg-primary/10  rounded-xl border border-primary dark:border-darkPrimary gap-2 p-2 items-center mx-auto">
-              <Text className="text-sm font-semibold text-text dark:text-darkText">
-                التصنيف
-              </Text>
+
+          {/* شبكة المربعات من عمودين (Grid 2 Columns) */}
+          <View className="flex-row flex-wrap justify-between gap-y-3 mb-5">
+            {/* 1. التصنيف */}
+            <View className="w-[48%] bg-primary/10 rounded-2xl border border-primary/30 dark:border-darkPrimary/30 p-3 items-center justify-center">
+              <UtensilsCrossed size={22} color="#FF8A00" />
               <Text
-                numberOfLines={2}
-                className="text-sm text-text dark:text-darkText mt-1 font-bold"
+                numberOfLines={1}
+                className="text-sm text-text dark:text-darkText mt-1.5 font-bold"
               >
-                {meal.strCategory}
+                {category}
               </Text>
             </View>
-            {/* AREA CONTAINER */}
-            <View className="bg-primary/10 rounded-xl border border-primary gap-3 p-2 items-center mx-auto">
-              <Text className="text-sm font-semibold text-text dark:text-darkText">
-                المنطقة
-              </Text>
+
+            {/* 2. المنطقة / البلد */}
+            <View className="w-[48%] bg-primary/10 rounded-2xl border border-primary/30 dark:border-darkPrimary/30 p-3 items-center justify-center">
+              <MapPin size={22} color="#FF8A00" />
               <Text
-                numberOfLines={2}
-                className="text-sm text-text dark:text-darkText mt-1 font-bold"
+                numberOfLines={1}
+                className="text-sm text-text dark:text-darkText mt-1.5 font-bold"
               >
-                {meal.strArea}
+                {country}
               </Text>
             </View>
-            {/* INGREDIENTS CONTAINER */}
-            <View className="bg-primary/10 rounded-xl border border-primary gap-3 p-2 items-center mx-auto">
-              <Text className="text-sm font-semibold text-text dark:text-darkText">
-                المكونات
+
+            {/* 3. وقت التحضير */}
+            <View className="w-[48%] bg-primary/10 rounded-2xl border border-primary/30 dark:border-darkPrimary/30 p-3 items-center justify-center">
+              <Clock size={22} color="#FF8A00" />
+              <Text className="text-sm text-text dark:text-darkText mt-1.5 font-bold">
+                {prepTime}
               </Text>
-              <Text className="text-sm text-text dark:text-darkText mt-1 font-bold">
-                {ingredients.length}
+            </View>
+
+            {/* 4. عدد المكونات */}
+            <View className="w-[48%] bg-primary/10 rounded-2xl border border-primary/30 dark:border-darkPrimary/30 p-3 items-center justify-center">
+              <ListOrdered size={22} color="#FF8A00" />
+              <Text className="text-sm text-text dark:text-darkText mt-1.5 font-bold">
+                {meal.ingredientsCount || ingredientsList.length} مكونات
               </Text>
             </View>
           </View>
-          <View className="px-4 my-4">
-            <View className="flex-row items-center justify-between bg-background dark:bg-darkBackground p-4 rounded-2xl border border-primary dark:border-darkPrimary">
+
+          {/* زر تبديل اللغة */}
+          <View className="mb-4">
+            <View className="flex-row items-center justify-between bg-background dark:bg-darkBackground p-3.5 rounded-2xl border border-primary/40 dark:border-darkPrimary/40">
               <Switch
                 value={isArabic}
-                onValueChange={handleToggle}
+                onValueChange={(val) => setIsArabic(val)}
                 thumbColor={isArabic ? "#FF8A00" : "#f4f3f4"}
                 trackColor={{ false: "#767577", true: "#FF8A00" }}
               />
-              <View className="flex-row items-center">
-                <Text className="text-text dark:text-darkText text-base font-bold mr-2">
-                  ترجمة الوصفة
-                </Text>
-              </View>
+              <Text className="text-text dark:text-darkText text-base font-bold">
+                عرض باللغة العربية
+              </Text>
             </View>
           </View>
 
-          <View className=" p-3 rounded-xl flex-row items-center justify-end">
-            <Text>
-              <Feather name="list" size={20} color="#FF8A00" className="mr-2" />
-            </Text>
-            <Text className="text-2xl font-bold text-primary dark:text-darkPrimary mt-2 mb-2 ml-4 text-right">
+          {/* عنوان المكونات */}
+          <View className="p-2 rounded-xl flex-row items-center justify-end mb-1">
+            <Text className="text-xl font-bold text-primary dark:text-darkPrimary mr-2 text-right">
               المكونات
             </Text>
+            <List size={22} color="#FF8A00" />
           </View>
 
-          <View className="mb-4 bg-primary/5 p-3 rounded-xl">
-            {ingredients.map((it, idx) => (
-              <View
-                key={idx}
-                className={`flex-row items-center justify-between mb-3 ${isArabic ? "flex-row-reverse" : ""}`}
-              >
-                <Text
-                  className={`text-text text-sm font-semibold dark:text-darkText ${isArabic ? "text-right" : "text-left"}`}
+          {/* قائمة المكونات */}
+          <View className="mb-5 bg-primary/5 p-4 rounded-2xl">
+            {ingredientsList.length > 0 ? (
+              ingredientsList.map((ing: string, idx: number) => (
+                <View
+                  key={idx}
+                  className={`flex-row items-center mb-2.5 ${
+                    isArabic ? "flex-row-reverse" : ""
+                  }`}
                 >
-                  {isArabic && translatedIngredients
-                    ? translatedIngredients[idx]
-                    : it.ingredient}
-                </Text>
-                <Text className="text-text text-sm text-muted font-semibold dark:text-darkText">
-                  {it.measure}
-                </Text>
-              </View>
-            ))}
+                  <View className="w-2 h-2 rounded-full bg-primary mx-2" />
+                  <Text
+                    className={`text-text text-sm font-semibold dark:text-darkText flex-1 ${
+                      isArabic ? "text-right" : "text-left"
+                    }`}
+                  >
+                    {ing}
+                  </Text>
+                </View>
+              ))
+            ) : (
+              <Text className="text-text dark:text-darkText text-center">
+                لا توجد مكونات مسجلة
+              </Text>
+            )}
           </View>
-          <View className=" p-3 rounded-xl flex-row items-center justify-end">
-            <Text>
-              <Feather
-                name="book-open"
-                size={20}
-                color="#FF8A00"
-                className="mr-2"
-              />
-            </Text>
 
-            <Text className="text-2xl font-bold text-primary dark:text-darkPrimary mt-2 mb-4 ml-4 text-right">
+          {/* عنوان طريقة التحضير */}
+          <View className="p-2 rounded-xl flex-row items-center justify-end mb-1">
+            <Text className="text-xl font-bold text-primary dark:text-darkPrimary mr-2 text-right">
               طريقة التحضير
             </Text>
+            <BookOpen size={22} color="#FF8A00" />
           </View>
-          <Text
-            className={`text-text dark:text-darkText leading-7 text-lg font-semibold bg-primary/5 p-4 rounded-xl ${isArabic ? "text-right" : "text-left"}`}
-          >
-            {isArabic
-              ? translatedData || "جاري تحميل الترجمة..."
-              : meal?.strInstructions}{" "}
-          </Text>
+
+          {/* قائمة طريقة التحضير */}
+          <View className="bg-primary/5 p-4 rounded-2xl mb-8">
+            {instructionsList.length > 0 ? (
+              instructionsList.map((step: string, idx: number) => (
+                <Text
+                  key={idx}
+                  className={`text-text dark:text-darkText leading-7 text-base font-semibold mb-3 ${
+                    isArabic ? "text-right" : "text-left"
+                  }`}
+                >
+                  {instructionsList.length > 1 ? `${idx + 1}. ` : ""}
+                  {step}
+                </Text>
+              ))
+            ) : (
+              <Text className="text-text dark:text-darkText text-center">
+                لا توجد تعليمات تحضير مسجلة
+              </Text>
+            )}
+          </View>
         </View>
       </ScrollView>
     </View>

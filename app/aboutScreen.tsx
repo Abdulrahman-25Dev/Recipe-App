@@ -121,7 +121,7 @@ export default function AboutApp() {
           </Text>
           <Pressable
             onPress={() =>
-              Linking.openURL("https://github.com/dooom77-0?tab=repositories")
+              Linking.openURL("https://github.com/Abdulrahman-25Dev?tab=repositories")
             }
             className="bg-orange-500 p-3 rounded-xl items-center shadow-sm"
           >
