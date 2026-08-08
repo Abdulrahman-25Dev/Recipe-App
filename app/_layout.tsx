@@ -6,18 +6,23 @@ import { useEffect } from "react";
 // ⚠️ تأكد إن الاستدعاء من nativewind وليس react-native
 import { useColorScheme } from "nativewind"; 
 import { I18nManager } from "react-native";
+import i18n from "../i18next/i18n";
 
 I18nManager.allowRTL(false);
 I18nManager.forceRTL(false);
 
 export default function RootLayout() {
   const { setColorScheme } = useColorScheme();
-  const { isDark } = useTheme(); // القيمة من الستور حقك
+  const { isDark, language } = useTheme(); // القيمة من الستور حقك
 
   useEffect(() => { 
     // هنا السحر: نحدث وضع nativewind كل ما تغير الستور
     setColorScheme(isDark ? "dark" : "light");
   }, [isDark, setColorScheme]);
+
+  useEffect(() => {
+    i18n.changeLanguage(language);
+  }, [language]);
 
   
 

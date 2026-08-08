@@ -133,26 +133,18 @@ export default function CategoriesScreen() {
       <Stack.Screen options={{ headerShown: false }} />
 
       {/* Header */}
-      <View
-        className={`${
-          isRTL ? "flex-row" : "flex-row-reverse"
-        } items-center mt-10 justify-between px-4 py-4 bg-background dark:bg-darkBackground`}
-      >
+      <View className="items-center justify-center mt-10 px-4 py-4 bg-background dark:bg-darkBackground">
         <TouchableOpacity
           onPress={() => router.back()}
-          className="p-2 rounded-full bg-black"
+          className="absolute left-4 p-2 rounded-full bg-black"
         >
           <Ionicons
-            name={isRTL ? "arrow-back" : "arrow-forward"}
+            name="arrow-back"
             size={24}
             color="#FF8A00"
           />
         </TouchableOpacity>
-        <Text
-          className={`${
-            isRTL ? "text-right" : "text-left"
-          } text-2xl font-bold flex-1 ml-3 text-primary dark:text-darkPrimary`}
-        >
+        <Text className="text-2xl font-bold truncate text-center text-primary dark:text-darkPrimary">
           {t("categories")}
         </Text>
       </View>

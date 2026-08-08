@@ -2,14 +2,20 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 export interface Meal {
-  idMeal: string;
-  strMeal: string;
+  _id?: string;
+  idMeal?: string;
+  externalId?: string;
+  title?: string;
+  strMeal?: string;
   strMealThumb?: string;
   strInstructions?: string;
   [key: string]: any; // للسماح بأي حقول أخرى تأتي من API
   favorite?: boolean;
   // أضف أي حقول أخرى تحتاجها من API
 }
+
+const getMealId = (meal: Meal): string =>
+  String(meal._id || meal.idMeal || meal.externalId || "");
 
 interface FavoritesState {
   favorites: Meal[];
@@ -25,23 +31,26 @@ export const useFavorites = create<FavoritesState>()(
 
       toggleFavorite: (meal) => {
         const { favorites } = get();
-        const isExist = favorites.some((f) => f.idMeal === meal.idMeal);
+        const mealId = getMealId(meal);
+        const isExist =
+          mealId !== "" &&
+          favorites.some((f) => getMealId(f) === mealId);
 
         if (isExist) {
           // حذف من المفضلة
-          set({ 
-            favorites: favorites.filter((f) => f.idMeal !== meal.idMeal) 
+          set({
+            favorites: favorites.filter((f) => getMealId(f) !== mealId),
           });
         } else {
           // إضافة للمفضلة
-          set({ 
-            favorites: [...favorites, meal] 
+          set({
+            favorites: [...favorites, meal],
           });
         }
       },
       isFavorite: (mealId) => {
         const { favorites } = get();
-        return favorites.some((f) => f.idMeal === mealId);
+        return favorites.some((f) => getMealId(f) === mealId);
       },
       clearFavorites: () => {
         set({ favorites: [] });

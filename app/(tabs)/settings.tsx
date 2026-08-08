@@ -38,10 +38,14 @@ export default function SettingsScreen() {
   // حساب عدد المفضلة
   const favoritesCount = favorites.length;
 
-  // دالة وهمية للحصول على أكثر تصنيف مكرر (يمكنك تطويرها لاحقاً)
+  // دالة الحصول على أكثر تصنيف مكرر (بحسب اللغة الحالية)
   const getTopCategory = () => {
-    if (favoritesCount === 0) return "لا يوجد";
-    const categories = favorites.map((m) => m.strCategory).filter(Boolean);
+    if (favoritesCount === 0) return isRTL ? "لا يوجد" : "None";
+    const categories = favorites
+      .map((m) =>
+        isRTL ? m.categoryAr || m.category || m.strCategory : m.category || m.categoryAr || m.strCategory,
+      )
+      .filter(Boolean);
     return (
       categories
         .sort(
@@ -49,7 +53,7 @@ export default function SettingsScreen() {
             categories.filter((v) => v === a).length -
             categories.filter((v) => v === b).length,
         )
-        .pop() || "متنوع"
+        .pop() || (isRTL ? "متنوع" : "Miscellaneous")
     );
   };
 

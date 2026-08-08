@@ -19,6 +19,7 @@ const DEFAULT_MEAL_IMAGE =
 export default function CategoryMealsScreen() {
   const [meals, setMeals] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [categoryAr, setCategoryAr] = useState("");
   const router = useRouter();
   const params = useLocalSearchParams();
   const categoryName = params.catId as string;
@@ -37,6 +38,9 @@ export default function CategoryMealsScreen() {
           response.data?.data || response.data?.recipes || response.data || [];
 
         setMeals(Array.isArray(data) ? data : []);
+
+        const first = Array.isArray(data) ? data[0] : null;
+        setCategoryAr(first?.categoryAr || first?.strCategory || "");
       } catch (error) {
         console.error("Error fetching category meals:", error);
       } finally {
@@ -131,11 +135,9 @@ export default function CategoryMealsScreen() {
           />
         </TouchableOpacity>
         <Text
-          className={`text-2xl font-bold flex-1 mx-3 truncate text-primary dark:text-darkPrimary ${
-            isRTL ? "text-right" : "text-left"
-          }`}
+          className={`text-2xl font-bold flex-1 mx-3 truncate text-center text-primary dark:text-darkPrimary`}
         >
-          {categoryName}
+          {isRTL ? `${categoryAr || categoryName}` : `${categoryName} Recipes`}
         </Text>
       </View>
 
