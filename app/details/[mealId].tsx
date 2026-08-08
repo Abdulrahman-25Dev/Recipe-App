@@ -40,8 +40,8 @@ export default function MealDetails() {
 
   const favorited = useFavorites((state) =>
     state.favorites.some(
-      (f: any) => (f._id || f.idMeal || f.id) === String(mealId)
-    )
+      (f: any) => (f._id || f.idMeal || f.id) === String(mealId),
+    ),
   );
 
   useEffect(() => {
@@ -53,7 +53,7 @@ export default function MealDetails() {
 
       if (data && Array.isArray(data.ingredients)) {
         const hasHaram = data.ingredients.some((ing: string) =>
-          HARAM_INGREDIENTS.some((h) => ing.toLowerCase().includes(h))
+          HARAM_INGREDIENTS.some((h) => ing.toLowerCase().includes(h)),
         );
         setIsHaram(hasHaram);
       }
@@ -99,7 +99,11 @@ export default function MealDetails() {
     ? meal.countryAr || meal.country || "عالمي"
     : meal.country || meal.countryAr || "International";
 
-  const prepTime = meal.prepTime ? `${meal.prepTime} دقيقة` : "غير حدد";
+  const prepTime = meal.prepTime
+    ? `${meal.prepTime} ${isArabic ? "دقيقة" : "min"}`
+    : isArabic
+      ? "غير محدد"
+      : "not specified";
 
   const ingredientsList: string[] = isArabic
     ? meal.ingredientsAr && meal.ingredientsAr.length > 0
@@ -180,7 +184,9 @@ export default function MealDetails() {
 
         <View className="p-4 bg-background dark:bg-darkBackground">
           {/* عنوان الوصفة */}
-          <Text className={`text-2xl font-bold text-primary dark:text-darkPrimary mb-4 ${isArabic ? "text-right" : "text-left"}`}>
+          <Text
+            className={`text-2xl font-bold text-primary dark:text-darkPrimary mb-4 ${isArabic ? "text-right" : "text-left"}`}
+          >
             {title}
           </Text>
 
@@ -214,13 +220,17 @@ export default function MealDetails() {
               <Text className="text-sm text-text dark:text-darkText mt-1.5 font-bold">
                 {prepTime}
               </Text>
+              <Text className="text-xs text-gray-500 dark:text-gray-400 mt-1.5">
+                {isArabic ? "الوقت ليس دقيق" : "is not accurate"}
+              </Text>
             </View>
 
             {/* 4. عدد المكونات */}
             <View className="w-[48%] bg-primary/10 rounded-2xl border border-primary/30 dark:border-darkPrimary/30 p-3 items-center justify-center">
               <ListOrdered size={22} color="#FF8A00" />
               <Text className="text-sm text-text dark:text-darkText mt-1.5 font-bold">
-                {meal.ingredientsCount || ingredientsList.length} مكونات
+                {meal.ingredientsCount || ingredientsList.length}{" "}
+                {isArabic ? "مكونات" : "ingredients"}
               </Text>
             </View>
           </View>

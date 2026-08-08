@@ -2,11 +2,11 @@ import {
   View,
   Text,
   TextInput,
-  FlatList,
   TouchableOpacity,
   ActivityIndicator,
   ImageBackground,
 } from "react-native";
+import { FlashList } from "@shopify/flash-list";
 import { useState, useEffect } from "react";
 import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
@@ -80,10 +80,9 @@ export default function Search() {
       )}
 
       {/* نتائج البحث */}
-      <FlatList
+      <FlashList
         data={results}
         numColumns={2}
-        columnWrapperStyle={{ justifyContent: "space-around" }}
         keyExtractor={(item) => item.idMeal}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 20 }}

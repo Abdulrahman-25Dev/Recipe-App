@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {
   View,
-  FlatList,
   TouchableOpacity,
   ImageBackground,
   Text,
   ActivityIndicator,
 } from "react-native";
+import { FlashList } from "@shopify/flash-list";
 import { useRouter, useLocalSearchParams, Stack } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
@@ -30,14 +30,11 @@ export default function CategoryMealsScreen() {
         setLoading(true);
         // الطلب من الباك إند عبر المسار المخصص للوجبات حسب التصنيف
         const response = await apiClient.get(
-          `/recipes/category/${encodeURIComponent(categoryName)}`
+          `/recipes/category/${encodeURIComponent(categoryName)}`,
         );
 
         const data =
-          response.data?.data ||
-          response.data?.recipes ||
-          response.data ||
-          [];
+          response.data?.data || response.data?.recipes || response.data || [];
 
         setMeals(Array.isArray(data) ? data : []);
       } catch (error) {
@@ -62,13 +59,13 @@ export default function CategoryMealsScreen() {
 
     // استخراج رابط الصورة مع التأكد من وجوده
     const rawImage =
-      item.image ||
-      item.imageUrl ||
-      item.thumbUrl ||
-      item.strMealThumb;
+      item.image || item.imageUrl || item.thumbUrl || item.strMealThumb;
 
     const imageUrl =
-      !imgError && rawImage && typeof rawImage === "string" && rawImage.trim() !== ""
+      !imgError &&
+      rawImage &&
+      typeof rawImage === "string" &&
+      rawImage.trim() !== ""
         ? rawImage
         : DEFAULT_MEAL_IMAGE;
 
@@ -151,14 +148,13 @@ export default function CategoryMealsScreen() {
           </Text>
         </View>
       ) : meals.length > 0 ? (
-        <FlatList
+        <FlashList
           data={meals}
           renderItem={({ item }) => <MealCard item={item} />}
           keyExtractor={(item, index) =>
             item._id || item.idMeal || String(index)
           }
           numColumns={2}
-          columnWrapperStyle={{ paddingHorizontal: 6, paddingBottom: 4 }}
           contentContainerStyle={{ paddingVertical: 8 }}
           showsVerticalScrollIndicator={false}
         />

@@ -1,18 +1,12 @@
-import {
-  View,
-  Text,
-  FlatList,
-  ImageBackground,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, ImageBackground, TouchableOpacity } from "react-native";
+import { FlashList } from "@shopify/flash-list";
 import React from "react";
 import { router } from "expo-router";
 import { useFavorites } from "../../store/useFavoriteStore";
 import { LinearGradient } from "expo-linear-gradient";
-import Feather from "@expo/vector-icons/build/Feather";
-import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import i18n from "../../i18next/i18n";
+import { Heart } from "lucide-react-native";
 const Favorites = () => {
   const { t } = useTranslation();
   const isRTL = i18n.language === "ar";
@@ -25,13 +19,12 @@ const Favorites = () => {
         <Text className="text-2xl font-bold text-primary dark:text-darkPrimary mr-2">
           {t("favorites recipes")}
         </Text>
-        <Feather name="heart" size={24} color="#FF8A00" />
+        <Heart size={24} color="#FF8A00" />
       </View>
       <View className="flex-1 px-3">
-        <FlatList
+        <FlashList
           data={favorites}
           numColumns={2}
-          columnWrapperStyle={{ paddingHorizontal: 5, paddingBottom: 4 }}
           contentContainerStyle={{ paddingVertical: 8, paddingBottom: 250 }}
           showsVerticalScrollIndicator={false}
           keyExtractor={(item) => item.idMeal}
@@ -42,7 +35,7 @@ const Favorites = () => {
               className="flex-1 m-1.5 relative"
             >
               <View className="absolute top-3 right-3 z-10 p-2 bg-black/70 rounded-full">
-                <Ionicons name="heart" size={16} color="#FF8A00" />
+                <Heart size={16} color="#FF8A00" />
               </View>
 
               <ImageBackground

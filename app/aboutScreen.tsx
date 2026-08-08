@@ -3,7 +3,14 @@ import { View, Text, ScrollView, Pressable, Linking } from "react-native";
 import { useTheme } from "../store/useTheme"; // الستور حقك الفخم
 import { Stack } from "expo-router";
 import { useTranslation } from "react-i18next";
-
+import {
+  Database,
+  Languages,
+  Smartphone,
+  Bookmark,
+  Github,
+  Mail,
+} from "lucide-react-native";
 export default function AboutApp() {
   const { language } = useTheme();
   const { t } = useTranslation();
@@ -11,25 +18,25 @@ export default function AboutApp() {
   const features = [
     {
       id: 1,
-      icon: "🍳",
+      icon: Database,
       title: t("feature1"),
       description: t("feature1_desc"),
     },
     {
       id: 2,
-      icon: "🌐",
+      icon: Languages,
       title: t("feature2"),
       description: t("feature2_desc"),
     },
     {
       id: 3,
-      icon: "📱",
+      icon: Smartphone,
       title: t("feature3"),
       description: t("feature3_desc"),
     },
     {
       id: 4,
-      icon: "💾",
+      icon: Bookmark,
       title: t("feature4"),
       description: t("feature4_desc"),
     },
@@ -43,7 +50,7 @@ export default function AboutApp() {
           <Text className="text-4xl text-white">🍳</Text>
         </View>
         <Text className="text-2xl font-bold mt-4 text-neutral-800 dark:text-white">
-          {t("app name")}
+          {t("appName")}
         </Text>
         <Text className="text-neutral-500 dark:text-neutral-400">
           {t("version")}
@@ -71,23 +78,34 @@ export default function AboutApp() {
 
           {/* شبكة الميزات (Grid-like layout) */}
           <View className="flex-row flex-wrap justify-between">
-            {features.map((f) => (
-              <View
-                key={f.id}
-                className="w-full bg-neutral-50 dark:bg-neutral-800/50 p-4 rounded-3xl mb-4 border border-neutral-100 dark:border-neutral-700 shadow-sm"
-              >
-                <Text
-                  className={` font-bold text-neutral-800 dark:text-white mb-1 ${language === "ar" ? "text-right" : "text-left"}`}
+            {features.map((f) => {
+              const Icon = f.icon;
+              return (
+                <View
+                  key={f.id}
+                  className="w-full bg-neutral-50 dark:bg-neutral-800/50 p-4 rounded-3xl mb-4 border border-neutral-100 dark:border-neutral-700 shadow-sm"
                 >
-                  {f.title} <Text className="text-xl mt-2">{f.icon}</Text>
-                </Text>
-                <Text
-                  className={`text-xs text-neutral-400 dark:text-neutral-400 leading-4 ${language === "ar" ? "text-right" : "text-left"}`}
-                >
-                  {f.description}
-                </Text>
-              </View>
-            ))}
+                  <View className="flex-row items-start gap-3">
+                    <View className="w-11 h-11 rounded-2xl bg-orange-500/10 items-center justify-center">
+                      <Icon size={20} color="#F97316" strokeWidth={1.8} />
+                    </View>
+                    <View className="flex-1">
+                      <Text
+                        className={`font-bold text-neutral-800 dark:text-white mb-1 ${language === "ar" ? "text-right" : "text-left"}`}
+                      >
+                        {f.title}
+                      </Text>
+
+                      <Text
+                        className={`text-xs text-neutral-400 dark:text-neutral-400 leading-4 ${language === "ar" ? "text-right" : "text-left"}`}
+                      >
+                        {f.description}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+              );
+            })}
           </View>
         </View>
 
@@ -101,7 +119,7 @@ export default function AboutApp() {
             "Zustand",
             "Tailwind CSS",
             "TheMealDB API",
-            "Google translate API",
+            "DeepL translate API",
           ].map((item) => (
             <View
               key={item}
@@ -121,18 +139,24 @@ export default function AboutApp() {
           </Text>
           <Pressable
             onPress={() =>
-              Linking.openURL("https://github.com/Abdulrahman-25Dev?tab=repositories")
+              Linking.openURL(
+                "https://github.com/Abdulrahman-25Dev?tab=repositories",
+              )
             }
-            className="bg-orange-500 p-3 rounded-xl items-center shadow-sm"
+            className="bg-orange-600 p-3 rounded-xl flex-row items-center justify-center shadow-sm"
           >
-            <Text className="text-white font-bold">{t("github")}</Text>
+            <Github size={18} color="#fff" strokeWidth={1.8} />
+            <Text className="text-white font-bold ml-2">{t("github")}</Text>
           </Pressable>
 
           <Pressable
-            onPress={() => Linking.openURL("mailto:abdulrahman.dev25@gmail.com")}
-            className="bg-orange-500 mt-4 p-3 rounded-xl items-center shadow-sm"
+            onPress={() =>
+              Linking.openURL("mailto:abdulrahman.dev25@gmail.com")
+            }
+            className="bg-orange-600 mt-4 p-3 rounded-xl flex-row items-center justify-center shadow-sm"
           >
-            <Text className="text-white dark:text-white font-semibold">
+            <Mail size={18} color="#fff" strokeWidth={1.8} />
+            <Text className="text-white dark:text-white font-semibold ml-2">
               تواصل عبر Gmail
             </Text>
           </Pressable>

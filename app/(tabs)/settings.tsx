@@ -1,11 +1,21 @@
 import React, { useState } from "react";
 import { View, Text, ScrollView, Switch, Pressable, Modal } from "react-native";
-import { Feather, Ionicons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { useFavorites } from "../../store/useFavoriteStore"; // تأكد من مسار ملف الستور عندك
 import { useTheme } from "../../store/useTheme";
 import { useTranslation } from "react-i18next";
 import i18n from "../../i18next/i18n";
 import { router } from "expo-router";
+import {
+  Heart,
+  Tag,
+  Moon,
+  Sun,
+  Languages,
+  AlertCircle,
+  Trash,
+  User2
+} from "lucide-react-native";
 
 export default function SettingsScreen() {
   const { t } = useTranslation();
@@ -51,7 +61,7 @@ export default function SettingsScreen() {
       {/* 1. الهيدر: البروفايل */}
       <View className="items-center mt-10 mb-8 px-5">
         <View className="w-28 h-28 rounded-full bg-white dark:bg-darkBackground items-center justify-center border-4 border-white dark:border-darkBackground shadow-sm">
-          <Feather name="user" size={55} color="#FF8A00" />
+          <User2 size={55} color="#FF8A00" />
         </View>
         <Text className="text-2xl font-bold mt-4 text-text dark:text-darkText text-center">
           {t("skilled cook")}
@@ -70,7 +80,7 @@ export default function SettingsScreen() {
           {/* مربع المفضلة - يقرأ من الستور */}
           <View className="flex-1 bg-card dark:bg-darkCard p-5 rounded-[35px] items-center shadow-sm border border-gray-50 dark:border-gray-800">
             <View className="bg-orange-50 dark:bg-orange-900 p-2.5 rounded-2xl mb-2">
-              <Ionicons name="heart" size={22} color="#FF8A00" />
+              <Heart size={22} color="#FF8A00" />
             </View>
             <Text className="text-gray-400 dark:text-gray-300 text-xs mb-1">
               {t("favorites")}
@@ -83,7 +93,7 @@ export default function SettingsScreen() {
           {/* مربع التصنيف المفضل */}
           <View className="flex-1 bg-white dark:bg-darkCard p-5 rounded-[35px] items-center shadow-sm border border-gray-50 dark:border-gray-800">
             <View className="bg-blue-50 dark:bg-blue-900 p-2.5 rounded-2xl mb-2">
-              <Feather name="tag" size={22} color="#3B82F6" />
+              <Tag size={22} color="#3B82F6" />
             </View>
             <Text className="text-gray-400 dark:text-gray-300 text-xs mb-1">
               {t("most saved")}
@@ -113,11 +123,11 @@ export default function SettingsScreen() {
               className={`${isRTL ? "flex-row-reverse" : "flex-row"} items-center gap-4`}
             >
               <View className="bg-orange-50 dark:bg-darkCard p-2.5 rounded-2xl">
-                <Feather
-                  name={isDark ? "moon" : "sun"}
-                  size={22}
-                  color="#FF8A00"
-                />
+                {isDark ? (
+                  <Moon size={22} color="#FF8A00" />
+                ) : (
+                  <Sun size={22} color="#FF8A00" />
+                )}
               </View>
               <Text className="text-lg font-semibold text-gray-800 dark:text-darkText">
                 {t("theme")}
@@ -138,7 +148,7 @@ export default function SettingsScreen() {
               className={`${isRTL ? "flex-row-reverse" : "flex-row"} items-center gap-4`}
             >
               <View className="bg-blue-50 dark:bg-darkCard p-2.5 rounded-2xl">
-                <Feather name="globe" size={22} color="#3B82F6" />
+                <Languages size={22} color="#3B82F6" />
               </View>
               <Text className="text-lg font-semibold text-gray-800 dark:text-darkText">
                 {t("language")}
@@ -203,7 +213,7 @@ export default function SettingsScreen() {
               className={`items-center gap-4 ${isRTL ? "flex-row-reverse" : "flex-row"}`}
             >
               <View className="bg-blue-50 dark:bg-darkCard p-2.5 rounded-2xl">
-                <Feather name={"info"} size={22} color="#3B82F6" />
+                <AlertCircle size={22} color="#3B82F6" />
               </View>
               <Text className="text-lg font-semibold text-gray-800 dark:text-darkText">
                 {t("title")}
@@ -220,7 +230,7 @@ export default function SettingsScreen() {
               className={`items-center gap-4 ${isRTL ? "flex-row-reverse" : "flex-row"}`}
             >
               <View className="bg-red-50 dark:bg-darkCard p-2.5 rounded-2xl">
-                <Feather name="trash-2" size={22} color="#EF4444" />
+                <Trash size={22} color="#EF4444" />
               </View>
               <Text className="text-lg font-semibold text-red-500">
                 {t("delete all favorites")}

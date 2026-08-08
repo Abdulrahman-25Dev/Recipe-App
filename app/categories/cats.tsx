@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {
   View,
-  FlatList,
   TouchableOpacity,
   ImageBackground,
   Text,
   ActivityIndicator,
 } from "react-native";
+import { FlashList } from "@shopify/flash-list";
 import { useRouter, Stack } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { ChefHat } from "lucide-react-native";
@@ -14,9 +14,6 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useTranslation } from "react-i18next";
 import i18n from "@/i18next/i18n";
 import { apiClient } from "@/src/api/client";
-
-const PLACEHOLDER_IMAGE =
-  "https://via.placeholder.com/300x300.png?text=No+Image";
 
 export default function CategoriesScreen() {
   const [categories, setCategories] = useState<any[]>([]);
@@ -53,74 +50,83 @@ export default function CategoriesScreen() {
     }
   };
 
-  const DEFAULT_CATEGORY_IMAGE = "https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=500&q=80";
+  const DEFAULT_CATEGORY_IMAGE =
+    "https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=500&q=80";
 
-const CategoryCard = ({ item }: { item: any }) => {
-  const [imgError, setImgError] = useState(false);
+  const CategoryCard = ({ item }: { item: any }) => {
+    const [imgError, setImgError] = useState(false);
 
-  const categoryName = isRTL
-    ? item.nameAr || item.categoryAr || item.name || item.strCategory
-    : item.name || item.strCategory || item.nameAr;
+    const categoryName = isRTL
+      ? item.nameAr || item.categoryAr || item.name || item.strCategory
+      : item.name || item.strCategory || item.nameAr;
 
-  // فحص كافة الحقول المحتملة لرابط الصورة من MongoDB أو API
-  const rawImage =
-    item.image ||
-    item.imageUrl ||
-    item.strCategoryThumb ||
-    item.thumbUrl;
+    // فحص كافة الحقول المحتملة لرابط الصورة من MongoDB أو API
+    const rawImage =
+      item.image || item.imageUrl || item.strCategoryThumb || item.thumbUrl;
 
-  const categoryImage = (!imgError && rawImage && typeof rawImage === "string" && rawImage.trim() !== "")
-    ? rawImage
-    : DEFAULT_CATEGORY_IMAGE;
+    const categoryImage =
+      !imgError &&
+      rawImage &&
+      typeof rawImage === "string" &&
+      rawImage.trim() !== ""
+        ? rawImage
+        : DEFAULT_CATEGORY_IMAGE;
 
-  const count = item.mealCount ?? item.recipesCount ?? 0;
+    const count = item.mealCount ?? item.recipesCount ?? 0;
 
-  return (
-    <TouchableOpacity
-      activeOpacity={0.7}
-      onPress={() =>
-        router.push({
-          pathname: "/categories/[catId]",
-          params: { catId: item.name || item.strCategory },
-        })
-      }
-      className="flex-1 m-1.5"
-    >
-      <ImageBackground
-        source={{ uri: categoryImage }}
-        className="rounded-2xl overflow-hidden flex-1 bg-gray-800"
-        style={{ height: 170 }}
-        imageStyle={{ resizeMode: "cover" }}
-        onError={() => setImgError(true)}
+    return (
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={() =>
+          router.push({
+            pathname: "/categories/[catId]",
+            params: { catId: item.name || item.strCategory },
+          })
+        }
+        className="flex-1 m-1.5"
       >
-        {/* Icon on top-left */}
-        <View className="absolute top-3 left-3 z-10">
-          <View className="bg-black/70 rounded-full w-9 h-9 items-center justify-center shadow-lg">
-            <ChefHat size={20} color="#FF8A00" />
-          </View>
-        </View>
-
-        {/* Dark gradient overlay */}
-        <LinearGradient
-          colors={["transparent", "rgba(0, 0, 0, 0.85)"]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 1 }}
-          className="flex-1 justify-end p-4"
+        <ImageBackground
+          source={{ uri: categoryImage }}
+          className="rounded-2xl overflow-hidden flex-1 bg-gray-800"
+          style={{ height: 170 }}
+          imageStyle={{ resizeMode: "cover" }}
+          onError={() => setImgError(true)}
         >
-          <Text className="text-white font-bold text-lg mb-1 leading-5">
-            {categoryName}
-          </Text>
+          {/* Icon on top-left */}
+          <View className="absolute top-3 left-3 z-10">
+            <View className="bg-black/70 rounded-full w-9 h-9 items-center justify-center shadow-lg">
+              <ChefHat size={20} color="#FF8A00" />
+            </View>
+          </View>
 
-          {count > 0 && (
-            <Text className="text-gray-300 text-xs font-medium">
-              {count} {isRTL ? "وصفات" : "Recipes"}
+          {/* Dark gradient overlay */}
+          <LinearGradient
+            colors={["transparent", "rgba(0, 0, 0, 0.85)"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
+            className="flex-1 justify-end p-4"
+          >
+            <Text className="text-white font-bold text-lg mb-1 leading-5">
+              {categoryName}
             </Text>
-          )}
-        </LinearGradient>
-      </ImageBackground>
-    </TouchableOpacity>
-  );
-};
+
+            {count > 0 && (
+              <Text className="text-gray-300 text-xs font-medium">
+                {count}{" "}
+                {isRTL
+                  ? count < 10
+                    ? "وصفات"
+                    : "وصفة"
+                  : count === 1
+                    ? "Recipe"
+                    : "Recipes"}
+              </Text>
+            )}
+          </LinearGradient>
+        </ImageBackground>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View className="flex-1 bg-background dark:bg-darkBackground">
@@ -160,14 +166,13 @@ const CategoryCard = ({ item }: { item: any }) => {
           </Text>
         </View>
       ) : (
-        <FlatList
+        <FlashList
           data={categories}
           renderItem={({ item }) => <CategoryCard item={item} />}
           keyExtractor={(item, index) =>
             item._id || item.idCategory || String(index)
           }
           numColumns={2}
-          columnWrapperStyle={{ paddingHorizontal: 6, paddingBottom: 4 }}
           contentContainerStyle={{ paddingVertical: 8 }}
           showsVerticalScrollIndicator={false}
         />

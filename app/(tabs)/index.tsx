@@ -3,11 +3,11 @@ import {
   View,
   ActivityIndicator,
   Pressable,
-  FlatList,
   ScrollView,
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
+import { FlashList } from "@shopify/flash-list";
 import { useEffect, useState } from "react";
 import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
@@ -40,32 +40,27 @@ export default function Index() {
 
   const categories = ["Chicken", "Seafood", "Beef", "Lamb"];
 
+  useEffect(() => {
+    const fetchMealsByCategory = async () => {
+      try {
+        setLoading(true);
+        // طلب البيانات من الباك إند المترجم بدلاً من API الخارجي
+        const response = await apiClient.get(
+          `/recipes/category/${encodeURIComponent(activeCategory)}`,
+        );
+        const data =
+          response.data?.data || response.data?.recipes || response.data || [];
+        setMeals(Array.isArray(data) ? data : []);
+      } catch (error) {
+        console.error("Error fetching meals:", error);
+        setMeals([]);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    useEffect(() => {
-  const fetchMealsByCategory = async () => {
-    try {
-      setLoading(true);
-      // طلب البيانات من الباك إند المترجم بدلاً من API الخارجي
-      const response = await apiClient.get(
-        `/recipes/category/${encodeURIComponent(activeCategory)}`
-      );
-      const data =
-        response.data?.data ||
-        response.data?.recipes ||
-        response.data ||
-        [];
-      setMeals(Array.isArray(data) ? data : []);
-    } catch (error) {
-      console.error("Error fetching meals:", error);
-      setMeals([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  fetchMealsByCategory();
-}, [activeCategory]);
-
+    fetchMealsByCategory();
+  }, [activeCategory]);
 
   return (
     <View className="flex-1 bg-background dark:bg-darkBackground">
@@ -103,7 +98,7 @@ export default function Index() {
       </View>
 
       {/* Category Buttons */}
-      <View className="flex-row gap-4 px-5 mt-3">
+      <View className="flex-row gap-4 px-5 py-2 my-3">
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -133,17 +128,6 @@ export default function Index() {
         </ScrollView>
       </View>
 
-      {/* Meal Title */}
-      <View
-        className={`p-2 mt-5 mx-5 ${
-          isRTL ? "justify-end" : "justify-start"
-        } items-center flex-row`}
-      >
-        <Text className="text-text dark:text-darkText text-2xl font-bold mb-2">
-          {t("recipes")}
-        </Text>
-      </View>
-
       {/* Meals Content */}
       {loading ? (
         <View className="flex-1 items-center justify-center">
@@ -160,10 +144,9 @@ export default function Index() {
         </View>
       ) : (
         <View className="px-2 flex-1">
-          <FlatList
+          <FlashList
             data={meals}
             numColumns={2}
-            columnWrapperStyle={{ paddingHorizontal: 6, paddingBottom: 4 }}
             contentContainerStyle={{ paddingVertical: 8, paddingBottom: 100 }}
             showsVerticalScrollIndicator={false}
             keyExtractor={(item) => item._id || (item as any).idMeal}
