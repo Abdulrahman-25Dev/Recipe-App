@@ -7,6 +7,8 @@ import { useEffect } from "react";
 import { useColorScheme } from "nativewind"; 
 import { I18nManager } from "react-native";
 import i18n from "../i18next/i18n";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 I18nManager.allowRTL(false);
 I18nManager.forceRTL(false);
@@ -27,10 +29,14 @@ export default function RootLayout() {
   
 
   return (
-    <Stack>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="Auth/Login" options={{ headerShown: false }} />
-      <Stack.Screen name="Auth/Register" options={{ headerShown: false }} />
-    </Stack>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <BottomSheetModalProvider>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="Auth/Login" options={{ headerShown: false }} />
+          <Stack.Screen name="Auth/Register" options={{ headerShown: false }} />
+        </Stack>
+      </BottomSheetModalProvider>
+    </GestureHandlerRootView>
   );
 }

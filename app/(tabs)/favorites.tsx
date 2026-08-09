@@ -20,12 +20,12 @@ const Favorites = () => {
     <View className="flex-1 bg-background dark:bg-darkBackground px-4 pt-12">
       {/* 1. الهيدر مع عدد الوصفات المحفوظة */}
       <View className="flex-row items-center justify-between my-4 px-1">
-        <View className="flex-row items-center gap-2">
+        <View className="flex-row items-center gap-6">
           <View className="p-2.5 rounded-2xl bg-orange-500/10 dark:bg-orange-500/20">
             <Heart size={22} color="#F97316" fill="#F97316" />
           </View>
           <Text className="text-2xl font-extrabold text-neutral-900 dark:text-white">
-            {t("favorites recipes")}
+            {t("favorites")}
           </Text>
         </View>
 

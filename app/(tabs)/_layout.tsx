@@ -9,7 +9,7 @@ export default function TabLayout() {
 
   const handleRandomRecipe = async () => {
     try {
-      router.push("/random");
+      router.push({ pathname: "/random", params: { openFilter: "1" } });
     } catch (error) {
       console.error("خطأ في التنقل إلى الوصفة العشوائية", error);
     }

@@ -9,6 +9,7 @@
     "show all":"Show all",
 
     "search for a recipe":"Search for recipes...",
+    "results":"Search results",
     "start searching for your favorite recipe":"Start searching for your favorite recipe",
 
     "favorites recipes":"Favorites recipes",
@@ -46,7 +47,24 @@
     "github":"View on Github",    
     "copyright":"Copyright © 2023 Abdulrahman. All rights reserved.",
     "confirm delete":"Confirm delete",
-    "delete confirmation message":"Do you want to delete all favorites permanently?"
+    "delete confirmation message":"Do you want to delete all favorites permanently?",
 
-    
+    "random recipe":"Random Recipe",
+    "filter search":"Filter Search",
+    "filter":"Filter",
+    "calories":"Calories",
+    "cuisine":"Cuisine",
+    "number of ingredients":"Number of Ingredients",
+    "low":"Low",
+    "medium":"Medium",
+    "high":"High",
+    "5 or fewer":"5 or fewer",
+    "6 - 10":"6 - 10",
+    "11 - 15":"11 - 15",
+    "16+":"16+",
+    "all":"All",
+    "shuffle":"Shuffle",
+    "clear all":"Clear all",
+    "no recipes with filters":"No recipes match your filters",
+    "ingredients count":"ingredients"
 }

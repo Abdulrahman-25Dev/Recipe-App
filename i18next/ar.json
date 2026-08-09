@@ -9,6 +9,7 @@
     "show all":"عرض الكل",
 
     "search for a recipe":"ابحث عن وصفات...",
+    "results":"نتائج البحث",
     "start searching for your favorite recipe":"ابدأ بالبحث عن وصفاتك المفضلة",
 
     "favorites recipes":"وصفاتي المفضلة",
@@ -46,5 +47,24 @@
     "github":"عرض على Github",
     "copyright":"حقوق النشر © 2026 عبدالرحمن. جميع الحقوق محفوظة.",
     "confirm delete":"تأكيد الحذف",
-    "delete confirmation message":"هل تريد حذف جميع المفضلات بشكل نهائي؟"
+    "delete confirmation message":"هل تريد حذف جميع المفضلات بشكل نهائي؟",
+
+    "random recipe":"وصفة عشوائية",
+    "filter search":"فلترة البحث",
+    "filter":"تصفية",
+    "calories":"السعرات",
+    "cuisine":"التصنيف",
+    "number of ingredients":"عدد المكونات",
+    "low":"قليلة",
+    "medium":"متوسطة",
+    "high":"عالية",
+    "5 or fewer":"5 أو أقل",
+    "6 - 10":"6 - 10",
+    "11 - 15":"11 - 15",
+    "16+":"16 فأكثر",
+    "all":"الكل",
+    "shuffle":"تغيير",
+    "clear all":"مسح الكل",
+    "no recipes with filters":"لا توجد وصفات مطابقة للفلاتر",
+    "ingredients count":"مكون"
 }
