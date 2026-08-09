@@ -9,6 +9,7 @@ import { I18nManager } from "react-native";
 import i18n from "../i18next/i18n";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { AlertProvider } from "../components/CustomAlert";
 
 I18nManager.allowRTL(false);
 I18nManager.forceRTL(false);
@@ -31,11 +32,13 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <BottomSheetModalProvider>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="Auth/Login" options={{ headerShown: false }} />
-          <Stack.Screen name="Auth/Register" options={{ headerShown: false }} />
-        </Stack>
+        <AlertProvider>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="Auth/Login" options={{ headerShown: false }} />
+            <Stack.Screen name="Auth/Register" options={{ headerShown: false }} />
+          </Stack>
+        </AlertProvider>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>
   );

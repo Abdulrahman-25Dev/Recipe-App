@@ -17,11 +17,11 @@ export type IngredientsFilter = "0-5" | "6-10" | "11-15" | "16+";
 
 export interface RecipeFilters {
   calorie: CalorieFilter | null;
-  cuisine: string | null;
+  category: string | null;
   ingredients: IngredientsFilter | null;
 }
 
-export interface CuisineOption {
+export interface CategoryOption {
   key: string;
   label: string;
   labelAr?: string;
@@ -32,7 +32,7 @@ export interface FilterBottomSheetProps {
   onClose: () => void;
   onApplyFilters: (filters: RecipeFilters) => void;
   currentFilters: RecipeFilters;
-  cuisines: CuisineOption[];
+  categories: CategoryOption[];
 }
 
 const PRIMARY_ORANGE = "#FF8A00";
@@ -42,31 +42,31 @@ const FilterBottomSheet = ({
   onClose,
   onApplyFilters,
   currentFilters,
-  cuisines,
+  categories,
 }: FilterBottomSheetProps) => {
   const { t } = useTranslation();
   const isArabic = i18n.language === "ar";
   const { isDark } = useTheme();
 
   const [calorie, setCalorie] = useState<CalorieFilter | null>(null);
-  const [cuisine, setCuisine] = useState<string | null>(null);
+  const [category, setCategory] = useState<string | null>(null);
   const [ingredients, setIngredients] = useState<IngredientsFilter | null>(null);
 
   useEffect(() => {
     if (isVisible) {
       setCalorie(currentFilters?.calorie ?? null);
-      setCuisine(currentFilters?.cuisine ?? null);
+      setCategory(currentFilters?.category ?? null);
       setIngredients(currentFilters?.ingredients ?? null);
     }
   }, [isVisible, currentFilters]);
 
   const handleApply = () => {
-    onApplyFilters({ calorie, cuisine, ingredients });
+    onApplyFilters({ calorie, category, ingredients });
     onClose();
   };
 
-  const handleSelectCuisine = (value: string) => {
-    setCuisine(cuisine === value ? null : value);
+  const handleSelectCategory = (value: string) => {
+    setCategory(category === value ? null : value);
   };
 
   const calorieOptions: { label: string; value: CalorieFilter }[] = [
@@ -119,14 +119,14 @@ const FilterBottomSheet = ({
             </View>
 
             {/* Section 1: Calories */}
-            <View className="mb-6">
-              <Text className="text-base font-bold text-zinc-900 dark:text-white mb-3 px-5">
+            <View className={"mb-6"}>
+              <Text className={`text-base font-bold text-zinc-900 dark:text-white mb-3 px-5 ${isArabic ? "text-right" : "text-left"}`}>
                 {t("calories")}
               </Text>
               <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{ paddingHorizontal: 20, gap: 10 }}
+                contentContainerStyle={{ paddingHorizontal: 20, gap: 10, flexDirection: isArabic ? "row-reverse" : "row"  }}
               >
                 {calorieOptions.map((option) => (
                   <FilterChip
@@ -141,22 +141,22 @@ const FilterBottomSheet = ({
               </ScrollView>
             </View>
 
-            {/* Section 2: Cuisine */}
+            {/* Section 2: Categories */}
             <View className="mb-6">
-              <Text className="text-base font-bold text-zinc-900 dark:text-white mb-3 px-5">
-                {t("cuisine")}
+              <Text className={`text-base font-bold text-zinc-900 dark:text-white mb-3 px-5 ${isArabic ? "text-right" : "text-left"}`}>
+                {t("categories")}
               </Text>
               <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{ paddingHorizontal: 20, gap: 10 }}
+                contentContainerStyle={{ paddingHorizontal: 20, gap: 10, flexDirection: isArabic ? "row-reverse" : "row" }}
               >
-                {cuisines.map((cu) => (
+                {categories.map((cat) => (
                   <FilterChip
-                    key={cu.key}
-                    label={isArabic ? cu.labelAr || cu.label : cu.label}
-                    selected={cuisine === cu.key}
-                    onPress={() => handleSelectCuisine(cu.key)}
+                    key={cat.key}
+                    label={isArabic ? cat.labelAr || cat.label : cat.label}
+                    selected={category === cat.key}
+                    onPress={() => handleSelectCategory(cat.key)}
                   />
                 ))}
               </ScrollView>
@@ -164,13 +164,13 @@ const FilterBottomSheet = ({
 
             {/* Section 3: Ingredients count */}
             <View className="mb-7">
-              <Text className="text-base font-bold text-zinc-900 dark:text-white mb-3 px-5">
+              <Text className={`text-base font-bold text-zinc-900 dark:text-white mb-3 px-5 ${isArabic ? "text-right" : "text-left"}`}>
                 {t("number of ingredients")}
               </Text>
               <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{ paddingHorizontal: 20, gap: 10 }}
+                contentContainerStyle={{ paddingHorizontal: 20, gap: 10, flexDirection: isArabic ? "row-reverse" : "row" }}
               >
                 {ingredientsOptions.map((option) => (
                   <FilterChip

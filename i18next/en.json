@@ -29,6 +29,7 @@
     "of corse Text?":"Do you want to delete all favorites permanently?",
     "delete":"Delete",
     "cancel":"Cancel",
+    "ok":"OK",
     "version":"Version 1.0.0",
 
     "title":"About the app",
@@ -53,8 +54,7 @@
     "filter search":"Filter Search",
     "filter":"Filter",
     "calories":"Calories",
-    "cuisine":"Cuisine",
-    "number of ingredients":"Number of Ingredients",
+    "number of ingredients":"ingredients length",
     "low":"Low",
     "medium":"Medium",
     "high":"High",

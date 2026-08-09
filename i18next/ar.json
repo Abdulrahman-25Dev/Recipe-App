@@ -29,6 +29,7 @@
     "of corse Text?":"هل تريد إزالة جميع المفضلات بشكل نهائي؟",
     "delete":"حذف",
     "cancel":"الغاء",
+    "ok":"حسنا",
     "version":"اصدار 1.0.0",
 
     "title":"حول التطبيق",
@@ -53,7 +54,6 @@
     "filter search":"فلترة البحث",
     "filter":"تصفية",
     "calories":"السعرات",
-    "cuisine":"التصنيف",
     "number of ingredients":"عدد المكونات",
     "low":"قليلة",
     "medium":"متوسطة",

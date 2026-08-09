@@ -17,12 +17,12 @@ import { Filter } from "lucide-react-native";
 import i18n from "../../i18next/i18n";
 import FilterBottomSheet, {
   RecipeFilters,
-  CuisineOption,
+  CategoryOption,
 } from "../../src/components/FilterBottomSheet";
 
 const EMPTY_FILTERS: RecipeFilters = {
   calorie: null,
-  cuisine: null,
+  category: null,
   ingredients: null,
 };
 
@@ -40,40 +40,41 @@ export default function Search() {
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState<RecipeFilters>(EMPTY_FILTERS);
   const [isFilterVisible, setFilterVisible] = useState(false);
-  const [cuisines, setCuisines] = useState<CuisineOption[]>([]);
+  const [categories, setCategories] = useState<CategoryOption[]>([]);
 
 const isArabic = i18n.language === "ar"; // تحقق من اللغة الحالية
 
   useEffect(() => {
-    const fetchCuisines = async () => {
+    const fetchCategories = async () => {
       try {
         const response = await apiClient.get("/recipes/categories");
         const data =
           response.data?.data || response.data?.categories || response.data || [];
         const list = Array.isArray(data) ? data : [];
-        const mapped: CuisineOption[] = list
+        const mapped: CategoryOption[] = list
           .map((cat: any) => {
-            const name = cat.name || cat.strCategory || cat.title || "";
+            const name =
+              cat.category || cat.name || cat.strCategory || cat.title || "";
             return {
               key: name,
               label: name,
-              labelAr: cat.nameAr || cat.categoryAr || name,
+              labelAr: cat.categoryAr || cat.nameAr || name,
             };
           })
-          .filter((c: CuisineOption) => c.key && c.key.toLowerCase() !== "pork");
-        setCuisines(mapped);
+          .filter((c: CategoryOption) => c.key && c.key.toLowerCase() !== "pork");
+        setCategories(mapped);
       } catch (error) {
         console.error("Error fetching categories:", error);
-        setCuisines([]);
+        setCategories([]);
       }
     };
-    fetchCuisines();
+    fetchCategories();
   }, []);
 
   useEffect(() => {
     const hasActiveFilters =
       filters.calorie !== null ||
-      filters.cuisine !== null ||
+      filters.category !== null ||
       filters.ingredients !== null;
 
     const fetchMeals = async () => {
@@ -87,7 +88,7 @@ const isArabic = i18n.language === "ar"; // تحقق من اللغة الحال�
         const params = new URLSearchParams();
         if (query.trim()) params.append("query", query.trim());
         if (filters.calorie) params.append("calories", filters.calorie);
-        if (filters.cuisine) params.append("category", filters.cuisine);
+        if (filters.category) params.append("category", filters.category);
         if (filters.ingredients)
           params.append(
             "ingredientsCount",
@@ -116,11 +117,11 @@ const isArabic = i18n.language === "ar"; // تحقق من اللغة الحال�
 
   const hasActiveFilters =
     filters.calorie !== null ||
-    filters.cuisine !== null ||
+    filters.category !== null ||
     filters.ingredients !== null;
 
   const activeFiltersCount = hasActiveFilters
-    ? [filters.calorie, filters.cuisine, filters.ingredients].filter(
+    ? [filters.calorie, filters.category, filters.ingredients].filter(
         (f) => f !== null,
       ).length
     : 0;
@@ -184,9 +185,9 @@ const isArabic = i18n.language === "ar"; // تحقق من اللغة الحال�
           <Text className="text-sm font-medium text-primary dark:text-primary ml-1">
             {[
               filters.calorie,
-              filters.cuisine
-                ? cuisines.find((c) => c.key === filters.cuisine)?.labelAr ||
-                  filters.cuisine
+              filters.category
+                ? categories.find((c) => c.key === filters.category)?.labelAr ||
+                  filters.category
                 : null,
               filters.ingredients
                 ? t(filters.ingredients === "0-5" ? "5 or fewer" : filters.ingredients === "6-10" ? "6 - 10" : filters.ingredients === "11-15" ? "11 - 15" : "16+")
@@ -249,7 +250,7 @@ const isArabic = i18n.language === "ar"; // تحقق من اللغة الحال�
           const title = item.titleAr || item.title || item.strMeal;
           const image = item.image || item.imageUrl || item.strMealThumb;
           const area =
-            item.countryAr || item.cuisine || item.strArea || "الشيف";
+            item.countryAr || item.country || item.strArea || "الشيف";
 
           return (
             <TouchableOpacity
@@ -304,7 +305,7 @@ const isArabic = i18n.language === "ar"; // تحقق من اللغة الحال�
         onClose={() => setFilterVisible(false)}
         onApplyFilters={handleApplyFilters}
         currentFilters={filters}
-        cuisines={cuisines}
+        categories={categories}
       />
     </View>
   );

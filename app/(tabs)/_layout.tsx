@@ -68,7 +68,7 @@ export default function TabLayout() {
               <View
                 style={[
                   styles.randomButton,
-                  { backgroundColor: isDark ? "#F97316" : "#121212" },
+                  { backgroundColor: "#F97316"  },
                 ]}
               >
                 <Dices size={30} color="#FFFFFF" />

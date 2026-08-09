@@ -3,7 +3,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Alert,
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
@@ -14,10 +13,12 @@ import { useRouter } from "expo-router";
 import { TextInput } from "react-native-paper";
 import { registerUser } from "../../src/api/authService";
 import { useTheme } from "../../store/useTheme";
+import { useAlert } from "../../components/CustomAlert";
 
 export default function RegisterScreen() {
   const router = useRouter();
   const { isDark } = useTheme();
+  const { alert } = useAlert();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -27,20 +28,20 @@ export default function RegisterScreen() {
 
   const handleRegister = async () => {
     if (!name || !email || !password) {
-      Alert.alert("تنبيه", "يرجى ملء جميع الحقول المطلوبة");
+      alert("تنبيه", "يرجى ملء جميع الحقول المطلوبة");
       return;
     }
 
     setLoading(true);
     try {
       const data = await registerUser(name, email, password);
-      Alert.alert(
+      alert(
         "نجاح 🍳",
         `تم إنشاء الحساب بنجاح، أهلاً بك ${data.user.name}`
       );
       router.replace("/(tabs)");
     } catch (error: any) {
-      Alert.alert("خطأ", error.message);
+      alert("خطأ", error.message);
     } finally {
       setLoading(false);
     }

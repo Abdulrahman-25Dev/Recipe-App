@@ -3,7 +3,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Alert,
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
@@ -14,10 +13,12 @@ import { useRouter } from "expo-router";
 import { TextInput } from "react-native-paper";
 import { loginUser } from "../../src/api/authService";
 import { useTheme } from "../../store/useTheme";
+import { useAlert } from "../../components/CustomAlert";
 
 export default function LoginScreen() {
   const router = useRouter();
   const { isDark } = useTheme();
+  const { alert } = useAlert();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,20 +27,20 @@ export default function LoginScreen() {
 
   const handleLogin = async () => {
     if (!email || !password) {
-      Alert.alert("تنبيه", "يرجى كتابة البريد الإلكتروني وكلمة المرور");
+      alert("تنبيه", "يرجى كتابة البريد الإلكتروني وكلمة المرور");
       return;
     }
 
     setLoading(true);
     try {
       const data = await loginUser(email, password);
-      Alert.alert(
+      alert(
         "أهلاً بك! 🍳",
         `تم تسجيل الدخول بنجاح، مرحباً ${data.user.name}`
       );
       router.replace("/(tabs)");
     } catch (error: any) {
-      Alert.alert("خطأ في الدخول", error.message);
+      alert("خطأ في الدخول", error.message);
     } finally {
       setLoading(false);
     }

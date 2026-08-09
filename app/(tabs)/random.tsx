@@ -15,7 +15,7 @@ import i18n from "../../i18next/i18n";
 import { apiClient } from "../../src/api/client";
 import FilterBottomSheet, {
   RecipeFilters,
-  CuisineOption,
+  CategoryOption,
 } from "../../src/components/FilterBottomSheet";
 
 const PLACEHOLDER_IMAGE =
@@ -23,36 +23,35 @@ const PLACEHOLDER_IMAGE =
 
 const EMPTY_FILTERS: RecipeFilters = {
   calorie: null,
-  cuisine: null,
+  category: null,
   ingredients: null,
 };
 
-const cuisineMatches = (
+const categoryMatches = (
   meal: any,
-  cuisineKey: string | null,
-  cuisines: CuisineOption[],
+  categoryKey: string | null,
+  categories: CategoryOption[],
 ) => {
-  if (!cuisineKey) return true;
-  const option = cuisines.find((c) => c.key === cuisineKey);
+  if (!categoryKey) return true;
+  const option = categories.find((c) => c.key === categoryKey);
   const names = [
     meal.category,
     meal.categoryAr,
-    meal.cuisine,
     option?.labelAr,
   ].filter(Boolean);
-  return names.some((n) => n === cuisineKey || n === option?.label);
+  return names.some((n) => n === categoryKey || n === option?.label);
 };
 
 const matchesFilters = (
   meal: any,
   f: RecipeFilters,
-  cuisines: CuisineOption[],
+  categories: CategoryOption[],
 ) => {
   if (f.calorie) {
     const cat = meal.calorieCategory || meal.calorieCategoryAr;
     if (!cat || cat !== f.calorie) return false;
   }
-  if (f.cuisine && !cuisineMatches(meal, f.cuisine, cuisines)) return false;
+  if (f.category && !categoryMatches(meal, f.category, categories)) return false;
   if (f.ingredients) {
     const count = meal.ingredients?.length ?? meal.ingredientsAr?.length ?? -1;
     if (count < 0) return false;
@@ -67,9 +66,9 @@ const matchesFilters = (
 const pickRandomFrom = (
   list: any[],
   f: RecipeFilters,
-  cuisines: CuisineOption[],
+  categories: CategoryOption[],
 ) => {
-  const filtered = list.filter((meal) => matchesFilters(meal, f, cuisines));
+  const filtered = list.filter((meal) => matchesFilters(meal, f, categories));
   if (filtered.length === 0) return null;
   return filtered[Math.floor(Math.random() * filtered.length)];
 };
@@ -82,7 +81,7 @@ export default function RandomRecipe() {
 
   const [isFilterVisible, setFilterVisible] = useState(false);
   const [recipes, setRecipes] = useState<any[]>([]);
-  const [cuisines, setCuisines] = useState<CuisineOption[]>([]);
+  const [categories, setCategories] = useState<CategoryOption[]>([]);
   const [randomMeal, setRandomMeal] = useState<any | null>(null);
   const [noMatch, setNoMatch] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -112,35 +111,36 @@ export default function RandomRecipe() {
       }
     };
 
-    const fetchCuisines = async () => {
+    const fetchCategories = async () => {
       try {
         const response = await apiClient.get("/recipes/categories");
         const data =
           response.data?.data || response.data?.categories || response.data || [];
         const list = Array.isArray(data) ? data : [];
-        const mapped: CuisineOption[] = list
+        const mapped: CategoryOption[] = list
           .map((cat: any) => {
-            const name = cat.name || cat.strCategory || cat.title || "";
+            const name =
+              cat.category || cat.name || cat.strCategory || cat.title || "";
             return {
               key: name,
               label: name,
-              labelAr: cat.nameAr || cat.categoryAr || name,
+              labelAr: cat.categoryAr || cat.nameAr || name,
             };
           })
-          .filter((c: CuisineOption) => c.key && c.key.toLowerCase() !== "pork");
-        setCuisines(mapped);
+          .filter((c: CategoryOption) => c.key && c.key.toLowerCase() !== "pork");
+        setCategories(mapped);
       } catch (error) {
         console.error("Error fetching categories:", error);
-        setCuisines([]);
+        setCategories([]);
       }
     };
 
     fetchRecipes();
-    fetchCuisines();
+    fetchCategories();
   }, []);
 
   const applyPick = (f: RecipeFilters) => {
-    const chosen = pickRandomFrom(recipes, f, cuisines);
+    const chosen = pickRandomFrom(recipes, f, categories);
     setRandomMeal(chosen);
     setNoMatch(!chosen);
   };
@@ -168,11 +168,11 @@ export default function RandomRecipe() {
 
   const hasActiveFilters =
     filters.calorie !== null ||
-    filters.cuisine !== null ||
+    filters.category !== null ||
     filters.ingredients !== null;
 
   const activeFiltersCount = hasActiveFilters
-    ? [filters.calorie, filters.cuisine, filters.ingredients].filter(
+    ? [filters.calorie, filters.category, filters.ingredients].filter(
         (f) => f !== null,
       ).length
     : 0;
@@ -192,8 +192,8 @@ export default function RandomRecipe() {
 
   const mealCategory = randomMeal
     ? isArabic
-      ? randomMeal.categoryAr || randomMeal.category || t("cuisine")
-      : randomMeal.category || randomMeal.categoryAr || t("cuisine")
+      ? randomMeal.categoryAr || randomMeal.category || t("categories")
+      : randomMeal.category || randomMeal.categoryAr || t("categories")
     : "";
 
   const mealCalories = randomMeal
@@ -241,9 +241,9 @@ export default function RandomRecipe() {
           <Text className="text-sm font-medium text-primary dark:text-primary">
             {[
               filters.calorie,
-              filters.cuisine
-                ? cuisines.find((c) => c.key === filters.cuisine)?.labelAr ||
-                  filters.cuisine
+              filters.category
+                ? categories.find((c) => c.key === filters.category)?.labelAr ||
+                  filters.category
                 : null,
               filters.ingredients,
             ]
@@ -345,7 +345,7 @@ export default function RandomRecipe() {
         onClose={() => setFilterVisible(false)}
         onApplyFilters={handleApplyFilters}
         currentFilters={filters}
-        cuisines={cuisines}
+        categories={categories}
       />
     </View>
   );

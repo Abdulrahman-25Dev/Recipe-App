@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import { View, Text, ScrollView, Switch, Pressable, Modal } from "react-native";
+import React from "react";
+import { View, Text, ScrollView, Switch, Pressable } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useFavorites } from "../../store/useFavoriteStore"; // تأكد من مسار ملف الستور عندك
 import { useTheme } from "../../store/useTheme";
 import { useTranslation } from "react-i18next";
 import i18n from "../../i18next/i18n";
 import { router } from "expo-router";
+import { useAlert } from "../../components/CustomAlert";
 import {
   Heart,
   Tag,
@@ -14,7 +15,7 @@ import {
   Languages,
   AlertCircle,
   Trash,
-  User2
+  User2,
 } from "lucide-react-native";
 
 export default function SettingsScreen() {
@@ -28,11 +29,13 @@ export default function SettingsScreen() {
   const language = useTheme((state) => state.language);
   const setLanguage = useTheme((state) => state.setLanguage);
 
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const { alert } = useAlert();
 
   const confirmDeleteFavorites = () => {
-    clearFavorites();
-    setShowDeleteModal(false);
+    alert(t("confirm delete"), t("delete confirmation message"), [
+      { text: t("cancel"), style: "cancel" },
+      { text: t("delete"), style: "destructive", onPress: clearFavorites },
+    ]);
   };
 
   // حساب عدد المفضلة
@@ -43,7 +46,9 @@ export default function SettingsScreen() {
     if (favoritesCount === 0) return isRTL ? "لا يوجد" : "None";
     const categories = favorites
       .map((m) =>
-        isRTL ? m.categoryAr || m.category || m.strCategory : m.category || m.categoryAr || m.strCategory,
+        isRTL
+          ? m.categoryAr || m.category || m.strCategory
+          : m.category || m.categoryAr || m.strCategory,
       )
       .filter(Boolean);
     return (
@@ -168,7 +173,7 @@ export default function SettingsScreen() {
                 className={` p-4 rounded-2xl border-2 items-center ${
                   language === "ar"
                     ? "border-orange-500 bg-orange-500/10"
-                    : "border-neutral-700"
+                    : "border-gray-300 dark:border-gray-600"
                 }`}
               >
                 <Text
@@ -187,7 +192,7 @@ export default function SettingsScreen() {
                 className={` p-4 rounded-2xl border-2 items-center ${
                   language === "en"
                     ? "border-orange-500 bg-orange-500/10"
-                    : "border-neutral-700"
+                    : "border-gray-300 dark:border-gray-600"
                 }`}
               >
                 <Text
@@ -227,7 +232,7 @@ export default function SettingsScreen() {
           </Pressable>
 
           <Pressable
-            onPress={() => setShowDeleteModal(true)}
+            onPress={confirmDeleteFavorites}
             className={` items-center justify-between py-3 ${isRTL ? "flex-row-reverse" : "flex-row"}`}
           >
             <View
@@ -243,41 +248,6 @@ export default function SettingsScreen() {
           </Pressable>
         </View>
       </View>
-
-      {/* MODAL WITH OVERLAY FOR DELETE ALL FAVORITES */}
-      <Modal
-        visible={showDeleteModal}
-        transparent={true}
-        animationType="fade"
-        onRequestClose={() => setShowDeleteModal(false)}
-      >
-        <View className="flex-1 bg-black/50 justify-center items-center">
-          <View className="bg-white dark:bg-darkCard rounded-2xl p-6 w-11/12 max-w-sm shadow-lg">
-            <Text className="text-xl font-bold text-red-500 dark:text-red-500  mb-4 text-center">
-              {t("confirm delete")}
-            </Text>
-            <Text className="text-gray-600 dark:text-gray-300 mb-6 text-center text-lg">
-              {t("delete confirmation message")}
-            </Text>
-            <View className="flex-row justify-center gap-4">
-              <Pressable
-                onPress={() => setShowDeleteModal(false)}
-                className="bg-gray-100 dark:bg-gray-700 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600"
-              >
-                <Text className="text-gray-700 dark:text-gray-300 text-md">
-                  {t("cancel")}
-                </Text>
-              </Pressable>
-              <Pressable
-                onPress={confirmDeleteFavorites}
-                className="px-4 py-2 rounded-lg bg-red-500"
-              >
-                <Text className="text-white text-md">{t("delete")}</Text>
-              </Pressable>
-            </View>
-          </View>
-        </View>
-      </Modal>
 
       <Text className="text-center text-gray-300 dark:text-gray-400 font-medium mb-10">
         {t("version")}
