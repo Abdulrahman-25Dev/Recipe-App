@@ -16,7 +16,7 @@ import i18n from "../../i18next/i18n";
 // استيراد الأيقونات من Lucide
 import {
   UtensilsCrossed,
-  Clock,
+  Flame,
   ListOrdered,
   ArrowRight,
   Heart,
@@ -99,11 +99,13 @@ export default function MealDetails() {
     ? meal.countryAr || meal.country || "عالمي"
     : meal.country || meal.countryAr || "International";
 
-  const prepTime = meal.prepTime
-    ? `${meal.prepTime} ${isArabic ? "دقيقة" : "min"}`
-    : isArabic
-      ? "غير محدد"
-      : "not specified";
+  const calorieCategory = isArabic
+    ? meal.calorieCategoryAr || "متوسطة"
+    : meal.calorieCategory || "Medium";
+
+  const caloriesText = isArabic
+    ? `(${meal.calories ?? 0}) ${calorieCategory}`
+    : `(${meal.calories ?? 0}) ${calorieCategory}`;
 
   const ingredientsList: string[] = isArabic
     ? meal.ingredientsAr && meal.ingredientsAr.length > 0
@@ -214,15 +216,16 @@ export default function MealDetails() {
               </Text>
             </View>
 
-            {/* 3. وقت التحضير */}
+            {/* 3. السعرات الحرارية */}
             <View className="w-[48%] bg-primary/10 rounded-2xl border border-primary/30 dark:border-darkPrimary/30 p-3 items-center justify-center">
-              <Clock size={22} color="#FF8A00" />
-              <Text className="text-sm text-text dark:text-darkText mt-1.5 font-bold">
-                {prepTime}
+              <Flame size={22} color="#FF8A00" />
+              <Text
+                numberOfLines={1}
+                className="text-sm text-text dark:text-darkText mt-1.5 font-bold"
+              >
+                {caloriesText}
               </Text>
-              <Text className="text-xs text-gray-500 dark:text-gray-400 mt-1.5">
-                {isArabic ? "الوقت ليس دقيق" : "is not accurate"}
-              </Text>
+              <Text className="text-sm text-primary mt-1.5 font-semibold">{isArabic ? "تقريبا" : "Almost"}</Text>
             </View>
 
             {/* 4. عدد المكونات */}
@@ -230,7 +233,13 @@ export default function MealDetails() {
               <ListOrdered size={22} color="#FF8A00" />
               <Text className="text-sm text-text dark:text-darkText mt-1.5 font-bold">
                 {meal.ingredientsCount || ingredientsList.length}{" "}
-                {isArabic ? "مكونات" : "ingredients"}
+                {isArabic
+                  ? ingredientsList.length > 10
+                    ? "مكون"
+                    : ingredientsList.length > 1
+                      ? "مكونات"
+                      : "مكون واحد"
+                  : "ingredients"}
               </Text>
             </View>
           </View>

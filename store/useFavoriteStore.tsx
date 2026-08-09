@@ -9,6 +9,9 @@ export interface Meal {
   strMeal?: string;
   strMealThumb?: string;
   strInstructions?: string;
+  calories?: number;
+  calorieCategory?: "Low" | "Medium" | "High";
+  calorieCategoryAr?: "قليلة" | "متوسطة" | "عالية";
   [key: string]: any; // للسماح بأي حقول أخرى تأتي من API
   favorite?: boolean;
   // أضف أي حقول أخرى تحتاجها من API
