@@ -104,8 +104,8 @@ export default function MealDetails() {
     : meal.calorieCategory || "Medium";
 
   const caloriesText = isArabic
-    ? `(${meal.calories ?? 0}) ${calorieCategory}`
-    : `(${meal.calories ?? 0}) ${calorieCategory}`;
+    ? ` ${calorieCategory}`
+    : ` ${calorieCategory}`;
 
   const ingredientsList: string[] = isArabic
     ? meal.ingredientsAr && meal.ingredientsAr.length > 0

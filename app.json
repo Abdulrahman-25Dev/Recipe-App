@@ -4,7 +4,7 @@
     "slug": "Recipe-App",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/RecipeIconO.png",
+    "icon": "./assets/images/MaqadeerIcon.png",
     "scheme": "magadeer",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -14,9 +14,9 @@
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/RecipeIconO.png",
-        "backgroundImage": "./assets/images/RecipeIconO.png",
-        "monochromeImage": "./assets/images/RecipeIconO.png"
+        "foregroundImage": "./assets/images/MaqadeerIcon.png",
+        "backgroundImage": "./assets/images/MaqadeerIcon.png",
+        "monochromeImage": "./assets/images/MaqadeerIcon.png"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
@@ -24,7 +24,7 @@
     },
     "web": {
       "output": "static",
-      "favicon": "./assets/images/RecipeIconNoBackground.png",
+      "favicon": "./assets/images/MaqadeerIcon.png",
       "bundle": "metro"
     },
     "plugins": [
