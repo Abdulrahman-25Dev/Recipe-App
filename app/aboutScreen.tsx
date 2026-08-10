@@ -10,6 +10,7 @@ import {
   Bookmark,
   Github,
   Mail,
+  
 } from "lucide-react-native";
 export default function AboutApp() {
   const { language } = useTheme();
@@ -118,7 +119,7 @@ export default function AboutApp() {
             "Expo SDK 55",
             "Zustand",
             "Tailwind CSS",
-            "TheMealDB API",
+            "TheMealDB API / MongoDB",
             "DeepL translate API",
           ].map((item) => (
             <View

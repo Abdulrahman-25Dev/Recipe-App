@@ -7,6 +7,9 @@
     "beef":"Beef",
     "lamb":"Lamb",
     "show all":"Show all",
+    "loading recipes":"Loading recipes...",
+    "no recipes in category":"No recipes available in this category",
+    "untitled recipe":"Untitled recipe",
 
     "search for a recipe":"Search for recipes...",
     "results":"Search results",
@@ -25,6 +28,7 @@
     "more":"More",
     "rate us":"Rate us",
     "delete all favorites":"Delete all favorites",
+    "logout":"Log out",
     "are you sure?":"Are you sure?",
     "of corse Text?":"Do you want to delete all favorites permanently?",
     "delete":"Delete",
@@ -37,7 +41,7 @@
     "description":"Your go-to app for exploring the world's most popular cuisines with an Arabic twist. The app combines the vast database of TheMealDB with the intelligence of instant translation, providing you with the most accurate details and ingredients in a modern and stylish design.",
     "tech":"Technologies used",
     "feature1":"Huge database",
-    "feature1_desc":"Explore thousands of recipes from around the world thanks to TheMealDB integration.",
+    "feature1_desc":"Explore thousands of recipes from around the world thanks to MongoDB with TheMealDB integration.",
     "feature2":"Instant translation",
     "feature2_desc":"Get highly accurate translated recipes using the DeepL Translate API.",
     "feature3":"Modern design",
@@ -66,5 +70,10 @@
     "shuffle":"Shuffle",
     "clear all":"Clear all",
     "no recipes with filters":"No recipes match your filters",
-    "ingredients count":"ingredients"
+    "ingredients count":"ingredients",
+
+    "Home":"Home",
+    "Search":"Search",
+    "Favorites":"Favorites",
+    "Settings":"Settings"
 }

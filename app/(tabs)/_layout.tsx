@@ -2,10 +2,12 @@ import { View, Pressable, StyleSheet } from "react-native";
 import { Tabs, useRouter } from "expo-router";
 import { Home, Search, Heart, Settings2, Dices } from "lucide-react-native";
 import { useTheme } from "../../store/useTheme";
+import { useTranslation } from "react-i18next";
 
 export default function TabLayout() {
   const { isDark } = useTheme();
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handleRandomRecipe = async () => {
     try {
@@ -21,7 +23,7 @@ export default function TabLayout() {
         headerShown: false,
         tabBarActiveTintColor: "#F97316",
         tabBarInactiveTintColor: "#9CA3AF",
-        tabBarShowLabel: false,
+        tabBarShowLabel: true,
         tabBarStyle: {
           backgroundColor: isDark ? "#121212" : "#FFFFFF",
           borderTopWidth: 0,
@@ -44,14 +46,14 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "الرئيسية",
+          title: t("Home"),
           tabBarIcon: ({ color, size }) => <Home size={26} color={color} />,
         }}
       />
       <Tabs.Screen
         name="search"
         options={{
-          title: "البحث",
+          title: t("Search"),
           tabBarIcon: ({ color, size }) => <Search size={26} color={color} />,
         }}
       />
@@ -81,14 +83,14 @@ export default function TabLayout() {
       <Tabs.Screen
         name="favorites"
         options={{
-          title: "المفضلة",
+          title: t("favorites"),
           tabBarIcon: ({ color, size }) => <Heart size={26} color={color} />,
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
-          title: "الإعدادات",
+          title: t("Settings"),
           tabBarIcon: ({ color, size }) => (
             <Settings2 size={26} color={color} />
           ),

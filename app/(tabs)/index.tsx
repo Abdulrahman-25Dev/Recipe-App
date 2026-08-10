@@ -13,8 +13,8 @@ import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTranslation } from "react-i18next";
-import i18n from "../../i18next/i18n";
-import { apiClient } from "../../src/api/client";
+import { getMealsByCategory } from "../../src/api/meal";
+import { getLocalizedMealName, useAppLanguage } from "../../src/utils/localizedMeal";
 
 // تحديث الواجهة لتناسب قاعدة البيانات الخاصة بك
 type Meal = {
@@ -30,9 +30,16 @@ type Meal = {
   category?: string;
 };
 
+const CATEGORY_LABEL_KEYS: Record<string, string> = {
+  Chicken: "chicken",
+  Seafood: "seafood",
+  Beef: "beef",
+  Lamb: "lamb",
+};
+
 export default function Index() {
-  const isRTL = i18n.language === "ar";
   const { t } = useTranslation();
+  const { language, isRTL } = useAppLanguage();
 
   const [meals, setMeals] = useState<Meal[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -41,25 +48,29 @@ export default function Index() {
   const categories = ["Chicken", "Seafood", "Beef", "Lamb"];
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchMealsByCategory = async () => {
       try {
         setLoading(true);
         // طلب البيانات من الباك إند المترجم بدلاً من API الخارجي
-        const response = await apiClient.get(
-          `/recipes/category/${encodeURIComponent(activeCategory)}`,
-        );
-        const data =
-          response.data?.data || response.data?.recipes || response.data || [];
-        setMeals(Array.isArray(data) ? data : []);
+        const meals = await getMealsByCategory(activeCategory);
+        if (isMounted) {
+          setMeals(Array.isArray(meals) ? meals : []);
+        }
       } catch (error) {
         console.error("Error fetching meals:", error);
-        setMeals([]);
+        if (isMounted) setMeals([]);
       } finally {
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
     };
 
     fetchMealsByCategory();
+
+    return () => {
+      isMounted = false;
+    };
   }, [activeCategory]);
 
   return (
@@ -115,13 +126,13 @@ export default function Index() {
               }`}
             >
               <Text
-                className={`font-medium ${
+                className={`font-semibold ${
                   activeCategory === cat
                     ? "text-white dark:text-black"
                     : "text-text dark:text-darkText"
                 }`}
               >
-                {cat}
+                {t(CATEGORY_LABEL_KEYS[cat] ?? cat)}
               </Text>
             </Pressable>
           ))}
@@ -133,13 +144,13 @@ export default function Index() {
         <View className="flex-1 items-center justify-center">
           <ActivityIndicator color="#FF8A00" size="large" />
           <Text className="text-text dark:text-darkText mt-4 text-md">
-            جاري تحميل الوصفات...
+            {t("loading recipes")}
           </Text>
         </View>
       ) : meals.length === 0 ? (
         <View className="flex-1 items-center justify-center">
           <Text className="text-text dark:text-darkText text-base">
-            لا توجد وصفات متوفرة في هذا التصنيف
+            {t("no recipes in category")}
           </Text>
         </View>
       ) : (
@@ -163,20 +174,8 @@ export default function Index() {
                 item.thumbnail ||
                 PLACEHOLDER_IMAGE;
 
-              // 2. استخراج الاسم بغض النظر عن كونه كائن أو نص
-              let mealName = "";
-              if (typeof item.title === "string") mealName = item.title;
-              else if (typeof item.name === "string") mealName = item.name;
-              else if (typeof item.strMeal === "string")
-                mealName = item.strMeal;
-              else if (item.title?.ar || item.title?.en)
-                mealName = isRTL
-                  ? item.title.ar || item.title.en
-                  : item.title.en || item.title.ar;
-              else if (item.name?.ar || item.name?.en)
-                mealName = isRTL
-                  ? item.name.ar || item.name.en
-                  : item.name.en || item.name.ar;
+              // الاسم المترجم حسب لغة التطبيق الحالية مع آلية استرجاع تلقائية
+              const mealName = getLocalizedMealName(item, language);
 
               // 3. استخراج الـ ID
               const mealId = item._id || item.id || item.idMeal;
@@ -184,7 +183,7 @@ export default function Index() {
               return (
                 <TouchableOpacity
                   activeOpacity={0.7}
-                  onPress={() => router.push(`/details/${mealId}`)}
+                  onPress={() => mealId && router.push(`/details/${mealId}`)}
                   className="m-1.5"
                   style={{ flex: 1, minHeight: 220 }}
                 >
@@ -204,7 +203,7 @@ export default function Index() {
                         numberOfLines={2}
                         className="text-white font-bold text-base leading-5"
                       >
-                        {mealName || "وصفة بدون عنوان"}
+                        {mealName || t("untitled recipe")}
                       </Text>
                     </LinearGradient>
                   </ImageBackground>

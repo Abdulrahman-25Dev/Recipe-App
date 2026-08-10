@@ -39,3 +39,36 @@ export const logoutUser = async () => {
   await AsyncStorage.removeItem('userToken');
   await AsyncStorage.removeItem('userData');
 };
+
+// 4. جلب بيانات المستخدم (المفضلة والتفضيلات) من الحساب
+export const getMe = async () => {
+  const response = await apiClient.get('/users/me');
+  return response.data.user;
+};
+
+// 5. مزامنة التفضيلات (اللغة والثيم) مع الحساب
+export const updatePreferencesRemote = async (prefs: {
+  language?: 'ar' | 'en';
+  isDark?: boolean;
+}) => {
+  const response = await apiClient.put('/users/me/preferences', prefs);
+  return response.data.preferences;
+};
+
+// 6. إضافة وصفة للمفضلة في الحساب
+export const addFavoriteRemote = async (recipeId: string) => {
+  const response = await apiClient.post('/users/me/favorites', { recipeId });
+  return response.data.favorites;
+};
+
+// 7. حذف وصفة من المفضلة في الحساب
+export const removeFavoriteRemote = async (recipeId: string) => {
+  const response = await apiClient.delete(`/users/me/favorites/${recipeId}`);
+  return response.data.favorites;
+};
+
+// 8. حذف جميع المفضلة من الحساب
+export const clearFavoritesRemote = async () => {
+  const response = await apiClient.delete('/users/me/favorites');
+  return response.data.favorites;
+};

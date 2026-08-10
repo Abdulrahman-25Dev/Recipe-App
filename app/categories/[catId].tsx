@@ -137,7 +137,7 @@ export default function CategoryMealsScreen() {
         <Text
           className={`text-2xl font-bold flex-1 mx-3 truncate text-center text-primary dark:text-darkPrimary`}
         >
-          {isRTL ? `${categoryAr || categoryName}` : `${categoryName} Recipes`}
+          {isRTL ? `${categoryAr || categoryName}` : `${categoryName}`}
         </Text>
       </View>
 

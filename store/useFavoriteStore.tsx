@@ -1,6 +1,11 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  addFavoriteRemote,
+  removeFavoriteRemote,
+  clearFavoritesRemote,
+} from '../src/api/authService';
 export interface Meal {
   _id?: string;
   idMeal?: string;
@@ -20,11 +25,40 @@ export interface Meal {
 const getMealId = (meal: Meal): string =>
   String(meal._id || meal.idMeal || meal.externalId || "");
 
+const isLoggedIn = async (): Promise<boolean> => {
+  try {
+    return !!(await AsyncStorage.getItem('userToken'));
+  } catch {
+    return false;
+  }
+};
+
+// تحويل وصفة قادمة من السيرفر إلى شكل Meal المستخدم في التطبيق
+export const recipeToMeal = (recipe: any): Meal => ({
+  _id: recipe._id,
+  title: recipe.title,
+  titleAr: recipe.titleAr,
+  image: recipe.image,
+  externalId: recipe.externalId,
+  strMeal: recipe.title,
+  strMealThumb: recipe.image,
+  category: recipe.category,
+  categoryAr: recipe.categoryAr,
+  country: recipe.country,
+  countryAr: recipe.countryAr,
+  calories: recipe.calories,
+  calorieCategory: recipe.calorieCategory,
+  calorieCategoryAr: recipe.calorieCategoryAr,
+  ingredients: recipe.ingredients,
+  ingredientsAr: recipe.ingredientsAr,
+});
+
 interface FavoritesState {
   favorites: Meal[];
   toggleFavorite: (meal: Meal) => void;
   isFavorite: (mealId: string) => boolean;
   clearFavorites: () => void;
+  setFavorites: (meals: Meal[]) => void;
 }
 
 export const useFavorites = create<FavoritesState>()(
@@ -44,10 +78,16 @@ export const useFavorites = create<FavoritesState>()(
           set({
             favorites: favorites.filter((f) => getMealId(f) !== mealId),
           });
+          isLoggedIn().then((loggedIn) => {
+            if (loggedIn) removeFavoriteRemote(mealId).catch(() => {});
+          });
         } else {
           // إضافة للمفضلة
           set({
             favorites: [...favorites, meal],
+          });
+          isLoggedIn().then((loggedIn) => {
+            if (loggedIn) addFavoriteRemote(mealId).catch(() => {});
           });
         }
       },
@@ -57,7 +97,13 @@ export const useFavorites = create<FavoritesState>()(
       },
       clearFavorites: () => {
         set({ favorites: [] });
-      }
+        isLoggedIn().then((loggedIn) => {
+          if (loggedIn) clearFavoritesRemote().catch(() => {});
+        });
+      },
+      setFavorites: (meals) => {
+        set({ favorites: meals });
+      },
     }),
     {
       name: 'recipe-favorites',

@@ -10,12 +10,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        background: "#F9FAFB", 
+        background: "#F2F2F2", 
         darkBackground: "#121212",
         card: "#FFFFFF", 
         darkCard:"#1E1E1E",
         primary: "#FF8A00", 
-        darkPrimary: "#FF9800",
+        darkPrimary: "#FF8A00",
         primaryLight: "#FFE0B2", 
         darkPrimaryLight: "#332100",
         text: "#1F2937", 

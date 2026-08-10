@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, ScrollView, Switch, Pressable } from "react-native";
 import { Feather } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { logoutUser } from "../../src/api/authService";
 import { useFavorites } from "../../store/useFavoriteStore"; // تأكد من مسار ملف الستور عندك
 import { useTheme } from "../../store/useTheme";
 import { useTranslation } from "react-i18next";
@@ -16,6 +18,7 @@ import {
   AlertCircle,
   Trash,
   User2,
+  LogOut,
 } from "lucide-react-native";
 
 export default function SettingsScreen() {
@@ -31,10 +34,35 @@ export default function SettingsScreen() {
 
   const { alert } = useAlert();
 
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    AsyncStorage.getItem("userData")
+      .then((data) => {
+        if (data) setUsername(JSON.parse(data).name || "");
+      })
+      .catch(() => {});
+  }, []);
+
   const confirmDeleteFavorites = () => {
     alert(t("confirm delete"), t("delete confirmation message"), [
       { text: t("cancel"), style: "cancel" },
       { text: t("delete"), style: "destructive", onPress: clearFavorites },
+    ]);
+  };
+
+  const handleLogout = () => {
+    alert(t("logout"), isArabic ? "هل تريد تسجيل الخروج من حسابك؟" : "Do you want to log out of your account?", [
+      { text: t("cancel"), style: "cancel" },
+      {
+        text: t("logout"),
+        style: "destructive",
+        onPress: async () => {
+          await logoutUser();
+          useFavorites.getState().setFavorites([]);
+          router.replace("/Auth/Login");
+        },
+      },
     ]);
   };
 
@@ -43,7 +71,7 @@ export default function SettingsScreen() {
 
   // دالة الحصول على أكثر تصنيف مكرر (بحسب اللغة الحالية)
   const getTopCategory = () => {
-    if (favoritesCount === 0) return isRTL ? "لا يوجد" : "None";
+    if (favoritesCount === 0) return "-";
     const categories = favorites
       .map((m) =>
         isRTL
@@ -62,6 +90,8 @@ export default function SettingsScreen() {
     );
   };
 
+  const isArabic = i18n.language === "ar";
+
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -73,7 +103,7 @@ export default function SettingsScreen() {
           <User2 size={55} color="#FF8A00" />
         </View>
         <Text className="text-2xl font-bold mt-4 text-text dark:text-darkText text-center">
-          {t("skilled cook")}
+          {username || t("skilled cook")}
         </Text>
         <Text className="text-gray-400 dark:text-gray-300 text-center text-base mt-1">
           {t("welcome to your own kitchen")}
@@ -87,7 +117,7 @@ export default function SettingsScreen() {
         </Text>
         <View className="flex-row-reverse gap-4">
           {/* مربع المفضلة - يقرأ من الستور */}
-          <View className="flex-1 bg-card dark:bg-darkCard p-5 rounded-[35px] items-center shadow-sm border border-gray-50 dark:border-gray-800">
+          <View className="flex-1 bg-card dark:bg-darkCard p-5 rounded-[35px] items-center shadow-sm border border-gray-50 dark:border-darkCard">
             <View className="bg-orange-50 dark:bg-orange-900 p-2.5 rounded-2xl mb-2">
               <Heart size={22} color="#FF8A00" />
             </View>
@@ -100,7 +130,7 @@ export default function SettingsScreen() {
           </View>
 
           {/* مربع التصنيف المفضل */}
-          <View className="flex-1 bg-white dark:bg-darkCard p-5 rounded-[35px] items-center shadow-sm border border-gray-50 dark:border-gray-800">
+          <View className="flex-1 bg-white dark:bg-darkCard p-5 rounded-[35px] items-center shadow-sm border border-gray-50 dark:border-darkCard">
             <View className="bg-blue-50 dark:bg-blue-900 p-2.5 rounded-2xl mb-2">
               <Tag size={22} color="#3B82F6" />
             </View>
@@ -124,9 +154,9 @@ export default function SettingsScreen() {
         >
           {t("preferences")}
         </Text>
-        <View className="bg-white dark:bg-darkCard rounded-[35px] p-5 shadow-sm border border-gray-50 dark:border-gray-800">
+        <View className="bg-white dark:bg-darkCard rounded-[35px] p-5 shadow-sm border border-gray-50 dark:border-darkCard">
           <View
-            className={`${isRTL ? "flex-row-reverse" : "flex-row"} items-center justify-between py-3 border-b border-gray-50 dark:border-gray-800`}
+            className={`${isRTL ? "flex-row-reverse" : "flex-row"} items-center justify-between py-3 border-b border-gray-50 dark:border-darkCard`}
           >
             <View
               className={`${isRTL ? "flex-row-reverse" : "flex-row"} items-center gap-4`}
@@ -213,7 +243,7 @@ export default function SettingsScreen() {
         >
           {t("more")}
         </Text>
-        <View className="bg-white dark:bg-darkCard rounded-[35px] p-5 shadow-sm border border-gray-50 dark:border-gray-800">
+        <View className="bg-white dark:bg-darkCard rounded-[35px] p-5 shadow-sm border border-gray-50 dark:border-darkCard">
           <Pressable
             onPress={() => router.push("../aboutScreen")}
             className={` items-center justify-between py-3 border-b border-gray-50 dark:border-gray-800 ${isRTL ? "flex-row-reverse" : "flex-row"}`}
@@ -228,7 +258,7 @@ export default function SettingsScreen() {
                 {t("title")}
               </Text>
             </View>
-            <Feather name="chevron-left" size={20} color="#CCC" />
+            <Feather name={isArabic ? "chevron-left" : "chevron-right"} size={20} color="#CCC" />
           </Pressable>
 
           <Pressable
@@ -243,6 +273,22 @@ export default function SettingsScreen() {
               </View>
               <Text className="text-lg font-semibold text-red-500">
                 {t("delete all favorites")}
+              </Text>
+            </View>
+          </Pressable>
+
+          <Pressable
+            onPress={handleLogout}
+            className={` items-center justify-between py-3 ${isRTL ? "flex-row-reverse" : "flex-row"}`}
+          >
+            <View
+              className={`items-center gap-4 ${isRTL ? "flex-row-reverse" : "flex-row"}`}
+            >
+              <View className="bg-red-50 dark:bg-darkCard p-2.5 rounded-2xl">
+                <LogOut size={22} color="#EF4444" />
+              </View>
+              <Text className="text-lg font-semibold text-red-500">
+                {t("logout")}
               </Text>
             </View>
           </Pressable>

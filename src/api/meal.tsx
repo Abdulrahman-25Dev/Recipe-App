@@ -3,8 +3,6 @@ import { apiClient } from "./client";
 export const getMealsByCategory = async (category: string) => {
   try {
     const response = await apiClient.get(`/recipes/category/${category}`);
-    // طباعة الاستجابة في الـ Terminal لتتبع هيكلها
-    console.log("Response data:", response.data);
 
     // التحقق هل البيانات مصفوفة أم كائن يحوي مصفوفة
     if (Array.isArray(response.data)) {

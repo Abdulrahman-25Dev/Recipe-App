@@ -11,7 +11,8 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { TextInput } from "react-native-paper";
-import { registerUser } from "../../src/api/authService";
+import { registerUser, getMe } from "../../src/api/authService";
+import { applyAccountData } from "../../src/utils/accountSync";
 import { useTheme } from "../../store/useTheme";
 import { useAlert } from "../../components/CustomAlert";
 
@@ -35,6 +36,11 @@ export default function RegisterScreen() {
     setLoading(true);
     try {
       const data = await registerUser(name, email, password);
+      // تحميل المفضلة والتفضيلات المحفوظة في الحساب
+      try {
+        const me = await getMe();
+        applyAccountData(me);
+      } catch {}
       alert(
         "نجاح 🍳",
         `تم إنشاء الحساب بنجاح، أهلاً بك ${data.user.name}`

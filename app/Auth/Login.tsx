@@ -11,7 +11,8 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { TextInput } from "react-native-paper";
-import { loginUser } from "../../src/api/authService";
+import { loginUser, getMe } from "../../src/api/authService";
+import { applyAccountData } from "../../src/utils/accountSync";
 import { useTheme } from "../../store/useTheme";
 import { useAlert } from "../../components/CustomAlert";
 
@@ -34,6 +35,11 @@ export default function LoginScreen() {
     setLoading(true);
     try {
       const data = await loginUser(email, password);
+      // تحميل المفضلة والتفضيلات المحفوظة في الحساب
+      try {
+        const me = await getMe();
+        applyAccountData(me);
+      } catch {}
       alert(
         "أهلاً بك! 🍳",
         `تم تسجيل الدخول بنجاح، مرحباً ${data.user.name}`
