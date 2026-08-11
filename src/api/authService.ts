@@ -72,3 +72,9 @@ export const clearFavoritesRemote = async () => {
   const response = await apiClient.delete('/users/me/favorites');
   return response.data.favorites;
 };
+
+// 9. حذف الحساب نهائياً
+export const deleteAccountRemote = async () => {
+  const response = await apiClient.delete('/users/me');
+  return response.data;
+};

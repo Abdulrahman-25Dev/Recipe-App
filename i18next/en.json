@@ -54,6 +54,15 @@
     "confirm delete":"Confirm delete",
     "delete confirmation message":"Do you want to delete all favorites permanently?",
 
+    "account":"Account",
+    "edit profile":"Edit Profile",
+    "change password":"Change Password",
+    "delete account":"Delete Account",
+    "delete account warning":"This action cannot be undone. Your account, favorites and preferences will be permanently deleted.",
+    "delete account confirm":"Are you absolutely sure? Your account cannot be restored after deletion.",
+    "deleting account":"Deleting account...",
+    "error":"Error",
+
     "random recipe":"Random Recipe",
     "filter search":"Filter Search",
     "filter":"Filter",

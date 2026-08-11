@@ -54,6 +54,15 @@
     "confirm delete":"تأكيد الحذف",
     "delete confirmation message":"هل تريد حذف جميع المفضلات بشكل نهائي؟",
 
+    "account":"الحساب",
+    "edit profile":"تعديل الملف الشخصي",
+    "change password":"تغيير كلمة المرور",
+    "delete account":"حذف الحساب",
+    "delete account warning":"لا يمكن التراجع عن هذا الإجراء، سيتم حذف حسابك ومفضلاتك وتفضيلاتك نهائياً.",
+    "delete account confirm":"هل أنت متأكد تماماً؟ لا يمكن استعادة الحساب بعد الحذف.",
+    "deleting account":"جاري حذف الحساب...",
+    "error":"خطأ",
+
     "random recipe":"وصفة عشوائية",
     "filter search":"فلترة البحث",
     "filter":"تصفية",

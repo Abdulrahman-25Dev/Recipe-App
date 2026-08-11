@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, ScrollView, Switch, Pressable } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { logoutUser } from "../../src/api/authService";
+import { logoutUser, deleteAccountRemote } from "../../src/api/authService";
 import { useFavorites } from "../../store/useFavoriteStore"; // تأكد من مسار ملف الستور عندك
 import { useTheme } from "../../store/useTheme";
 import { useTranslation } from "react-i18next";
@@ -19,6 +19,8 @@ import {
   Trash,
   User2,
   LogOut,
+  CircleUserRound,
+  Lock,
 } from "lucide-react-native";
 
 export default function SettingsScreen() {
@@ -52,15 +54,54 @@ export default function SettingsScreen() {
   };
 
   const handleLogout = () => {
-    alert(t("logout"), isArabic ? "هل تريد تسجيل الخروج من حسابك؟" : "Do you want to log out of your account?", [
+    alert(
+      t("logout"),
+      isArabic
+        ? "هل تريد تسجيل الخروج من حسابك؟"
+        : "Do you want to log out of your account?",
+      [
+        { text: t("cancel"), style: "cancel" },
+        {
+          text: t("logout"),
+          style: "destructive",
+          onPress: async () => {
+            await logoutUser();
+            useFavorites.getState().setFavorites([]);
+            router.replace("/Auth/Login");
+          },
+        },
+      ],
+    );
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      await deleteAccountRemote();
+      await logoutUser();
+      useFavorites.getState().setFavorites([]);
+      router.replace("/Auth/Login");
+    } catch (error: any) {
+      alert(t("error"), error.message || "");
+    }
+  };
+
+  const confirmDeleteAccount = () => {
+    // 1. تحذير أول: شرح العواقب
+    alert(t("delete account"), t("delete account warning"), [
       { text: t("cancel"), style: "cancel" },
       {
-        text: t("logout"),
+        text: t("delete"),
         style: "destructive",
-        onPress: async () => {
-          await logoutUser();
-          useFavorites.getState().setFavorites([]);
-          router.replace("/Auth/Login");
+        onPress: () => {
+          // 2. تأكيد نهائي قبل الحذف الفعلي
+          alert(t("delete account"), t("delete account confirm"), [
+            { text: t("cancel"), style: "cancel" },
+            {
+              text: t("delete"),
+              style: "destructive",
+              onPress: handleDeleteAccount,
+            },
+          ]);
         },
       },
     ]);
@@ -236,7 +277,90 @@ export default function SettingsScreen() {
         </View>
       </View>
 
-      {/* 4. قسم المزيد */}
+      {/* 4. قسم الحساب */}
+      <View className="px-5 mb-8">
+        <Text
+          className={`text-gray-400 dark:text-gray-300 font-bold mb-4 mr-2 ${isRTL ? "text-right" : "text-left"}`}
+        >
+          {t("account")}
+        </Text>
+        <View className="bg-white dark:bg-darkCard rounded-[35px] p-5 shadow-sm border border-gray-50 dark:border-darkCard">
+          <Pressable
+            onPress={() => router.push("/account/EditProfile" as never)}
+            className={` items-center justify-between py-3 border-b border-gray-100 dark:border-gray-800 ${isRTL ? "flex-row-reverse" : "flex-row"}`}
+          >
+            <View
+              className={`items-center gap-4 ${isRTL ? "flex-row-reverse" : "flex-row"}`}
+            >
+              <View className="bg-orange-50 dark:bg-darkCard p-2.5 rounded-2xl">
+                <CircleUserRound size={22} color="#FF8A00" />
+              </View>
+              <Text className="text-lg font-semibold text-gray-800 dark:text-darkText">
+                {t("edit profile")}
+              </Text>
+            </View>
+            <Feather
+              name={isArabic ? "chevron-left" : "chevron-right"}
+              size={20}
+              color="#CCC"
+            />
+          </Pressable>
+
+          <Pressable
+            onPress={() => router.push("/account/ChangePassword" as never)}
+            className={` items-center justify-between py-3 border-b border-gray-100 dark:border-gray-800 ${isRTL ? "flex-row-reverse" : "flex-row"}`}
+          >
+            <View
+              className={`items-center gap-4 ${isRTL ? "flex-row-reverse" : "flex-row"}`}
+            >
+              <View className="bg-blue-50 dark:bg-darkCard p-2.5 rounded-2xl">
+                <Lock size={22} color="#3B82F6" />
+              </View>
+              <Text className="text-lg font-semibold text-gray-800 dark:text-darkText">
+                {t("change password")}
+              </Text>
+            </View>
+            <Feather
+              name={isArabic ? "chevron-left" : "chevron-right"}
+              size={20}
+              color="#CCC"
+            />
+          </Pressable>
+
+          <Pressable
+            onPress={confirmDeleteAccount}
+            className={` items-center justify-between py-3  border-b border-gray-100 dark:border-gray-800 ${isRTL ? "flex-row-reverse" : "flex-row"}`}
+          >
+            <View
+              className={`items-center gap-4 ${isRTL ? "flex-row-reverse" : "flex-row"}`}
+            >
+              <View className="bg-red-50 dark:bg-darkCard p-2.5 rounded-2xl">
+                <Trash size={22} color="#EF4444" />
+              </View>
+              <Text className="text-lg font-semibold text-red-500">
+                {t("delete account")}
+              </Text>
+            </View>
+          </Pressable>
+          <Pressable
+            onPress={handleLogout}
+            className={` items-center justify-between py-3 ${isRTL ? "flex-row-reverse" : "flex-row"}`}
+          >
+            <View
+              className={`items-center gap-4 ${isRTL ? "flex-row-reverse" : "flex-row"}`}
+            >
+              <View className="bg-red-50 dark:bg-darkCard p-2.5 rounded-2xl">
+                <LogOut size={22} color="#EF4444" />
+              </View>
+              <Text className="text-lg font-semibold text-red-500">
+                {t("logout")}
+              </Text>
+            </View>
+          </Pressable>
+        </View>
+      </View>
+
+      {/* 5. قسم المزيد */}
       <View className="px-5 mb-10">
         <Text
           className={`text-gray-400 px-2 font-bold mb-4 mr-2 dark:text-gray-300 ${isRTL ? "text-right" : "text-left"}`}
@@ -246,7 +370,7 @@ export default function SettingsScreen() {
         <View className="bg-white dark:bg-darkCard rounded-[35px] p-5 shadow-sm border border-gray-50 dark:border-darkCard">
           <Pressable
             onPress={() => router.push("../aboutScreen")}
-            className={` items-center justify-between py-3 border-b border-gray-50 dark:border-gray-800 ${isRTL ? "flex-row-reverse" : "flex-row"}`}
+            className={` items-center justify-between py-3 border-b border-gray-100 dark:border-gray-800 ${isRTL ? "flex-row-reverse" : "flex-row"}`}
           >
             <View
               className={`items-center gap-4 ${isRTL ? "flex-row-reverse" : "flex-row"}`}
@@ -258,7 +382,11 @@ export default function SettingsScreen() {
                 {t("title")}
               </Text>
             </View>
-            <Feather name={isArabic ? "chevron-left" : "chevron-right"} size={20} color="#CCC" />
+            <Feather
+              name={isArabic ? "chevron-left" : "chevron-right"}
+              size={20}
+              color="#CCC"
+            />
           </Pressable>
 
           <Pressable
@@ -273,22 +401,6 @@ export default function SettingsScreen() {
               </View>
               <Text className="text-lg font-semibold text-red-500">
                 {t("delete all favorites")}
-              </Text>
-            </View>
-          </Pressable>
-
-          <Pressable
-            onPress={handleLogout}
-            className={` items-center justify-between py-3 ${isRTL ? "flex-row-reverse" : "flex-row"}`}
-          >
-            <View
-              className={`items-center gap-4 ${isRTL ? "flex-row-reverse" : "flex-row"}`}
-            >
-              <View className="bg-red-50 dark:bg-darkCard p-2.5 rounded-2xl">
-                <LogOut size={22} color="#EF4444" />
-              </View>
-              <Text className="text-lg font-semibold text-red-500">
-                {t("logout")}
               </Text>
             </View>
           </Pressable>

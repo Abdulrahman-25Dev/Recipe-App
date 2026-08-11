@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "Magadeer",
+    "name": "Maqadeer",
     "slug": "Recipe-App",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/MaqadeerIcon.png",
-    "scheme": "magadeer",
+    "scheme": "maqadeer",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
