@@ -37,6 +37,14 @@ export default function RootLayout() {
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="Auth/Login" options={{ headerShown: false }} />
             <Stack.Screen name="Auth/Register" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="account/EditProfile"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="account/ChangePassword"
+              options={{ headerShown: false }}
+            />
           </Stack>
         </AlertProvider>
       </BottomSheetModalProvider>

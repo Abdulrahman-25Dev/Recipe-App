@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, ScrollView, Pressable, Linking } from "react-native";
+import { View, Text, ScrollView, Pressable, Linking, Image } from "react-native";
 import { useTheme } from "../store/useTheme"; // الستور حقك الفخم
 import { Stack } from "expo-router";
 import { useTranslation } from "react-i18next";
@@ -47,9 +47,12 @@ export default function AboutApp() {
       <Stack.Screen options={{ headerShown: false }} />
       <View className="items-center my-8">
         {/* أيقونة التطبيق أو شعار مبرمج (ممكن تحط صورتك هنا) */}
-        <View className="w-24 h-24 bg-orange-500 rounded-full items-center justify-center shadow-lg">
-          <Text className="text-4xl text-white">🍳</Text>
-        </View>
+        <Image
+          source={require("../assets/images/MaqadeerIcon.png")}
+          className="w-28 h-28 rounded-full"
+          resizeMode="contain"
+        />
+        
         <Text className="text-2xl font-bold mt-4 text-neutral-800 dark:text-white">
           {t("appName")}
         </Text>

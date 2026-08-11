@@ -55,25 +55,35 @@ export const updatePreferencesRemote = async (prefs: {
   return response.data.preferences;
 };
 
-// 6. إضافة وصفة للمفضلة في الحساب
+// 6. تحديث الملف الشخصي (الاسم، الحالة، صورة البروفايل)
+export const updateProfileRemote = async (payload: {
+  name: string;
+  bio?: string;
+  profileImage?: string | null;
+}) => {
+  const response = await apiClient.patch('/users/me/profile', payload);
+  return response.data.user;
+};
+
+// 7. إضافة وصفة للمفضلة في الحساب
 export const addFavoriteRemote = async (recipeId: string) => {
   const response = await apiClient.post('/users/me/favorites', { recipeId });
   return response.data.favorites;
 };
 
-// 7. حذف وصفة من المفضلة في الحساب
+// 8. حذف وصفة من المفضلة في الحساب
 export const removeFavoriteRemote = async (recipeId: string) => {
   const response = await apiClient.delete(`/users/me/favorites/${recipeId}`);
   return response.data.favorites;
 };
 
-// 8. حذف جميع المفضلة من الحساب
+// 9. حذف جميع المفضلة من الحساب
 export const clearFavoritesRemote = async () => {
   const response = await apiClient.delete('/users/me/favorites');
   return response.data.favorites;
 };
 
-// 9. حذف الحساب نهائياً
+// 10. حذف الحساب نهائياً
 export const deleteAccountRemote = async () => {
   const response = await apiClient.delete('/users/me');
   return response.data;

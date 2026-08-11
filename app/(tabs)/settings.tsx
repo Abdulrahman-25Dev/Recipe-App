@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView, Switch, Pressable } from "react-native";
-import { Feather } from "@expo/vector-icons";
+import React, { useState } from "react";
+import { View, Text, ScrollView, Switch, Pressable, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { logoutUser, deleteAccountRemote } from "../../src/api/authService";
 import { useFavorites } from "../../store/useFavoriteStore"; // تأكد من مسار ملف الستور عندك
 import { useTheme } from "../../store/useTheme";
 import { useTranslation } from "react-i18next";
 import i18n from "../../i18next/i18n";
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import { useAlert } from "../../components/CustomAlert";
 import {
   Heart,
@@ -37,14 +36,23 @@ export default function SettingsScreen() {
   const { alert } = useAlert();
 
   const [username, setUsername] = useState("");
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [bio, setBio] = useState("");
 
-  useEffect(() => {
-    AsyncStorage.getItem("userData")
-      .then((data) => {
-        if (data) setUsername(JSON.parse(data).name || "");
-      })
-      .catch(() => {});
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      AsyncStorage.getItem("userData")
+        .then((data) => {
+          if (data) {
+            const user = JSON.parse(data);
+            setUsername(user.name || "");
+            setProfileImage(user.profileImage || null);
+            setBio(user.bio || "");
+          }
+        })
+        .catch(() => {});
+    }, []),
+  );
 
   const confirmDeleteFavorites = () => {
     alert(t("confirm delete"), t("delete confirmation message"), [
@@ -140,14 +148,23 @@ export default function SettingsScreen() {
     >
       {/* 1. الهيدر: البروفايل */}
       <View className="items-center mt-10 mb-8 px-5">
-        <View className="w-28 h-28 rounded-full bg-white dark:bg-darkBackground items-center justify-center border-4 border-white dark:border-darkBackground shadow-sm">
-          <User2 size={55} color="#FF8A00" />
+        <View className="w-28 h-28 rounded-full bg-white dark:bg-darkBackground items-center justify-center border-4 border-white dark:border-darkBackground shadow-sm overflow-hidden">
+          {profileImage ? (
+            <Image
+              source={{ uri: profileImage }}
+              className="w-full h-full"
+              resizeMode="cover"
+              onError={() => setProfileImage(null)}
+            />
+          ) : (
+            <User2 size={55} color="#FF8A00" />
+          )}
         </View>
         <Text className="text-2xl font-bold mt-4 text-text dark:text-darkText text-center">
           {username || t("skilled cook")}
         </Text>
         <Text className="text-gray-400 dark:text-gray-300 text-center text-base mt-1">
-          {t("welcome to your own kitchen")}
+          {bio || t("welcome to your own kitchen")}
         </Text>
       </View>
 
@@ -286,7 +303,7 @@ export default function SettingsScreen() {
         </Text>
         <View className="bg-white dark:bg-darkCard rounded-[35px] p-5 shadow-sm border border-gray-50 dark:border-darkCard">
           <Pressable
-            onPress={() => router.push("/account/EditProfile" as never)}
+            onPress={() => router.push("/account/EditProfile")}
             className={` items-center justify-between py-3 border-b border-gray-100 dark:border-gray-800 ${isRTL ? "flex-row-reverse" : "flex-row"}`}
           >
             <View
@@ -299,11 +316,6 @@ export default function SettingsScreen() {
                 {t("edit profile")}
               </Text>
             </View>
-            <Feather
-              name={isArabic ? "chevron-left" : "chevron-right"}
-              size={20}
-              color="#CCC"
-            />
           </Pressable>
 
           <Pressable
@@ -320,11 +332,6 @@ export default function SettingsScreen() {
                 {t("change password")}
               </Text>
             </View>
-            <Feather
-              name={isArabic ? "chevron-left" : "chevron-right"}
-              size={20}
-              color="#CCC"
-            />
           </Pressable>
 
           <Pressable
@@ -382,11 +389,6 @@ export default function SettingsScreen() {
                 {t("title")}
               </Text>
             </View>
-            <Feather
-              name={isArabic ? "chevron-left" : "chevron-right"}
-              size={20}
-              color="#CCC"
-            />
           </Pressable>
 
           <Pressable
