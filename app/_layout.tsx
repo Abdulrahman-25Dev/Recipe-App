@@ -1,20 +1,21 @@
-import "../i18next/i18n";
+import i18n from "../i18next/i18n";
 import { Stack } from "expo-router";
 import "./global.css";
 import { useTheme } from "../store/useTheme";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 // ⚠️ تأكد إن الاستدعاء من nativewind وليس react-native
 import { useColorScheme } from "nativewind"; 
 import { I18nManager } from "react-native";
-import i18n from "../i18next/i18n";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { AlertProvider } from "../components/CustomAlert";
+import CustomSplash from "../components/CustomSplash";
 
 I18nManager.allowRTL(false);
 I18nManager.forceRTL(false);
 
 export default function RootLayout() {
+  const [isShowSplash, setIsShowSplash] = useState(true);
   const { setColorScheme } = useColorScheme();
   const { isDark, language } = useTheme(); // القيمة من الستور حقك
 
@@ -27,7 +28,10 @@ export default function RootLayout() {
     i18n.changeLanguage(language);
   }, [language]);
 
-  
+  // عرض الـ Splash Screen أولاً حتى ينتهي شريط التحميل
+  if (isShowSplash) {
+    return <CustomSplash onFinish={() => setIsShowSplash(false)} />;
+  }
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
