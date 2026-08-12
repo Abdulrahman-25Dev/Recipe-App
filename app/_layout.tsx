@@ -8,6 +8,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Stack } from "expo-router";
 import CustomSplash from "../components/CustomSplash";
 import Onboarding from "../components/Onboarding";
+import { AlertProvider } from "../components/CustomAlert";
 
 I18nManager.allowRTL(false);
 I18nManager.forceRTL(false);
@@ -79,10 +80,12 @@ export default function RootLayout() {
   // رابعاً: التطبيق الرسمي، وشاشة تسجيل الدخول محمية من داخل الصفحة الرئيسية
   // بحيث يُعاد التوجيه لـ Login عند عدم وجود توكن (index.tsx)
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="(tabs)" />
-      <Stack.Screen name="Auth/Login" />
-      <Stack.Screen name="Auth/Register" />
-    </Stack>
+    <AlertProvider>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="Auth/Login" />
+        <Stack.Screen name="Auth/Register" />
+      </Stack>
+    </AlertProvider>
   );
 }

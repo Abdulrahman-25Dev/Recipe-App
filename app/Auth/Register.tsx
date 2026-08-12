@@ -38,7 +38,7 @@ export default function RegisterScreen() {
       const data = await registerUser(name, email, password);
       try {
         const me = await getMe();
-        applyAccountData(me);
+        await applyAccountData(me);
       } catch {}
       alert(
         "نجاح 🍳",

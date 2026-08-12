@@ -1,5 +1,17 @@
-import { apiClient } from './client';
+import { apiClient, extractProfileImageUrl } from './client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// تطبيع بيانات المستخدم عند حدود الـ API:
+// مجرد تعيين حقل الصورة من أي مفتاح يرجع به الخادم + تحويل الرابط النسبي إلى مطلق
+const sanitizeUser = (user: any) => {
+  if (!user) return user;
+  return {
+    ...user,
+    name: user.name ?? '',
+    bio: user.bio ?? '',
+    profileImage: extractProfileImageUrl(user),
+  };
+};
 
 // 1. تسجيل الدخول
 export const loginUser = async (email: string, password: string) => {
@@ -9,7 +21,7 @@ export const loginUser = async (email: string, password: string) => {
     // حفظ التوكن وبيانات المستخدم عند النجاح
     if (response.data.token) {
       await AsyncStorage.setItem('userToken', response.data.token);
-      await AsyncStorage.setItem('userData', JSON.stringify(response.data.user));
+      await AsyncStorage.setItem('userData', JSON.stringify(sanitizeUser(response.data.user)));
     }
     
     return response.data;
@@ -25,7 +37,7 @@ export const registerUser = async (name: string, email: string, password: string
     
     if (response.data.token) {
       await AsyncStorage.setItem('userToken', response.data.token);
-      await AsyncStorage.setItem('userData', JSON.stringify(response.data.user));
+      await AsyncStorage.setItem('userData', JSON.stringify(sanitizeUser(response.data.user)));
     }
     
     return response.data;
@@ -43,7 +55,7 @@ export const logoutUser = async () => {
 // 4. جلب بيانات المستخدم (المفضلة والتفضيلات) من الحساب
 export const getMe = async () => {
   const response = await apiClient.get('/users/me');
-  return response.data.user;
+  return sanitizeUser(response.data.user);
 };
 
 // 5. مزامنة التفضيلات (اللغة والثيم) مع الحساب
@@ -62,7 +74,29 @@ export const updateProfileRemote = async (payload: {
   profileImage?: string | null;
 }) => {
   const response = await apiClient.patch('/users/me/profile', payload);
-  return response.data.user;
+  return sanitizeUser(response.data.user);
+};
+
+// 6.1 رفع صورة البروفايل إلى الخادم وإرجاع الرابط الدائم (HTTP) بدلاً من المسار المحلي
+export const uploadProfileImageRemote = async (imageUri: string): Promise<string> => {
+  const formData = new FormData();
+  const filename = imageUri.split('/').pop() || `avatar-${Date.now()}.jpg`;
+  const match = /\.(\w+)$/.exec(filename);
+  const type = match ? `image/${match[1].toLowerCase()}` : 'image/jpeg';
+  formData.append('image', { uri: imageUri, name: filename, type } as any);
+
+  try {
+    const response = await apiClient.post('/users/me/profile-image', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    const url = extractProfileImageUrl(response.data);
+    if (!url) {
+      throw new Error('لم يُرجع الخادم رابط صورة صالحاً');
+    }
+    return url;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || 'فشل رفع الصورة إلى الخادم');
+  }
 };
 
 // 7. إضافة وصفة للمفضلة في الحساب

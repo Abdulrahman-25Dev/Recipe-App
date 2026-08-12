@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -18,7 +18,7 @@ import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ChevronLeft, ChevronRight, User2, Camera } from "lucide-react-native";
 import { useAlert } from "../../components/CustomAlert";
-import { updateProfileRemote } from "../../src/api/authService";
+import { updateProfileRemote, uploadProfileImageRemote } from "../../src/api/authService";
 
 export default function EditProfileScreen() {
   const router = useRouter();
@@ -31,6 +31,11 @@ export default function EditProfileScreen() {
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // يمنع قراءة البيانات المحفوظة من إعادة ضبط الصورة التي اختارها المستخدم للتو
+  const didPickImageRef = useRef(false);
+  // الصورة الأصلية المحملة من التخزين لاكتشاف إن تغيّرت أثناء الجلسة
+  const originalProfileImageRef = useRef<string | null>(null);
+
   useEffect(() => {
     AsyncStorage.getItem("userData")
       .then((data) => {
@@ -38,7 +43,10 @@ export default function EditProfileScreen() {
           const user = JSON.parse(data);
           setUsername(user.name || "");
           setBio(user.bio || t("welcome to your own kitchen"));
-          setProfileImage(user.profileImage || null);
+          if (!didPickImageRef.current) {
+            originalProfileImageRef.current = user.profileImage || null;
+            setProfileImage(user.profileImage || null);
+          }
         } else {
           setBio(t("welcome to your own kitchen"));
         }
@@ -57,6 +65,7 @@ export default function EditProfileScreen() {
         quality: 0.8,
       });
       if (!result.canceled && result.assets[0]?.uri) {
+        didPickImageRef.current = true;
         setProfileImage(result.assets[0].uri);
       }
     } catch {
@@ -70,23 +79,36 @@ export default function EditProfileScreen() {
       return;
     }
 
-    const updatedUser = {
-      name: username.trim(),
-      bio: bio.trim(),
-      profileImage,
-    };
-
-    // حفظ محلي أولاً حتى يظهر التحديث فوراً حتى لو فشل السيرفر
-    try {
-      const raw = await AsyncStorage.getItem("userData");
-      const user = raw ? JSON.parse(raw) : {};
-      await AsyncStorage.setItem("userData", JSON.stringify({ ...user, ...updatedUser }));
-    } catch {}
-
     setIsSubmitting(true);
     try {
-      await updateProfileRemote(updatedUser);
-      alert(t("edit profile"), t("profile updated"));
+      // 1. إذا كانت الصورة محلية (من منتقي الصور)، ارفعها للخادم أولاً
+      //    للحصول على رابط HTTP دائم بدلاً من مسار file:// الذي يختفي بمسح البيانات
+      let finalImageUrl: string | null = profileImage;
+      if (profileImage && !/^https?:\/\//i.test(profileImage)) {
+        finalImageUrl = await uploadProfileImageRemote(profileImage);
+      }
+
+      const updatedUser = {
+        name: username.trim(),
+        bio: bio.trim(),
+        profileImage: finalImageUrl,
+      };
+
+      // 2. تحديث الخادم وحفظ الرابط الدائم محلياً من استجابة الخادم
+      const savedUser = await updateProfileRemote(updatedUser);
+      const raw = await AsyncStorage.getItem("userData");
+      const user = raw ? JSON.parse(raw) : {};
+      await AsyncStorage.setItem(
+        "userData",
+        JSON.stringify({ ...user, ...updatedUser, ...(savedUser || {}) }),
+      );
+
+      alert(
+        t("edit profile"),
+        profileImage !== originalProfileImageRef.current
+          ? t("profile image updated")
+          : t("profile updated"),
+      );
       router.back();
     } catch (error: any) {
       alert(t("error"), error?.message || "");
@@ -132,6 +154,7 @@ export default function EditProfileScreen() {
                 source={{ uri: profileImage }}
                 className="w-full h-full"
                 resizeMode="cover"
+                onError={() => setProfileImage(null)}
               />
             ) : (
               <User2 size={52} color="#d97706" />

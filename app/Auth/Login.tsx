@@ -38,7 +38,7 @@ export default function LoginScreen() {
       // تحميل المفضلة والتفضيلات المحفوظة في الحساب
       try {
         const me = await getMe();
-        applyAccountData(me);
+        await applyAccountData(me);
       } catch {}
       alert(
         "أهلاً بك! 🍳",
