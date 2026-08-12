@@ -36,7 +36,6 @@ export default function RegisterScreen() {
     setLoading(true);
     try {
       const data = await registerUser(name, email, password);
-      // تحميل المفضلة والتفضيلات المحفوظة في الحساب
       try {
         const me = await getMe();
         applyAccountData(me);
@@ -79,7 +78,7 @@ export default function RegisterScreen() {
           className="p-6"
         >
           {/* نموذج البيانات */}
-          <View className="gap-2">
+          <View className="gap-3">
             <TextInput
               mode="outlined"
               label="اسم المستخدم"
@@ -89,8 +88,8 @@ export default function RegisterScreen() {
               textColor={textColor}
               outlineColor={isDark ? "#3F3F46" : "#E5E7EB"}
               activeOutlineColor={activeOutlineColor}
-              style={{ backgroundColor: inputBgColor, textAlign: "right" }}
-              left={
+              style={{ backgroundColor: inputBgColor }}
+              right={
                 <TextInput.Icon
                   icon="account-outline"
                   color={isDark ? "#A1A1AA" : "#6B7280"}
@@ -109,8 +108,8 @@ export default function RegisterScreen() {
               textColor={textColor}
               outlineColor={isDark ? "#3F3F46" : "#E5E7EB"}
               activeOutlineColor={activeOutlineColor}
-              style={{ backgroundColor: inputBgColor, textAlign: "right" }}
-              left={
+              style={{ backgroundColor: inputBgColor }}
+              right={
                 <TextInput.Icon
                   icon="email-outline"
                   color={isDark ? "#A1A1AA" : "#6B7280"}
@@ -128,8 +127,8 @@ export default function RegisterScreen() {
               textColor={textColor}
               outlineColor={isDark ? "#3F3F46" : "#E5E7EB"}
               activeOutlineColor={activeOutlineColor}
-              style={{ backgroundColor: inputBgColor, textAlign: "right" }}
-              left={
+              style={{ backgroundColor: inputBgColor }}
+              right={
                 <TextInput.Icon
                   icon={showPassword ? "eye-off-outline" : "eye-outline"}
                   onPress={() => setShowPassword(!showPassword)}
@@ -142,7 +141,7 @@ export default function RegisterScreen() {
             <TouchableOpacity
               onPress={handleRegister}
               disabled={loading}
-              className="bg-[#7A8B42] py-3.5 rounded-xl items-center mt-2.5"
+              className="bg-[#7A8B42] py-3.5 rounded-xl items-center mt-3"
             >
               {loading ? (
                 <ActivityIndicator color="#FFFFFF" />
@@ -156,7 +155,7 @@ export default function RegisterScreen() {
 
           {/* التنقل لتسجيل الدخول */}
           <View className="flex-row justify-center mt-6 gap-1.5">
-            <TouchableOpacity onPress={() => router.push("/Auth/Login")}>
+            <TouchableOpacity onPress={() => router.push("./Login")}>
               <Text className="text-[#7A8B42] font-bold text-md">
                 تسجيل الدخول
               </Text>

@@ -78,7 +78,7 @@ export default function LoginScreen() {
           className="p-6"
         >
           {/* نموذج البيانات */}
-          <View className="gap-2">
+          <View className="gap-3">
             <TextInput
               mode="outlined"
               label="البريد الإلكتروني"
@@ -90,8 +90,8 @@ export default function LoginScreen() {
               textColor={textColor}
               outlineColor={isDark ? "#3F3F46" : "#E5E7EB"}
               activeOutlineColor={activeOutlineColor}
-              style={{ backgroundColor: inputBgColor }}
-              left={
+              style={{ backgroundColor: inputBgColor}}
+              right={
                 <TextInput.Icon
                   icon="email-outline"
                   color={isDark ? "#A1A1AA" : "#6B7280"}
@@ -110,7 +110,7 @@ export default function LoginScreen() {
               outlineColor={isDark ? "#3F3F46" : "#E5E7EB"}
               activeOutlineColor={activeOutlineColor}
               style={{ backgroundColor: inputBgColor }}
-              left={
+              right={
                 <TextInput.Icon
                   icon={showPassword ? "eye-off-outline" : "eye-outline"}
                   onPress={() => setShowPassword(!showPassword)}
@@ -123,7 +123,7 @@ export default function LoginScreen() {
             <TouchableOpacity
               onPress={handleLogin}
               disabled={loading}
-              className="bg-[#7A8B42] py-3.5 rounded-xl items-center mt-2.5"
+              className="bg-[#7A8B42] py-3.5 rounded-xl items-center mt-3"
             >
               {loading ? (
                 <ActivityIndicator color="#FFFFFF" />
@@ -137,7 +137,7 @@ export default function LoginScreen() {
 
           {/* التنقل لإنشاء حساب */}
           <View className="flex-row justify-center mt-6 gap-1.5">
-            <TouchableOpacity onPress={() => router.push("/Auth/Register")}>
+            <TouchableOpacity onPress={() => router.push("./Register")}>
               <Text className="text-[#7A8B42] font-bold text-md">
                 إنشاء حساب جديد
               </Text>

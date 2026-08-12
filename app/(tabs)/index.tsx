@@ -10,8 +10,9 @@ import {
 import { FlashList } from "@shopify/flash-list";
 import { useEffect, useState } from "react";
 import { Feather } from "@expo/vector-icons";
-import { router } from "expo-router";
+import { Redirect, router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTranslation } from "react-i18next";
 import { getMealsByCategory } from "../../src/api/meal";
 import { getLocalizedMealName, useAppLanguage } from "../../src/utils/localizedMeal";
@@ -47,6 +48,26 @@ export default function Index() {
 
   const categories = ["Chicken", "Seafood", "Beef", "Lamb"];
 
+  // حارس الدخول: بدون توكن نعيد التوجيه لشاشة تسجيل الدخول
+  // حتى لا يفتح التطبيق على الصفحة الرئيسية بدون حساب
+  const [authChecked, setAuthChecked] = useState(false);
+  const [isAuthed, setIsAuthed] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+    AsyncStorage.getItem("userToken")
+      .then((token) => {
+        if (isMounted) setIsAuthed(!!token);
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (isMounted) setAuthChecked(true);
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   useEffect(() => {
     let isMounted = true;
 
@@ -72,6 +93,18 @@ export default function Index() {
       isMounted = false;
     };
   }, [activeCategory]);
+
+  if (!authChecked) {
+    return (
+      <View className="flex-1 justify-center items-center bg-[#121212]">
+        <ActivityIndicator size="large" color="#EA580C" />
+      </View>
+    );
+  }
+
+  if (!isAuthed) {
+    return <Redirect href="/Auth/Login" />;
+  }
 
   return (
     <View className="flex-1 bg-background dark:bg-darkBackground">
