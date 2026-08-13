@@ -32,7 +32,7 @@ export default function CustomSplash({ onFinish }: CustomSplashProps) {
   }, [onFinish]);
 
   return (
-    <View className="flex-1 bg-[#F2F2F2] dark:bg-[#121212] justify-center items-center px-6">
+    <View className="flex-1 bg-[#F8FAFC] dark:bg-[#223D4D] justify-center items-center px-6">
       {/* الشعار */}
       <Image 
         source={isDark ? require('../assets/images/SplashIconDark.png') : require('../assets/images/SplashIcon.png')} 

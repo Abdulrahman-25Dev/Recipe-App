@@ -38,6 +38,13 @@ const CATEGORY_LABEL_KEYS: Record<string, string> = {
   Lamb: "lamb",
 };
 
+const getGreetingKey = () => {
+  const hour = new Date().getHours();
+  if (hour < 12) return "greeting morning";
+  if (hour < 18) return "greeting afternoon";
+  return "greeting evening";
+};
+
 export default function Index() {
   const { t } = useTranslation();
   const { language, isRTL } = useAppLanguage();
@@ -96,8 +103,8 @@ export default function Index() {
 
   if (!authChecked) {
     return (
-      <View className="flex-1 justify-center items-center bg-[#121212]">
-        <ActivityIndicator size="large" color="#EA580C" />
+      <View className="flex-1 justify-center items-center bg-[#223D4D]">
+        <ActivityIndicator size="large" color="#FD802E" />
       </View>
     );
   }
@@ -110,14 +117,23 @@ export default function Index() {
     <View className="flex-1 bg-background dark:bg-darkBackground">
       {/* Header */}
       <View
-        className={`p-5 flex-row items-center mt-10 ${
-          isRTL ? "justify-end" : "justify-start"
+        className={`p-5 flex-row items-center gap-4 mt-10 ${
+          isRTL ? "flex-row" : "flex-row-reverse"
         }`}
       >
-        <Text className="text-lg font-bold text-primary dark:text-darkPrimary mr-2">
-          {t("welcome")}
-        </Text>
-        <Feather name="sun" size={24} color="#FF8A00" />
+        <View className="flex-1 mr-2">
+          <Text
+            className="text-primary"
+            style={{
+              fontSize: 14,
+              fontWeight: "bold",
+              textAlign: isRTL ? "right" : "left",
+            }}
+          >
+            {t(getGreetingKey())}
+          </Text>
+        </View>
+        <Feather name="sun" size={24} color="#FD802E" />
       </View>
 
       {/* Categories Header */}
@@ -175,7 +191,7 @@ export default function Index() {
       {/* Meals Content */}
       {loading ? (
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator color="#FF8A00" size="large" />
+          <ActivityIndicator color="#FD802E" size="large" />
           <Text className="text-text dark:text-darkText mt-4 text-md">
             {t("loading recipes")}
           </Text>

@@ -16,18 +16,18 @@ import { useRouter } from "expo-router";
 import { useTheme } from "../store/useTheme";
 
 const COLORS = {
-  primary: "#EA580C",
+  primary: "#FD802E",
   dark: {
-    background: "#121212",
+    background: "#223D4D",
     textPrimary: "#FFFFFF",
-    textSecondary: "#A1A1AA",
-    dotInactive: "#3F3F46",
+    textSecondary: "#94A3B8",
+    dotInactive: "#334B5B",
   },
   light: {
-    background: "#F2F2F2",
-    textPrimary: "#18181B",
-    textSecondary: "#71717A",
-    dotInactive: "#E4E4E7",
+    background: "#F8FAFC",
+    textPrimary: "#223D4D",
+    textSecondary: "#64748B",
+    dotInactive: "#E2E8F0",
   },
 } as const;
 

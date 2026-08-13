@@ -223,7 +223,7 @@ export default function RandomRecipe() {
           className="w-11 h-11 items-center justify-center rounded-xl bg-card dark:bg-darkCard border border-neutral-200 dark:border-neutral-700"
         >
           <View className="flex-row items-center gap-1">
-            <Filter size={19} color="#FF8A00" />
+            <Filter size={19} color="#FD802E" />
             {activeFiltersCount > 0 && (
               <View className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] rounded-full bg-primary items-center justify-center px-1">
                 <Text className="text-white text-[10px] font-bold">
@@ -257,7 +257,7 @@ export default function RandomRecipe() {
       {/* Content */}
       {loading ? (
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#FF8A00" />
+          <ActivityIndicator size="large" color="#FD802E" />
           <Text className="text-text dark:text-darkText mt-4 text-base">
             {isArabic ? "جاري تحميل الوصفات..." : "Loading recipes..."}
           </Text>
@@ -265,7 +265,7 @@ export default function RandomRecipe() {
       ) : noMatch || !randomMeal ? (
         <View className="flex-1 items-center justify-center px-6">
           <View className="w-24 h-24 rounded-full bg-primary/10 items-center justify-center mb-5">
-            <ChefHat size={44} color="#FF8A00" />
+            <ChefHat size={44} color="#FD802E" />
           </View>
           <Text className="text-lg font-bold text-text dark:text-darkText text-center mb-2">
             {t("no recipes with filters")}

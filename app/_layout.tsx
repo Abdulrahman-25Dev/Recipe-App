@@ -66,8 +66,8 @@ export default function RootLayout() {
   // ثانياً: شاشة إضافية مؤقتة لو لم يتحدد وضع الاستخدام الأول بعد
   if (isFirstLaunch === null) {
     return (
-      <View className="flex-1 justify-center items-center bg-[#121212]">
-        <ActivityIndicator size="large" color="#EA580C" />
+      <View className="flex-1 justify-center items-center bg-[#223D4D]">
+        <ActivityIndicator size="large" color="#FD802E" />
       </View>
     );
   }

@@ -52,9 +52,9 @@ export default function RegisterScreen() {
     }
   };
 
-  const activeOutlineColor = "#7A8B42";
-  const textColor = isDark ? "#FFFFFF" : "#111827";
-  const inputBgColor = isDark ? "#18181B" : "#FFFFFF";
+  const activeOutlineColor = "#FD802E";
+  const textColor = isDark ? "#FFFFFF" : "#223D4D";
+  const inputBgColor = isDark ? "#1A303D" : "#FFFFFF";
 
   return (
     <ImageBackground
@@ -86,13 +86,13 @@ export default function RegisterScreen() {
               value={name}
               onChangeText={setName}
               textColor={textColor}
-              outlineColor={isDark ? "#3F3F46" : "#E5E7EB"}
+              outlineColor={isDark ? "#334B5B" : "#E2E8F0"}
               activeOutlineColor={activeOutlineColor}
               style={{ backgroundColor: inputBgColor }}
               right={
                 <TextInput.Icon
                   icon="account-outline"
-                  color={isDark ? "#A1A1AA" : "#6B7280"}
+                  color={isDark ? "#94A3B8" : "#64748B"}
                 />
               }
             />
@@ -106,13 +106,13 @@ export default function RegisterScreen() {
               keyboardType="email-address"
               autoCapitalize="none"
               textColor={textColor}
-              outlineColor={isDark ? "#3F3F46" : "#E5E7EB"}
+              outlineColor={isDark ? "#334B5B" : "#E2E8F0"}
               activeOutlineColor={activeOutlineColor}
               style={{ backgroundColor: inputBgColor }}
               right={
                 <TextInput.Icon
                   icon="email-outline"
-                  color={isDark ? "#A1A1AA" : "#6B7280"}
+                  color={isDark ? "#94A3B8" : "#64748B"}
                 />
               }
             />
@@ -125,14 +125,14 @@ export default function RegisterScreen() {
               onChangeText={setPassword}
               secureTextEntry={!showPassword}
               textColor={textColor}
-              outlineColor={isDark ? "#3F3F46" : "#E5E7EB"}
+              outlineColor={isDark ? "#334B5B" : "#E2E8F0"}
               activeOutlineColor={activeOutlineColor}
               style={{ backgroundColor: inputBgColor }}
               right={
                 <TextInput.Icon
                   icon={showPassword ? "eye-off-outline" : "eye-outline"}
                   onPress={() => setShowPassword(!showPassword)}
-                  color={isDark ? "#A1A1AA" : "#6B7280"}
+                  color={isDark ? "#94A3B8" : "#64748B"}
                 />
               }
             />
@@ -141,7 +141,7 @@ export default function RegisterScreen() {
             <TouchableOpacity
               onPress={handleRegister}
               disabled={loading}
-              className="bg-[#7A8B42] py-3.5 rounded-xl items-center mt-3"
+              className="bg-[#FD802E] py-3.5 rounded-xl items-center mt-3"
             >
               {loading ? (
                 <ActivityIndicator color="#FFFFFF" />
@@ -156,11 +156,11 @@ export default function RegisterScreen() {
           {/* التنقل لتسجيل الدخول */}
           <View className="flex-row justify-center mt-6 gap-1.5">
             <TouchableOpacity onPress={() => router.push("./Login")}>
-              <Text className="text-[#7A8B42] font-bold text-md">
+              <Text className="text-[#FD802E] font-bold text-md">
                 تسجيل الدخول
               </Text>
             </TouchableOpacity>
-            <Text className="text-gray-500 dark:text-zinc-400 text-md">
+            <Text className="text-slate-500 dark:text-slate-400 text-md">
               لديك حساب بالفعل؟
             </Text>
           </View>

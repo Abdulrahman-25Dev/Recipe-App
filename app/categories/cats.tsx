@@ -95,7 +95,7 @@ export default function CategoriesScreen() {
           {/* Icon on top-left */}
           <View className="absolute top-3 left-3 z-10">
             <View className="bg-black/70 rounded-full w-9 h-9 items-center justify-center shadow-lg">
-              <ChefHat size={20} color="#FF8A00" />
+              <ChefHat size={20} color="#FD802E" />
             </View>
           </View>
 
@@ -141,7 +141,7 @@ export default function CategoriesScreen() {
           <Ionicons
             name="arrow-back"
             size={24}
-            color="#FF8A00"
+            color="#FD802E"
           />
         </TouchableOpacity>
         <Text className="text-2xl font-bold truncate text-center text-primary dark:text-darkPrimary">
@@ -152,7 +152,7 @@ export default function CategoriesScreen() {
       {/* Content */}
       {loading ? (
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#FF8A00" />
+          <ActivityIndicator size="large" color="#FD802E" />
           <Text className="text-text mt-4 text-md">
             جاري تحميل التصنيفات...
           </Text>

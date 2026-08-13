@@ -21,11 +21,11 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: "#F97316",
+        tabBarActiveTintColor: "#FD802E",
         tabBarInactiveTintColor: "#9CA3AF",
         tabBarShowLabel: true,
         tabBarStyle: {
-          backgroundColor: isDark ? "#121212" : "#FFFFFF",
+          backgroundColor: isDark ? "#223D4D" : "#F2F2F2",
           borderTopWidth: 0,
           height: 75,
           position: "absolute",
@@ -70,7 +70,7 @@ export default function TabLayout() {
               <View
                 style={[
                   styles.randomButton,
-                  { backgroundColor: "#F97316"  },
+                  { backgroundColor: "#FD802E"  },
                 ]}
               >
                 <Dices size={30} color="#FFFFFF" />

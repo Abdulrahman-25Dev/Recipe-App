@@ -1,5 +1,11 @@
 {
     "welcome":"مرحبا بك",
+    
+    "greeting morning":"صباح الخير واللذاذة ☕",
+    "greeting afternoon":"أهلاً بك في المطبخ 🍳",
+    "greeting evening":"مساء الورد، وش العشاء اليوم؟ 🌙",
+
+    "chef":"الشيف",
     "SplashDescription":"مقادير… حيث تبدأ نكهة الإبداع",
     "loading":"جاري تحميل عالم مقادير...",
     "categories":"التصنيفات",

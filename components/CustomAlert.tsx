@@ -75,7 +75,7 @@ export function AlertProvider({ children }: { children: React.ReactNode }) {
                     ? "bg-red-500"
                     : btn.style === "cancel"
                       ? "bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600"
-                      : "bg-[#FF8A00]";
+                      : "bg-[#FD802E]";
                 const textStyle =
                   btn.style === "cancel"
                     ? "text-gray-700 dark:text-gray-300"

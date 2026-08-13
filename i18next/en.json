@@ -1,5 +1,9 @@
 {
     "welcome":"Welcome",
+    "greeting morning":"Good morning and deliciousness ☕",
+    "greeting afternoon":"Welcome to the kitchen 🍳",
+    "greeting evening":"Good evening, what's for dinner today? 🌙",
+    "chef":"Chef",
     "SplashDescription":"Maqadeer... where you start the flavor of creativity",
     "loading":"Loading the world of Maqadeer...",
     "categories":"Categories",

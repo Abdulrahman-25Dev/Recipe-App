@@ -73,7 +73,7 @@ export default function MealDetails() {
   if (loading || !meal) {
     return (
       <View className="flex-1 items-center justify-center bg-background dark:bg-darkBackground">
-        <ActivityIndicator size="large" color="#FF8A00" />
+        <ActivityIndicator size="large" color="#FD802E" />
         <Text className="text-text dark:text-darkText mt-4">
           جاري تحميل تفاصيل الوصفة...
         </Text>
@@ -128,7 +128,7 @@ export default function MealDetails() {
             onPress={() => router.back()}
             className="absolute top-4 bg-black right-4 z-10 p-2 rounded-full shadow mt-7"
           >
-            <ArrowRight size={24} color="#FF8A00" />
+            <ArrowRight size={24} color="#FD802E" />
           </Pressable>
           <Image
             source={{ uri: imageUrl }}
@@ -169,7 +169,7 @@ export default function MealDetails() {
             onPress={() => router.back()}
             className="absolute top-4 bg-black/60 right-4 z-10 p-2.5 rounded-full shadow mt-7"
           >
-            <ArrowRight size={22} color="#FF8A00" />
+            <ArrowRight size={22} color="#FD802E" />
           </Pressable>
 
           <Pressable
@@ -178,8 +178,8 @@ export default function MealDetails() {
           >
             <Heart
               size={22}
-              color="#FF8A00"
-              fill={favorited ? "#FF8A00" : "none"}
+              color="#FD802E"
+              fill={favorited ? "#FD802E" : "none"}
             />
           </Pressable>
         </View>
@@ -196,7 +196,7 @@ export default function MealDetails() {
           <View className="flex-row flex-wrap justify-between gap-y-3 mb-5">
             {/* 1. التصنيف */}
             <View className="w-[48%] bg-primary/10 rounded-2xl border border-primary/30 dark:border-darkPrimary/30 p-3 items-center justify-center">
-              <UtensilsCrossed size={22} color="#FF8A00" />
+              <UtensilsCrossed size={22} color="#FD802E" />
               <Text
                 numberOfLines={1}
                 className="text-sm text-text dark:text-darkText mt-1.5 font-bold"
@@ -207,7 +207,7 @@ export default function MealDetails() {
 
             {/* 2. المنطقة / البلد */}
             <View className="w-[48%] bg-primary/10 rounded-2xl border border-primary/30 dark:border-darkPrimary/30 p-3 items-center justify-center">
-              <MapPin size={22} color="#FF8A00" />
+              <MapPin size={22} color="#FD802E" />
               <Text
                 numberOfLines={1}
                 className="text-sm text-text dark:text-darkText mt-1.5 font-bold"
@@ -218,7 +218,7 @@ export default function MealDetails() {
 
             {/* 3. السعرات الحرارية */}
             <View className="w-[48%] bg-primary/10 rounded-2xl border border-primary/30 dark:border-darkPrimary/30 p-3 items-center justify-center">
-              <Flame size={22} color="#FF8A00" />
+              <Flame size={22} color="#FD802E" />
               <Text
                 numberOfLines={1}
                 className="text-sm text-text dark:text-darkText mt-1.5 font-bold"
@@ -230,7 +230,7 @@ export default function MealDetails() {
 
             {/* 4. عدد المكونات */}
             <View className="w-[48%] bg-primary/10 rounded-2xl border border-primary/30 dark:border-darkPrimary/30 p-3 items-center justify-center">
-              <ListOrdered size={22} color="#FF8A00" />
+              <ListOrdered size={22} color="#FD802E" />
               <Text className="text-sm text-text dark:text-darkText mt-1.5 font-bold">
                 {meal.ingredientsCount || ingredientsList.length}{" "}
                 {isArabic
@@ -250,8 +250,8 @@ export default function MealDetails() {
               <Switch
                 value={isArabic}
                 onValueChange={(val) => setIsArabic(val)}
-                thumbColor={isArabic ? "#FF8A00" : "#f4f3f4"}
-                trackColor={{ false: "#767577", true: "#FF8A00" }}
+                thumbColor={isArabic ? "#FD802E" : "#f4f3f4"}
+                trackColor={{ false: "#767577", true: "#FD802E" }}
               />
               <Text className="text-text dark:text-darkText text-base font-bold">
                 عرض باللغة العربية
@@ -264,7 +264,7 @@ export default function MealDetails() {
             <Text className="text-xl font-bold text-primary dark:text-darkPrimary mr-2 text-right">
               المكونات
             </Text>
-            <List size={22} color="#FF8A00" />
+            <List size={22} color="#FD802E" />
           </View>
 
           {/* قائمة المكونات */}
@@ -299,7 +299,7 @@ export default function MealDetails() {
             <Text className="text-xl font-bold text-primary dark:text-darkPrimary mr-2 text-right">
               طريقة التحضير
             </Text>
-            <BookOpen size={22} color="#FF8A00" />
+            <BookOpen size={22} color="#FD802E" />
           </View>
 
           {/* قائمة طريقة التحضير */}

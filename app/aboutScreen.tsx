@@ -43,12 +43,12 @@ export default function AboutApp() {
     },
   ];
   return (
-    <ScrollView className="flex-1 bg-white dark:bg-neutral-900 p-6">
+    <ScrollView className="flex-1 bg-white dark:bg-darkBackground p-6">
       <Stack.Screen options={{ headerShown: false }} />
       <View className="items-center my-8">
         {/* أيقونة التطبيق أو شعار مبرمج (ممكن تحط صورتك هنا) */}
         <Image
-          source={require("../assets/images/MaqadeerIcon.png")}
+          source={require("../assets/images/AboutIcon.png")}
           className="w-28 h-28 rounded-full"
           resizeMode="contain"
         />
@@ -62,7 +62,7 @@ export default function AboutApp() {
       </View>
 
       <View className={language === "ar" ? "items-end" : "items-start"}>
-        <Text className="text-lg font-bold text-orange-500 mb-2">
+        <Text className="text-lg font-bold text-[#FD802E] mb-2">
           {t("title")}
         </Text>
         <Text
@@ -75,7 +75,7 @@ export default function AboutApp() {
         <View className="mt-8 px-4">
           {/* عنوان القسم */}
           <Text
-            className={`text-xl font-bold mb-6 text-orange-500 ${language === "ar" ? "text-right" : "text-left"}`}
+            className={`text-xl font-bold mb-6 text-[#FD802E] ${language === "ar" ? "text-right" : "text-left"}`}
           >
             {language === "ar" ? "مميزات التطبيق" : "App Features"}
           </Text>
@@ -87,11 +87,11 @@ export default function AboutApp() {
               return (
                 <View
                   key={f.id}
-                  className="w-full bg-neutral-50 dark:bg-neutral-800/50 p-4 rounded-3xl mb-4 border border-neutral-100 dark:border-neutral-700 shadow-sm"
+                  className="w-full bg-neutral-50 dark:bg-darkCard p-4 rounded-3xl mb-4 border border-neutral-100 dark:border-neutral-700 shadow-sm"
                 >
                   <View className="flex-row items-start gap-3">
-                    <View className="w-11 h-11 rounded-2xl bg-orange-500/10 items-center justify-center">
-                      <Icon size={20} color="#F97316" strokeWidth={1.8} />
+                    <View className="w-11 h-11 rounded-2xl bg-[#FD802E]/10 items-center justify-center">
+                      <Icon size={20} color="#FD802E" strokeWidth={1.8} />
                     </View>
                     <View className="flex-1">
                       <Text
@@ -113,7 +113,7 @@ export default function AboutApp() {
           </View>
         </View>
 
-        <Text className="text-lg font-bold text-orange-500 mb-4">
+        <Text className="text-lg font-bold text-[#FD802E] mb-4">
           {t("tech")}
         </Text>
         <View className="flex-row flex-wrap gap-2 mb-8 justify-center">
@@ -137,7 +137,7 @@ export default function AboutApp() {
         </View>
 
         {/* معلومات المطور */}
-        <View className="w-full p-4 bg-orange-500/10 rounded-2xl border border-orange-500/20">
+        <View className="w-full p-4 bg-[#FD802E]/10 rounded-2xl border border-[#FD802E]/20">
           <Text className="text-neutral-800 dark:text-white font-semibold text-center mb-4">
             {t("developer")} 🐧
           </Text>
@@ -147,7 +147,7 @@ export default function AboutApp() {
                 "https://github.com/Abdulrahman-25Dev?tab=repositories",
               )
             }
-            className="bg-orange-600 p-3 rounded-xl flex-row items-center justify-center shadow-sm"
+            className="bg-[#FD802E] p-3 rounded-xl flex-row items-center justify-center shadow-sm"
           >
             <Github size={18} color="#fff" strokeWidth={1.8} />
             <Text className="text-white font-bold ml-2">{t("github")}</Text>
@@ -157,7 +157,7 @@ export default function AboutApp() {
             onPress={() =>
               Linking.openURL("mailto:abdulrahman.dev25@gmail.com")
             }
-            className="bg-orange-600 mt-4 p-3 rounded-xl flex-row items-center justify-center shadow-sm"
+            className="bg-[#FD802E] mt-4 p-3 rounded-xl flex-row items-center justify-center shadow-sm"
           >
             <Mail size={18} color="#fff" strokeWidth={1.8} />
             <Text className="text-white dark:text-white font-semibold ml-2">

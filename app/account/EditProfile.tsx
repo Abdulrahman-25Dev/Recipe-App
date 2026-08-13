@@ -131,9 +131,9 @@ export default function EditProfileScreen() {
           className={`absolute ${isRTL ? "right-4" : "left-4"} w-10 h-10 items-center justify-center rounded-full bg-white dark:bg-darkCard border border-[#f0e6d6] dark:border-gray-800`}
         >
           {isRTL ? (
-            <ChevronRight size={22} color="#FF8A00" />
+            <ChevronRight size={22} color="#FD802E" />
           ) : (
-            <ChevronLeft size={22} color="#FF8A00" />
+            <ChevronLeft size={22} color="#FD802E" />
           )}
         </Pressable>
         <Text className="text-lg font-bold text-[#4a2c11] dark:text-darkText">

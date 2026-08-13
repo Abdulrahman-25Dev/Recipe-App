@@ -35,7 +35,7 @@ export interface FilterBottomSheetProps {
   categories: CategoryOption[];
 }
 
-const PRIMARY_ORANGE = "#FF8A00";
+const PRIMARY_ORANGE = "#FD802E";
 
 const FilterBottomSheet = ({
   isVisible,

@@ -157,7 +157,7 @@ export default function SettingsScreen() {
               onError={() => setProfileImage(null)}
             />
           ) : (
-            <User2 size={55} color="#FF8A00" />
+            <User2 size={55} color="#FD802E" />
           )}
         </View>
         <Text className="text-2xl font-bold mt-4 text-text dark:text-darkText text-center">
@@ -176,8 +176,8 @@ export default function SettingsScreen() {
         <View className="flex-row-reverse gap-4">
           {/* مربع المفضلة - يقرأ من الستور */}
           <View className="flex-1 bg-card dark:bg-darkCard p-5 rounded-[35px] items-center shadow-sm border border-gray-50 dark:border-darkCard">
-            <View className="bg-orange-50 dark:bg-orange-900 p-2.5 rounded-2xl mb-2">
-              <Heart size={22} color="#FF8A00" />
+            <View className="bg-[#FD802E]/10 dark:bg-[#FD802E]/20 p-2.5 rounded-2xl mb-2">
+              <Heart size={22} color="#FD802E" />
             </View>
             <Text className="text-gray-400 dark:text-gray-300 text-xs mb-1">
               {t("favorites")}
@@ -219,11 +219,11 @@ export default function SettingsScreen() {
             <View
               className={`${isRTL ? "flex-row-reverse" : "flex-row"} items-center gap-4`}
             >
-              <View className="bg-orange-50 dark:bg-darkCard p-2.5 rounded-2xl">
+              <View className="bg-[#FD802E]/10 dark:bg-darkCard p-2.5 rounded-2xl">
                 {isDark ? (
-                  <Moon size={22} color="#FF8A00" />
+                  <Moon size={22} color="#FD802E" />
                 ) : (
-                  <Sun size={22} color="#FF8A00" />
+                  <Sun size={22} color="#FD802E" />
                 )}
               </View>
               <Text className="text-lg font-semibold text-gray-800 dark:text-darkText">
@@ -231,7 +231,7 @@ export default function SettingsScreen() {
               </Text>
             </View>
             <Switch
-              trackColor={{ true: "#FF8A00", false: "#DDD" }}
+              trackColor={{ true: "#FD802E", false: "#DDD" }}
               thumbColor="white"
               value={isDark}
               onValueChange={toggleTheme}
@@ -260,12 +260,12 @@ export default function SettingsScreen() {
                 }}
                 className={` p-4 rounded-2xl border-2 items-center ${
                   language === "ar"
-                    ? "border-orange-500 bg-orange-500/10"
+                    ? "border-[#FD802E] bg-[#FD802E]/10"
                     : "border-gray-300 dark:border-gray-600"
                 }`}
               >
                 <Text
-                  className={`text-xl font-bold ${language === "ar" ? "text-orange-500" : "text-neutral-400"}`}
+                  className={`text-xl font-bold ${language === "ar" ? "text-[#FD802E]" : "text-neutral-400"}`}
                 >
                   ع
                 </Text>
@@ -279,12 +279,12 @@ export default function SettingsScreen() {
                 }}
                 className={` p-4 rounded-2xl border-2 items-center ${
                   language === "en"
-                    ? "border-orange-500 bg-orange-500/10"
+                    ? "border-[#FD802E] bg-[#FD802E]/10"
                     : "border-gray-300 dark:border-gray-600"
                 }`}
               >
                 <Text
-                  className={`text-xl font-bold ${language === "en" ? "text-orange-500" : "text-neutral-400"}`}
+                  className={`text-xl font-bold ${language === "en" ? "text-[#FD802E]" : "text-neutral-400"}`}
                 >
                   E
                 </Text>
@@ -309,8 +309,8 @@ export default function SettingsScreen() {
             <View
               className={`items-center gap-4 ${isRTL ? "flex-row-reverse" : "flex-row"}`}
             >
-              <View className="bg-orange-50 dark:bg-darkCard p-2.5 rounded-2xl">
-                <CircleUserRound size={22} color="#FF8A00" />
+              <View className="bg-[#FD802E]/10 dark:bg-darkCard p-2.5 rounded-2xl">
+                <CircleUserRound size={22} color="#FD802E" />
               </View>
               <Text className="text-lg font-semibold text-gray-800 dark:text-darkText">
                 {t("edit profile")}

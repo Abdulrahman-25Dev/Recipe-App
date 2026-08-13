@@ -21,8 +21,8 @@ const Favorites = () => {
       {/* 1. الهيدر مع عدد الوصفات المحفوظة */}
       <View className="flex-row items-center justify-between my-4 px-1">
         <View className="flex-row items-center gap-6">
-          <View className="p-2.5 rounded-2xl bg-orange-500/10 dark:bg-orange-500/20">
-            <Heart size={22} color="#F97316" fill="#F97316" />
+          <View className="p-2.5 rounded-2xl bg-[#FD802E]/10 dark:bg-[#FD802E]/20">
+            <Heart size={22} color="#FD802E" fill="#FD802E" />
           </View>
           <Text className="text-2xl font-extrabold text-neutral-900 dark:text-white">
             {t("favorites")}
@@ -31,7 +31,7 @@ const Favorites = () => {
 
         {favorites.length > 0 && (
           <View className="bg-neutral-100 dark:bg-neutral-800 px-3 py-1 rounded-full border border-neutral-200 dark:border-neutral-700">
-            <Text className="text-xs font-bold text-orange-500">
+            <Text className="text-xs font-bold text-[#FD802E]">
               {favorites.length} {isArabic ? "وصفات" : "recipes"}
             </Text>
           </View>
@@ -41,8 +41,8 @@ const Favorites = () => {
       {/* 2. الشاشة الفارغة في حال عدم وجود مفضلة */}
       {favorites.length === 0 ? (
         <View className="flex-1 items-center justify-center -mt-10 px-6">
-          <View className="w-24 h-24 rounded-full bg-orange-500/10 dark:bg-orange-500/20 items-center justify-center mb-5">
-            <Heart size={44} color="#F97316" />
+          <View className="w-24 h-24 rounded-full bg-[#FD802E]/10 dark:bg-[#FD802E]/20 items-center justify-center mb-5">
+            <Heart size={44} color="#FD802E" />
           </View>
           <Text className="text-xl font-bold text-neutral-800 dark:text-white text-center mb-2">
             {isArabic ? "لا توجد وصفات مفضلة بعد" : "No favorite recipes yet"}
@@ -56,7 +56,7 @@ const Favorites = () => {
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={() => router.push("/search")}
-            className="flex-row items-center bg-orange-500 px-6 py-3.5 rounded-full gap-2 shadow-lg shadow-orange-500/30"
+            className="flex-row items-center bg-[#FD802E] px-6 py-3.5 rounded-full gap-2 shadow-lg shadow-[#FD802E]/30"
           >
             <Search size={18} color="#FFFFFF" />
             <Text className="text-white font-bold text-base">
@@ -120,7 +120,7 @@ const Favorites = () => {
                         </Text>
 
                         {category && (
-                          <View className="bg-orange-500/90 self-start px-2.5 py-0.5 rounded-full">
+                          <View className="bg-[#FD802E]/90 self-start px-2.5 py-0.5 rounded-full">
                             <Text className="text-white font-bold text-[10px] tracking-wide">
                               {category}
                             </Text>

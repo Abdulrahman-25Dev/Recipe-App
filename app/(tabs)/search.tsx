@@ -142,7 +142,7 @@ const isArabic = i18n.language === "ar"; // تحقق من اللغة الحال�
           onPress={() => router.back()}
           className="w-10 h-10 items-center justify-center rounded-full border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-darkCard"
         >
-          <Feather name="chevron-left" size={22} color="#FF8A00" />
+          <Feather name="chevron-left" size={22} color="#FD802E" />
         </TouchableOpacity>
 
         <View className="flex-1 flex-row items-center bg-neutral-100 dark:bg-neutral-800 rounded-full px-3 py-2">
@@ -168,7 +168,7 @@ const isArabic = i18n.language === "ar"; // تحقق من اللغة الحال�
           onPress={() => setFilterVisible(true)}
           className="w-10 h-10 items-center justify-center rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-darkCard"
         >
-          <Filter size={18} color="#FF8A00" />
+          <Filter size={18} color="#FD802E" />
           {activeFiltersCount > 0 && (
             <View className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] rounded-full bg-primary items-center justify-center px-1">
               <Text className="text-white text-[10px] font-bold">
@@ -225,7 +225,7 @@ const isArabic = i18n.language === "ar"; // تحقق من اللغة الحال�
         )}
 
       {loading && (
-        <ActivityIndicator size="large" color="#FF8A00" className="mt-8" />
+        <ActivityIndicator size="large" color="#FD802E" className="mt-8" />
       )}
 
       {!loading &&
@@ -286,7 +286,7 @@ const isArabic = i18n.language === "ar"; // تحقق من اللغة الحال�
                       {title}
                     </Text>
                     <Text
-                      className="text-orange-300 text-[11px] font-bold"
+                      className="text-[#FD802E] text-[11px] font-bold"
                       numberOfLines={1}
                     >
                       {area}

@@ -131,7 +131,7 @@ export default function CategoryMealsScreen() {
           <Ionicons
             name={isRTL ? "arrow-back" : "arrow-forward"}
             size={24}
-            color="#FF8A00"
+            color="#FD802E"
           />
         </TouchableOpacity>
         <Text
@@ -144,7 +144,7 @@ export default function CategoryMealsScreen() {
       {/* Content */}
       {loading ? (
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#FF8A00" />
+          <ActivityIndicator size="large" color="#FD802E" />
           <Text className="text-text dark:text-darkText mt-3 font-semibold">
             {isRTL ? "جاري تحميل الوصفات..." : "Loading recipes..."}
           </Text>

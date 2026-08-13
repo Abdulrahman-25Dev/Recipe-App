@@ -32,11 +32,13 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/RecipeIconNoBackground.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
+          "image": "./assets/images/F2F2F2.png",
+          "resizeMode": "cover",
+          "backgroundColor": "#F2F2F2",
           "dark": {
-            "backgroundColor": "#121212"
+            "image": "./assets/images/223D4D.png",
+            "backgroundColor": "#223D4D",
+            "resizeMode": "cover"
           }
         }
       ]
