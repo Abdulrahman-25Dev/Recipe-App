@@ -9,6 +9,7 @@ import { Stack } from "expo-router";
 import CustomSplash from "../components/CustomSplash";
 import Onboarding from "../components/Onboarding";
 import { AlertProvider } from "../components/CustomAlert";
+import OfflineAlert from "../components/OfflineAlert";
 
 I18nManager.allowRTL(false);
 I18nManager.forceRTL(false);
@@ -86,6 +87,7 @@ export default function RootLayout() {
         <Stack.Screen name="Auth/Login" />
         <Stack.Screen name="Auth/Register" />
       </Stack>
+      <OfflineAlert />
     </AlertProvider>
   );
 }

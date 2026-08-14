@@ -9,13 +9,13 @@ import {
 } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 import { useEffect, useState } from "react";
-import { Feather } from "@expo/vector-icons";
 import { Redirect, router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTranslation } from "react-i18next";
 import { getMealsByCategory } from "../../src/api/meal";
 import { getLocalizedMealName, useAppLanguage } from "../../src/utils/localizedMeal";
+import { Coffee, Salad, UtensilsCrossed } from "lucide-react-native";
 
 // تحديث الواجهة لتناسب قاعدة البيانات الخاصة بك
 type Meal = {
@@ -117,7 +117,7 @@ export default function Index() {
     <View className="flex-1 bg-background dark:bg-darkBackground">
       {/* Header */}
       <View
-        className={`p-5 flex-row items-center gap-4 mt-10 ${
+        className={`p-5 flex-row items-center gap-2 mt-10 ${
           isRTL ? "flex-row" : "flex-row-reverse"
         }`}
       >
@@ -133,7 +133,13 @@ export default function Index() {
             {t(getGreetingKey())}
           </Text>
         </View>
-        <Feather name="sun" size={24} color="#FD802E" />
+          {getGreetingKey() === "greeting morning" ? (
+            <Coffee color="#FD802E" size={24}  />
+          ) : getGreetingKey() === "greeting afternoon" ? (
+            <Salad color="#FD802E" size={24} />
+          ) : (
+            <UtensilsCrossed color="#FD802E" size={24} />
+          )}
       </View>
 
       {/* Categories Header */}

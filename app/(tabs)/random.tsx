@@ -213,7 +213,7 @@ export default function RandomRecipe() {
 
       {/* Header: title + Filter button */}
       <View className="flex-row items-center justify-between mb-5">
-        <View />
+        <View className="w-11" />
         <Text className="text-xl font-bold text-text dark:text-darkText">
           {t("random recipe")}
         </Text>

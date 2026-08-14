@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image } from 'react-native';
-import { useTheme } from "../store/useTheme";
 import { useTranslation } from "react-i18next";
 
 interface CustomSplashProps {
@@ -9,7 +8,6 @@ interface CustomSplashProps {
 
 export default function CustomSplash({ onFinish }: CustomSplashProps) {
   const [progress, setProgress] = useState(0);
-    const { isDark } = useTheme(); 
     const { t } = useTranslation(); // استدعاء الدالة t للترجمة
 
   useEffect(() => {
@@ -35,7 +33,7 @@ export default function CustomSplash({ onFinish }: CustomSplashProps) {
     <View className="flex-1 bg-[#F8FAFC] dark:bg-[#223D4D] justify-center items-center px-6">
       {/* الشعار */}
       <Image 
-        source={isDark ? require('../assets/images/SplashIconDark.png') : require('../assets/images/SplashIcon.png')} 
+        source={require('../assets/images/MaqadeerIcon-NoBackground.png')} 
         className="w-48 h-48 p-4"
         resizeMode="contain"
       />

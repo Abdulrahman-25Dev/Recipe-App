@@ -61,25 +61,10 @@ export default function SettingsScreen() {
     ]);
   };
 
-  const handleLogout = () => {
-    alert(
-      t("logout"),
-      isArabic
-        ? "هل تريد تسجيل الخروج من حسابك؟"
-        : "Do you want to log out of your account?",
-      [
-        { text: t("cancel"), style: "cancel" },
-        {
-          text: t("logout"),
-          style: "destructive",
-          onPress: async () => {
-            await logoutUser();
-            useFavorites.getState().setFavorites([]);
-            router.replace("/Auth/Login");
-          },
-        },
-      ],
-    );
+  const handleLogout = async () => {
+    await logoutUser();
+    useFavorites.getState().setFavorites([]);
+    router.replace("/Auth/Login");
   };
 
   const handleDeleteAccount = async () => {
@@ -138,8 +123,6 @@ export default function SettingsScreen() {
         .pop() || (isRTL ? "متنوع" : "Miscellaneous")
     );
   };
-
-  const isArabic = i18n.language === "ar";
 
   return (
     <ScrollView
