@@ -22,6 +22,8 @@
     "search for a recipe":"ابحث عن وصفات...",
     "results":"نتائج البحث",
     "start searching for your favorite recipe":"ابدأ بالبحث عن وصفاتك المفضلة",
+    "what are you looking for":"عن ماذا تبحث اليوم؟ 🍳",
+    "search subtitle":"اكتب اسم الوصفة أو المكونات للوصول لأشهى الأطباق",
 
     "favorites recipes":"وصفاتي المفضلة",
  
@@ -36,7 +38,10 @@
     "more":"المزيد",
     "rate us":"تقييم التطبيق",
     "delete all favorites":"إزالة كل المفضلات",
+    "no internet connection":"لا يوجد اتصال بالإنترنت",
+    "offline message":"يتطلب تطبيق مقادير الاتصال بالإنترنت لتقليب واستكشاف الوصفات من قاعدة البيانات.",
     "logout":"تسجيل الخروج",
+    "logout confirmation":"هل أنت متأكد من تسجيل الخروج؟",
     "are you sure?":"هل تريد الحذف؟",
     "of corse Text?":"هل تريد إزالة جميع المفضلات بشكل نهائي؟",
     "delete":"حذف",
@@ -95,6 +100,9 @@
     "shuffle":"تغيير",
     "clear all":"مسح الكل",
     "no recipes with filters":"لا توجد وصفات مطابقة للفلاتر",
+    "no results title":"لم نجد أي وصفة تطابق بحثك 🔍",
+    "no results subtitle":"جرب البحث بكلمة مختلفة أو اسم مكون آخر",
+    "clear search":"مسح البحث",
     "ingredients count":"مكون",
 
 

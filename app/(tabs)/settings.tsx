@@ -61,10 +61,19 @@ export default function SettingsScreen() {
     ]);
   };
 
-  const handleLogout = async () => {
-    await logoutUser();
-    useFavorites.getState().setFavorites([]);
-    router.replace("/Auth/Login");
+  const handleLogout = () => {
+    alert(t("logout"), t("logout confirmation"), [
+      { text: t("cancel"), style: "cancel" },
+      {
+        text: t("logout"),
+        style: "destructive",
+        onPress: async () => {
+          await logoutUser();
+          useFavorites.getState().setFavorites([]);
+          router.replace("/Auth/Login");
+        },
+      },
+    ]);
   };
 
   const handleDeleteAccount = async () => {

@@ -13,7 +13,7 @@ import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTranslation } from "react-i18next";
 import { apiClient } from "../../src/api/client"; // استيراد العميل المعرف لديك المربوط بالباك إند
-import { Filter } from "lucide-react-native";
+import { Filter, SearchX } from "lucide-react-native";
 import i18n from "../../i18next/i18n";
 import FilterBottomSheet, {
   RecipeFilters,
@@ -25,7 +25,6 @@ const EMPTY_FILTERS: RecipeFilters = {
   category: null,
   ingredients: null,
 };
-
 const INGREDIENTS_API_MAP: Record<string, string> = {
   "0-5": "5-or-fewer",
   "6-10": "6-10",
@@ -219,9 +218,17 @@ const isArabic = i18n.language === "ar"; // تحقق من اللغة الحال�
         results.length === 0 &&
         query.length === 0 &&
         !hasActiveFilters && (
-          <Text className="text-neutral-400 text-center mt-12 text-base">
-            {t("start searching for your favorite recipe")}
-          </Text>
+          <View className="items-center px-6 mt-10">
+            <View className="w-28 h-28 rounded-full bg-[#1A303D] items-center justify-center mb-6 shadow-lg">
+              <Feather name="search" size={44} color="#FD802E" />
+            </View>
+            <Text className="text-lg font-bold text-white text-center mb-2">
+              {t("what are you looking for")}
+            </Text>
+            <Text className="text-sm text-[#94A3B8] text-center leading-6 mb-6 px-2">
+              {t("search subtitle")}
+            </Text>
+          </View>
         )}
 
       {loading && (
@@ -231,9 +238,26 @@ const isArabic = i18n.language === "ar"; // تحقق من اللغة الحال�
       {!loading &&
         (query.length > 0 || hasActiveFilters) &&
         results.length === 0 && (
-          <Text className="text-neutral-500 text-center mt-10 text-base">
-            لا توجد وصفات مطابقة لبحثك
-          </Text>
+          <View className="items-center px-6 mt-10">
+            <View className="w-28 h-28 rounded-full bg-[#1A303D] items-center justify-center mb-6 shadow-lg">
+              <SearchX size={44} color="#FD802E" />
+            </View>
+            <Text className="text-lg font-bold text-white dark:text-white text-center mb-2">
+              {t("no results title")}
+            </Text>
+            <Text className="text-sm text-[#94A3B8] text-center leading-6 mb-6 px-2">
+              {t("no results subtitle")}
+            </Text>
+            <TouchableOpacity
+              onPress={() => setQuery("")}
+              activeOpacity={0.8}
+              className="bg-[#FD802E] rounded-full px-8 py-3"
+            >
+              <Text className="text-white font-semibold text-base">
+                {t("clear search")}
+              </Text>
+            </TouchableOpacity>
+          </View>
         )}
 
       {/* 3. القائمة بالتنسيق الموحد */}

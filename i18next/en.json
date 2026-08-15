@@ -1,6 +1,6 @@
 {
     "welcome":"Welcome",
-    "greeting morning":"Good morning and deliciousness",
+    "greeting morning":"Good morning and chill",
     "greeting afternoon":"Welcome to the kitchen",
     "greeting evening":"Good evening, what's for dinner today?",
     "chef":"Chef",
@@ -20,6 +20,8 @@
     "search for a recipe":"Search for recipes...",
     "results":"Search results",
     "start searching for your favorite recipe":"Start searching for your favorite recipe",
+    "what are you looking for":"What are you looking for today? 🍳",
+    "search subtitle":"Type the recipe name or ingredients to reach the tastiest dishes",
 
     "favorites recipes":"Favorites recipes",
 
@@ -34,7 +36,10 @@
     "more":"More",
     "rate us":"Rate us",
     "delete all favorites":"Delete all favorites",
+    "no internet connection":"No internet connection",
+    "offline message":"The Maqadeer app requires an internet connection to browse and explore recipes from the database.",
     "logout":"Log out",
+    "logout confirmation":"Are you sure you want to log out?",
     "are you sure?":"Are you sure?",
     "of corse Text?":"Do you want to delete all favorites permanently?",
     "delete":"Delete",
@@ -93,6 +98,9 @@
     "shuffle":"Shuffle",
     "clear all":"Clear all",
     "no recipes with filters":"No recipes match your filters",
+    "no results title":"We couldn't find any recipe matching your search 🔍",
+    "no results subtitle":"Try searching with a different word or another ingredient name",
+    "clear search":"Clear search",
     "ingredients count":"ingredients",
 
     "Home":"Home",
