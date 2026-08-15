@@ -131,7 +131,7 @@ export default function Index() {
             }}
           >
             {t(getGreetingKey())}
-          </Text>
+          </Text> 
         </View>
           {getGreetingKey() === "greeting morning" ? (
             <Coffee color="#FD802E" size={24}  />

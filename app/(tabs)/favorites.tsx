@@ -7,12 +7,17 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useTranslation } from "react-i18next";
 import i18n from "../../i18next/i18n";
 import { Heart, Search } from "lucide-react-native";
+import {
+  getLocalizedMealName,
+  useAppLanguage,
+} from "../../src/utils/localizedMeal";
 
 const getMealId = (item: Meal): string =>
   String(item._id || item.idMeal || item.externalId || "");
 
 const Favorites = () => {
   const { t } = useTranslation();
+  const { language } = useAppLanguage();
   const isArabic = i18n.language === "ar";
   const { favorites, toggleFavorite } = useFavorites((state) => state);
 
@@ -75,7 +80,7 @@ const Favorites = () => {
             keyExtractor={(item) => getMealId(item)}
             renderItem={({ item }) => {
               const id = getMealId(item);
-              const title = item.titleAr || item.title || item.strMeal;
+              const title = getLocalizedMealName(item, language);
               const image = item.image || item.strMealThumb;
               const category = isArabic
                 ? item.categoryAr || item.category || item.strCategory

@@ -19,6 +19,10 @@ import FilterBottomSheet, {
   RecipeFilters,
   CategoryOption,
 } from "../../src/components/FilterBottomSheet";
+import {
+  getLocalizedMealName,
+  useAppLanguage,
+} from "../../src/utils/localizedMeal";
 
 const EMPTY_FILTERS: RecipeFilters = {
   calorie: null,
@@ -34,6 +38,7 @@ const INGREDIENTS_API_MAP: Record<string, string> = {
 
 export default function Search() {
   const { t } = useTranslation();
+  const { language } = useAppLanguage();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -219,10 +224,10 @@ const isArabic = i18n.language === "ar"; // تحقق من اللغة الحال�
         query.length === 0 &&
         !hasActiveFilters && (
           <View className="items-center px-6 mt-10">
-            <View className="w-28 h-28 rounded-full bg-[#1A303D] items-center justify-center mb-6 shadow-lg">
+            <View className="w-28 h-28 rounded-full bg-background dark:bg-darkCard items-center justify-center mb-6 shadow-lg">
               <Feather name="search" size={44} color="#FD802E" />
             </View>
-            <Text className="text-lg font-bold text-white text-center mb-2">
+            <Text className="text-lg font-bold text-text dark:text-white text-center mb-2">
               {t("what are you looking for")}
             </Text>
             <Text className="text-sm text-[#94A3B8] text-center leading-6 mb-6 px-2">
@@ -239,10 +244,10 @@ const isArabic = i18n.language === "ar"; // تحقق من اللغة الحال�
         (query.length > 0 || hasActiveFilters) &&
         results.length === 0 && (
           <View className="items-center px-6 mt-10">
-            <View className="w-28 h-28 rounded-full bg-[#1A303D] items-center justify-center mb-6 shadow-lg">
+            <View className="w-28 h-28 rounded-full bg-background dark:bg-darkCard items-center justify-center mb-6 shadow-lg">
               <SearchX size={44} color="#FD802E" />
             </View>
-            <Text className="text-lg font-bold text-white dark:text-white text-center mb-2">
+            <Text className="text-lg font-bold text-text dark:text-white text-center mb-2">
               {t("no results title")}
             </Text>
             <Text className="text-sm text-[#94A3B8] text-center leading-6 mb-6 px-2">
@@ -271,7 +276,7 @@ const isArabic = i18n.language === "ar"; // تحقق من اللغة الحال�
         contentContainerStyle={{ paddingBottom: 100 }}
         renderItem={({ item }) => {
           const id = item._id || item.idMeal;
-          const title = item.titleAr || item.title || item.strMeal;
+          const title = getLocalizedMealName(item, language);
           const image = item.image || item.imageUrl || item.strMealThumb;
           const area =
             item.countryAr || item.country || item.strArea || "الشيف";

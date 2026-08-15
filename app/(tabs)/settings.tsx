@@ -6,6 +6,7 @@ import { useFavorites } from "../../store/useFavoriteStore"; // تأكد من م
 import { useTheme } from "../../store/useTheme";
 import { useTranslation } from "react-i18next";
 import i18n from "../../i18next/i18n";
+import { getLocalizedCategory } from "../../src/utils/localizedMeal";
 import { router, useFocusEffect } from "expo-router";
 import { useAlert } from "../../components/CustomAlert";
 import {
@@ -116,11 +117,7 @@ export default function SettingsScreen() {
   const getTopCategory = () => {
     if (favoritesCount === 0) return "-";
     const categories = favorites
-      .map((m) =>
-        isRTL
-          ? m.categoryAr || m.category || m.strCategory
-          : m.category || m.categoryAr || m.strCategory,
-      )
+      .map((m) => getLocalizedCategory(m, language))
       .filter(Boolean);
     return (
       categories

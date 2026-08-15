@@ -122,3 +122,13 @@ export const deleteAccountRemote = async () => {
   const response = await apiClient.delete('/users/me');
   return response.data;
 };
+
+// 11. تغيير كلمة المرور مباشرة للمستخدم المسجل دخوله
+export const changePasswordRemote = async (currentPassword: string, newPassword: string) => {
+  try {
+    const response = await apiClient.post('/users/change-password', { currentPassword, newPassword });
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || 'فشل تغيير كلمة المرور');
+  }
+};
