@@ -16,21 +16,21 @@ import { Eye, EyeOff, KeyRound, ChevronLeft, ChevronRight } from "lucide-react-n
 import i18n from "../../i18next/i18n";
 import { useAlert } from "../../components/CustomAlert";
 import { changePasswordRemote } from "../../src/api/authService";
-
-const COLORS = {
-  bg: "#223D4D",
-  card: "#1A303D",
-  accent: "#FD802E",
-  white: "#FFFFFF",
-  muted: "#94A3B8",
-  border: "#334B5B",
-};
+import { useTheme } from "../../store/useTheme";
 
 export default function ChangePasswordScreen() {
+  const { isDark } = useTheme();
   const router = useRouter();
   const { alert } = useAlert();
   const { t } = useTranslation();
   const isRTL = i18n.language === "ar";
+
+  const COLORS = {
+    accent: "#FD802E",
+    white: "#FFFFFF",
+    muted: isDark ? "#94A3B8" : "#64748B",
+    border: isDark ? "#334B5B" : "#E2E8F0",
+  };
 
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -71,23 +71,22 @@ export default function ChangePasswordScreen() {
   };
 
   const inputBase = {
-    backgroundColor: COLORS.card,
-    color: COLORS.white,
+    backgroundColor: isDark ? "#1A303D" : "#FFFFFF",
+    color: isDark ? "#FFFFFF" : "#223D4D",
     borderColor: COLORS.border,
   };
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      className="flex-1"
-      style={{ backgroundColor: COLORS.bg }}
+      className="flex-1 bg-background dark:bg-darkBackground"
     >
       {/* الهيدر: زر الرجوع + العنوان */}
       <View className="relative flex-row items-center justify-center py-4 mt-10">
         <Pressable
           onPress={() => router.back()}
           hitSlop={8}
-          className={`absolute ${isRTL ? "right-4" : "left-4"} w-10 h-10 items-center justify-center rounded-full bg-[#1A303D] border border-[#334B5B]`}
+          className={`absolute ${isRTL ? "right-4" : "left-4"} w-10 h-10 items-center justify-center rounded-full bg-white dark:bg-darkCard border border-neutral-200 dark:border-neutral-700`}
         >
           {isRTL ? (
             <ChevronRight size={22} color="#FD802E" />
@@ -95,7 +94,7 @@ export default function ChangePasswordScreen() {
             <ChevronLeft size={22} color="#FD802E" />
           )}
         </Pressable>
-        <Text className="text-lg font-bold text-white">{t("change password")}</Text>
+        <Text className="text-lg font-bold text-text dark:text-darkText">{t("change password")}</Text>
       </View>
 
       <ScrollView
@@ -107,13 +106,13 @@ export default function ChangePasswordScreen() {
         <View className="px-6 pt-10">
           {/* الترويسة */}
           <View className="items-center mb-8">
-            <View className="w-20 h-20 rounded-full bg-[#1A303D] border border-[#334B5B] items-center justify-center mb-5">
+            <View className="w-20 h-20 rounded-full bg-card dark:bg-darkCard border border-neutral-200 dark:border-neutral-700 items-center justify-center mb-5">
               <KeyRound size={36} color="#FD802E" />
             </View>
-            <Text className="text-2xl font-bold text-white mb-2">
+            <Text className="text-2xl font-bold text-text dark:text-darkText mb-2">
               {t("change password")}
             </Text>
-            <Text className="text-base text-center" style={{ color: COLORS.muted }}>
+            <Text className="text-base text-center text-textLight dark:text-darkTextLight">
               {t("password change subtitle")}
             </Text>
           </View>
@@ -122,7 +121,7 @@ export default function ChangePasswordScreen() {
           <View className="gap-5 mb-6">
             <View className="gap-2">
               <Text
-                className={`text-sm font-semibold text-white ${isRTL ? "text-right" : "text-left"}`}
+                className={`text-sm font-semibold text-text dark:text-darkText ${isRTL ? "text-right" : "text-left"}`}
               >
                 {t("current password")}
               </Text>
@@ -133,7 +132,8 @@ export default function ChangePasswordScreen() {
                   placeholder="••••••••"
                   placeholderTextColor={COLORS.muted}
                   secureTextEntry={!showCurrent}
-                  className={`flex-1 py-4 pr-3 text-base text-white ${isRTL ? "text-right" : "text-left"}`}
+                  className={`flex-1 py-4 pr-3 text-base ${isRTL ? "text-right" : "text-left"}`}
+                  style={{ color: inputBase.color }}
                 />
                 <Pressable onPress={() => setShowCurrent(!showCurrent)} hitSlop={8}>
                   {showCurrent ? (
@@ -147,7 +147,7 @@ export default function ChangePasswordScreen() {
 
             <View className="gap-2">
               <Text
-                className={`text-sm font-semibold text-white ${isRTL ? "text-right" : "text-left"}`}
+                className={`text-sm font-semibold text-text dark:text-darkText ${isRTL ? "text-right" : "text-left"}`}
               >
                 {t("new password")}
               </Text>
@@ -158,7 +158,8 @@ export default function ChangePasswordScreen() {
                   placeholder="••••••••"
                   placeholderTextColor={COLORS.muted}
                   secureTextEntry={!showNew}
-                  className={`flex-1 py-4 pr-3 text-base text-white ${isRTL ? "text-right" : "text-left"}`}
+                  className={`flex-1 py-4 pr-3 text-base ${isRTL ? "text-right" : "text-left"}`}
+                  style={{ color: inputBase.color }}
                 />
                 <Pressable onPress={() => setShowNew(!showNew)} hitSlop={8}>
                   {showNew ? (
@@ -172,14 +173,14 @@ export default function ChangePasswordScreen() {
 
             <View className="gap-2">
               <Text
-                className={`text-sm font-semibold text-white ${isRTL ? "text-right" : "text-left"}`}
+                className={`text-sm font-semibold text-text dark:text-darkText ${isRTL ? "text-right" : "text-left"}`}
               >
                 {t("confirm new password")}
               </Text>
               <View
                 className="flex-row items-center rounded-2xl border px-4"
                 style={{
-                  backgroundColor: COLORS.card,
+                  backgroundColor: inputBase.backgroundColor,
                   borderColor:
                     confirmPassword && confirmPassword !== newPassword
                       ? "#EF4444"
@@ -192,7 +193,8 @@ export default function ChangePasswordScreen() {
                   placeholder="••••••••"
                   placeholderTextColor={COLORS.muted}
                   secureTextEntry={!showConfirm}
-                  className={`flex-1 py-4 pr-3 text-base text-white ${isRTL ? "text-right" : "text-left"}`}
+                  className={`flex-1 py-4 pr-3 text-base ${isRTL ? "text-right" : "text-left"}`}
+                  style={{ color: inputBase.color }}
                 />
                 <Pressable onPress={() => setShowConfirm(!showConfirm)} hitSlop={8}>
                   {showConfirm ? (

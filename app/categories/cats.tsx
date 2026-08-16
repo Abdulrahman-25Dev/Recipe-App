@@ -136,13 +136,15 @@ export default function CategoriesScreen() {
       <View className="items-center justify-center mt-10 px-4 py-4 bg-background dark:bg-darkBackground">
         <TouchableOpacity
           onPress={() => router.back()}
-          className="absolute left-4 p-2 rounded-full bg-black"
+          className={`absolute ${isRTL ? "right-4" : "left-4"} p-2 rounded-full bg-black`}
         >
-          <Ionicons
-            name="arrow-back"
-            size={24}
-            color="#FD802E"
-          />
+          {isRTL ? (
+            <Ionicons name="arrow-forward" color="#FD802E" size={26} />
+          ) : (
+            (
+            <Ionicons name="arrow-back" color="#FD802E" size={26} />
+          )
+          )}
         </TouchableOpacity>
         <Text className="text-2xl font-bold truncate text-center text-primary dark:text-darkPrimary">
           {t("categories")}

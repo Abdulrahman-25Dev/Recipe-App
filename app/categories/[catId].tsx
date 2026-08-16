@@ -119,23 +119,22 @@ export default function CategoryMealsScreen() {
       <Stack.Screen options={{ headerShown: false }} />
 
       {/* Header */}
-      <View
-        className={`${
-          isRTL ? "flex-row" : "flex-row-reverse"
-        } items-center justify-between px-4 py-4 bg-background dark:bg-darkBackground mt-10`}
-      >
+      <View className="items-center justify-center px-4 py-4 bg-background dark:bg-darkBackground mt-10">
         <TouchableOpacity
           onPress={() => router.back()}
-          className="p-2 rounded-full bg-black"
+          className={`absolute ${isRTL ? "right-4" : "left-4"} p-2 rounded-full bg-black`}
         >
-          <Ionicons
-            name={isRTL ? "arrow-back" : "arrow-forward"}
-            size={24}
-            color="#FD802E"
-          />
+          {
+          isRTL ? (
+            <Ionicons name="arrow-forward" size={24} color="#FD802E" />
+          ) : (
+            <Ionicons name="arrow-back" size={24} color="#FD802E" />
+          )
+        }
+          
         </TouchableOpacity>
         <Text
-          className={`text-2xl font-bold flex-1 mx-3 truncate text-center text-primary dark:text-darkPrimary`}
+          className={`text-2xl font-bold truncate text-center text-primary dark:text-darkPrimary`}
         >
           {isRTL ? `${categoryAr || categoryName}` : `${categoryName}`}
         </Text>
