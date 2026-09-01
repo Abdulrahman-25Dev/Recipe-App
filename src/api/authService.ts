@@ -119,8 +119,12 @@ export const clearFavoritesRemote = async () => {
 
 // 10. حذف الحساب نهائياً
 export const deleteAccountRemote = async () => {
-  const response = await apiClient.delete('/users/me');
-  return response.data;
+  try {
+    const response = await apiClient.delete('/users/me');
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || 'فشل حذف الحساب');
+  }
 };
 
 // 11. تغيير كلمة المرور مباشرة للمستخدم المسجل دخوله

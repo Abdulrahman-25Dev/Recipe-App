@@ -84,8 +84,8 @@ export function AlertProvider({ children }: { children: React.ReactNode }) {
                   <Pressable
                     key={index}
                     onPress={() => {
-                      btn.onPress?.();
                       close();
+                      btn.onPress?.();
                     }}
                     className={`px-5 py-2.5 rounded-lg ${style}`}
                   >
